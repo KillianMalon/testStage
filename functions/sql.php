@@ -13,7 +13,7 @@ function getRoom($dbh, $numeroChambre)
 {
     $query = $dbh->prepare( 'SELECT chambres.*,tarifs.prix FROM chambres,tarifs WHERE chambres.tarif_id = tarifs.id AND chambres.id =' . $numeroChambre );
     $query->execute(); // execute le SQL dans la base de données (MySQL / MariaDB)
-    return $query->fetchAll( PDO::FETCH_ASSOC );
+    return $query->fetchAll( PDO::FETCH_ASSOC ); 
 }
 
 //Fonction pour obtenir la capacité d'une chambre avec son id
