@@ -7,7 +7,7 @@ body{
 
 header{
   z-index: 1;
-  position: fixed;
+  position: fixed; 
   background: #22242A;
   padding: 20px;
   width: calc(100% - 0%);
