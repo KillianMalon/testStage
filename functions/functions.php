@@ -19,3 +19,12 @@ function checkCapacityChild($capacityEnter){
         return false;
     }
 }
+function generateRandomString($longueur = 35, $CharList = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
+{
+    $chaine = '';
+    $max = mb_strlen($CharList, '8bit') - 1;
+    for ($i = 0; $i < $longueur; ++$i) {
+        $chaine .= $CharList[random_int(0, $max)];
+    }
+    return $chaine;
+}
