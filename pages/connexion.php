@@ -14,9 +14,13 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
         $userExist = $query->rowCount();
         if($userExist === 1 ){
             $user = $query->fetch();
-            $_SESSION['id'] = $user['id'];
-            header("Location:../index.php");
-            exit();
+            if($user['statut'] === 1) {
+                $_SESSION['id'] = $user['id'];
+                header("Location:../index.php");
+                exit();
+            }else{
+                $error = "Veuillez confirmer votre compte en cliquant sur le lien que vous avez reçu par mail";
+            }
         }else{
             $error = "Le mot de passe ou l'identifiant est incorrect";
         }

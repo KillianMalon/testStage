@@ -16,13 +16,17 @@ unset($_SESSION['end']);
 unset($_SESSION['chambreId']);
 unset($_SESSION['numberAdult']);
 unset($_SESSION['numberChild']);
+$idReser = intval(getLastReservationId($dbh));
+$idReservation = $idReser + 1;
 
-}elseif (!empty($_POST['start']) && !empty($_POST['end']) &&  !empty($_POST['chambreId']) &&  !empty($_POST['numberAdult'])  &&  isset($_POST['numberChild'])){
+
+}elseif (!empty($_POST['start']) && !empty($_POST['end']) &&  !empty($_POST['chambreId']) &&  !empty($_POST['numberAdult']) && !empty($_POST['idReservation'])  &&  isset($_POST['numberChild'])){
 
 $startPost = $_POST['start'];
 $endPost = $_POST['end'];
 $numberAdult = $_POST['numberAdult'];
 $numberChild = $_POST['numberChild'];
+$idReserv = $_POST['idReservation'];
 $startDateTime = new DateTime("$startPost");
 $endDateTime = new DateTime("$endPost");
 
@@ -32,7 +36,7 @@ $chambreId =  $_POST['chambreId'];
 $id = $_SESSION['id'];
 $dateStartFormatted = $startDateTime->format('Y-m-d H:i:s');
 $dateEndFormatted = $endDateTime->format('Y-m-d H:i:s');
-addReservation($dbh, $chambreId, $dateStartFormatted, $id);
+addReservation($dbh, $chambreId, $dateStartFormatted, $id, $idReserv);
 $startDateTime->add(new DateInterval('P1D'));
 }
 header('Location:./reservations.php');
@@ -67,13 +71,12 @@ header('Location:../index.php');
             <input type="text" name="end" value="<?php echo $end ?>" hidden="hidden">
             <input type="text" name="numberAdult" value="<?php echo $numberAdult?>" hidden="hidden">
             <input type="text" name="numberChild" value="<?php echo $numberChild ?>" hidden="hidden">
+            <input type="text" name="idReservation" value="<?php echo $idReservation?>" hidden="hidden">
             <input  type="submit" id="decale" class="btn btn-primary taille" name="confirmReserv" value="Valider votre rÃ©servation">
         </form>
     </div>
     <?php
 
-    //$startDateTime = new DateTime("$start");
-    //$endDateTime = new DateTime("$end");
 
 
     ?>

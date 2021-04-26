@@ -13,6 +13,46 @@ if(isset($_GET['client'])){
     $img = $client['image'];
     $rank = $client['type'];
 }
+if(isset($_POST['modif'])){
+    if(isset($_POST['fname']) and !empty($_POST['fname']) and $_POST['fname'] != $fname){
+        //on sécurise firtName pour éviter les injections direct dans la base de donnée
+        $firstName = htmlspecialchars($_POST['fname']);
+        $firstNameLength = strlen($firstName);
+        if ($firstNameLength >= 1 && $firstNameLength <= 150) {
+            updateFirstName($dbh, $firstName, $id);
+        } else {
+            $error = "Le prénom doit faire entre 1 et 150 caractères !";
+        }
+    }
+    if (isset($_POST['lname']) and !empty($_POST['lname']) and $_POST['lname'] != $lname) {
+        $lastName = htmlspecialchars($_POST['lname']);
+        $lastNameLength = strlen($lastName);
+        if ($lastNameLength >= 1 && $lastNameLength <= 150) {
+            updateLastName($dbh, $lastName, $id);
+        } else {
+            $error = "Le nom doit faire entre 1 et 150 caractères !";
+        }
+    }
+    if(isset($_POST['img']) and !empty($_POST['img']) and $_POST['img'] != $img) {
+        $image = $_POST['img'];
+        //on vérifie qu'il s'agit d'une url valide avec filter_var
+        if(filter_var($image, FILTER_VALIDATE_URL)){
+            //on récupère les 4 derniers caractères de $lastCharacters
+            $lastCharacters = substr($image, -4);
+            //on stocke dans un tableau les différentes extensions
+            $extensionOk = array('.jpg', '.png', 'webp','.gif','jpeg','.psd', '.svg');
+            if(in_array($lastCharacters,$extensionOk)){
+                updateUserPP($dbh, $image, $id);
+            }
+        }else{
+            $error = "Veuillez saisir l'url d'une image correct !";
+        }
+    }
+    if(isset($_POST['rank']) and !empty($_POST['rank']) and $_POST['rank'] != $rank){
+        $newRank =  htmlspecialchars($_POST['rank']);
+        updateRank($dbh, $newRank,$id);
+    }
+}
 ?>
 <div class="content">
     <form method="post">
@@ -28,18 +68,22 @@ if(isset($_GET['client'])){
             <h4>Mail :<?php echo isset($mail)? $mail : " " ?> </h4>
         </div>
         <div>
-            <label>Civilite :</label>
-            <input type="text" value="<?php echo isset($civility)?$civility: " " ?>">
+            <p>Civilité : <?php echo isset($civility)? $civility :" "?></p>
         </div>
         <div>
             <label>Image :</label>
             <input type="text" name="img" value="<?php echo isset($img)?$img: " " ?>">
         </div>
         <div>
-            <label>Type d'utilisateurs : </label>
-            <input type="text" value="<?php echo isset($rank)? $rank:""?>">
+            <select name="rank" id="">
+                <!--je selectionne le select qui correspond vrai role de l'utilisateur-->
+                <option value="admin" <?php echo $rank === "admin"? "selected" : " " ?> >Admin</option>
+                <option value="client" <?php echo $rank === "client"? "selected" : " " ?>>Client</option>
+            </select>
         </div>
-        <input type="submit" value="Modifier">
+
+        <input type="submit" name="modif" value="Modifier">
     </form>
+    <br>
+    <img style="width: 250px;height: auto;" src="<?php echo isset($img)? $img :" " ?>">
 </div>
-<img src="">
