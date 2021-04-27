@@ -55,8 +55,8 @@ require_once 'bdd.php';
         background-color: #ffffff;
         color: #19B3D3;
     }
-
 </style>
+
 <div class="content">
    <div class="globalAdmin">
         <div class="adminAffichage">
@@ -80,7 +80,6 @@ require_once 'bdd.php';
                             $lname = $client['nom'];
                             $mail = $client['mail'];
                             $type = $client['type'];
-
                    ?>
                         <tr>
                             <td><?php echo isset($lname)? $lname :" " ?></td>
@@ -95,7 +94,6 @@ require_once 'bdd.php';
                </table>
             </div>
         </div>
-        <div class="adminAffichage">Administration Chambres </div>
         <div class="adminAffichage">Administration Commentaires </div>
         <div class="adminAffichage">Administration Reservations </div>
    </div>

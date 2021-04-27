@@ -1,6 +1,7 @@
 <?php
 require_once '../component/header.php';
 require_once '../functions/sql.php';
+require_once '../functions/functions.php';
 require_once 'bdd.php';
 if(isset($_POST['send']) AND !empty($_POST['send'])){
     if(!empty($_POST['firstName']) AND !empty($_POST['lastName']) AND !empty($_POST['mail']) AND !empty($_POST['mailVerify']) AND !empty($_POST['password']) AND
@@ -43,16 +44,23 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
                                                         if (filter_var($_POST['image'], FILTER_VALIDATE_URL)) {
                                                             $extensionOk = array('.jpg', '.png', 'webp','.gif','jpeg','.psd', '.svg');
                                                             $lastCharacters = substr($_POST['image'], -4);
+                                                            $key = generateRandomString();
+                                                            $response = getClientByKey($dbh,$key);
+                                                            while($response === 1 ){
+                                                                $key = generateRandomString();
+                                                                $response = getClientByKey($dbh,$key);
+                                                            }
                                                             if(in_array($lastCharacters,$extensionOk)){
                                                                 $image = $_POST['image'];
                                                                 $to       = $mail;
                                                                 $subject  = 'Validation de compte';
-                                                                $message  = '<p>Veuillez cliquer sur le lien pour valider votre compte</p><br><a href="http://localhost/hotel/hotel-master/pages/confirmInscription.php?fname='.urlencode($firstName).'&lname='.urlencode($lastName).'&mail='.urlencode($mail).'&pwd='.urlencode($password).'&address='.urlencode($address).'&pc='.urlencode($postalCode).'&town='.urlencode($city).'&country='.urlencode($country).'&civility='.urlencode($civility).'&img='.urlencode($image).'">Valider mon compte</a>';
+                                                                $message  = '<p>Veuillez cliquer sur le lien pour valider votre compte</p><br><a href="http://localhost/testStage/hotel/pages/confirmInscription.php?key='.$key.'">Valider mon compte</a>';
                                                                 $headers  = 'From: envoiedemailtest@gmail.com' . "\r\n" .
                                                                     'MIME-Version: 1.0' . "\r\n" .
                                                                     'Content-type: text/html; charset=utf-8';
                                                                 if(mail($to, $subject, $message, $headers)) {
                                                                     $msg = "Vous allez recevoir un email de confirmation, cliqué sur le lien pour confirmer votre inscription!";
+                                                                    inscription($dbh, $firstName, $lastName, $mail, $password, $address, $postalCode, $city, $country, $civility, $image,$key);
                                                                 }else{
                                                                     $error = "Email sending failed";
                                                                 }

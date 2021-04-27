@@ -33,9 +33,8 @@ if (isset($_SESSION['id'])){
         if (isset($_POST['lname']) and !empty($_POST['lname']) and $_POST['lname'] != $lname) {
             $lastName = htmlspecialchars($_POST['lname']);
             $lastNameLength = strlen($lastName);
-            if ($lastNameLength >= 1 && $firstNameLength <= 150) {
+            if ($lastNameLength >= 1 && $lastNameLength <= 150) {
                 updateLastName($dbh, $lastName, $id);
-
             } else {
                 $error = "Le nom doit faire entre 1 et 150 caractères !";
             }

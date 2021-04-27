@@ -3,12 +3,25 @@ require_once '../component/header.php';
 require_once '../functions/sql.php';
 require_once 'bdd.php';
 
+$compteur = 0;
 if (isset($_SESSION['id'])){
     echo '<div class="content">';
     $uid = $_SESSION['id'];
     $count = countReservations($dbh, $uid);
-    $rlists = getReservations($dbh, $uid, $count);
+    $rlists = getReservations($dbh, $uid);
     $i = 0;
+    
+    
+    $arrayId = array('id'=> '');
+
+    foreach ($rlists as $rlist){
+        $idReservations = $rlists[$compteur]['idReservation'];
+        array_push($arrayId, $idReservations);
+        $compteur = $compteur +1;
+       
+    }
+    var_dump($arrayId);
+
     foreach ($rlists as $rlist){
         $i = $i+1;
         $chid = $rlist['chambre_id'];
