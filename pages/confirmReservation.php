@@ -6,56 +6,58 @@ require_once '../functions/sql.php';
 require_once  'bdd.php';
 
 if (!empty($_SESSION['start']) && !empty($_SESSION['end']) &&  !empty($_SESSION['chambreId'])  &&  !empty($_SESSION['numberAdult'])  && isset($_SESSION['numberChild'])) {
-$end = $_SESSION['end'];
-$start = $_SESSION['start'];
-$chambreId = $_SESSION['chambreId'];
-$numberAdult = $_SESSION['numberAdult'];
-$numberChild = $_SESSION['numberChild'];
-unset($_SESSION['start']);
-unset($_SESSION['end']);
-unset($_SESSION['chambreId']);
-unset($_SESSION['numberAdult']);
-unset($_SESSION['numberChild']);
-$idReser = intval(getLastReservationId($dbh));
-$idReservation = $idReser + 1;
+    $end = $_SESSION['end'];
+    $start = $_SESSION['start'];
+    $chambreId = $_SESSION['chambreId'];
+    $numberAdult = $_SESSION['numberAdult'];
+    $numberChild = $_SESSION['numberChild'];
+    unset($_SESSION['start']);
+    unset($_SESSION['end']);
+    unset($_SESSION['chambreId']);
+    unset($_SESSION['numberAdult']);
+    unset($_SESSION['numberChild']);
+    $searchIdRservation = getLastReservationId($dbh);
+    $idReservationInArray = $searchIdRservation['idReservation'];
+    $idReservation = $idReservationInArray + 1;
 
 
-}elseif (!empty($_POST['start']) && !empty($_POST['end']) &&  !empty($_POST['chambreId']) &&  !empty($_POST['numberAdult']) && !empty($_POST['idReservation'])  &&  isset($_POST['numberChild'])){
 
-$startPost = $_POST['start'];
-$endPost = $_POST['end'];
-$numberAdult = $_POST['numberAdult'];
-$numberChild = $_POST['numberChild'];
-$idReserv = $_POST['idReservation'];
-$startDateTime = new DateTime("$startPost");
-$endDateTime = new DateTime("$endPost");
+}elseif (!empty($_POST['start']) && !empty($_POST['end']) &&  !empty($_POST['chambreId']) &&  !empty($_POST['numberAdult'])  &&  isset($_POST['numberChild'])){
+
+    $startPost = $_POST['start'];
+    $endPost = $_POST['end'];
+    $numberAdult = $_POST['numberAdult'];
+    $numberChild = $_POST['numberChild'];
+    $idReserv = $_POST['idReservation'];
+    $startDateTime = new DateTime("$startPost");
+    $endDateTime = new DateTime("$endPost");
 
 
-while ($startDateTime < $endDateTime) {
-$chambreId =  $_POST['chambreId'];
-$id = $_SESSION['id'];
-$dateStartFormatted = $startDateTime->format('Y-m-d H:i:s');
-$dateEndFormatted = $endDateTime->format('Y-m-d H:i:s');
-addReservation($dbh, $chambreId, $dateStartFormatted, $id, $idReserv);
-$startDateTime->add(new DateInterval('P1D'));
-}
-header('Location:./reservations.php');
+    while ($startDateTime < $endDateTime) {
+        $chambreId =  $_POST['chambreId'];
+        $id = $_SESSION['id'];
+        $dateStartFormatted = $startDateTime->format('Y-m-d H:i:s');
+        $dateEndFormatted = $endDateTime->format('Y-m-d H:i:s');
+        addReservation($dbh, $chambreId, $dateStartFormatted, $id, $idReserv);
+        $startDateTime->add(new DateInterval('P1D'));
+    }
+    header('Location:./reservations.php');
 
 }elseif(isset($_POST['check']) && $_POST['check'] == 1  ){
 
-$end = $_POST['dateend'];
-$start = $_POST['datestart'];
-$chambreId = $_POST['chambreId'];
-$numberAdult = $_POST['numberAdult'];
-$numberChild = $_POST['numberChild'];
+    $end = $_POST['dateend'];
+    $start = $_POST['datestart'];
+    $chambreId = $_POST['chambreId'];
+    $numberAdult = $_POST['numberAdult'];
+    $numberChild = $_POST['numberChild'];
 
-}else{
-unset($_SESSION['start']);
-unset($_SESSION['end']);
-unset($_SESSION['chambreId']);
-unset($_SESSION['numberAdult']);
-unset($_SESSION['numberChild']);
-header('Location:../index.php');
+    }else{
+    unset($_SESSION['start']);
+    unset($_SESSION['end']);
+    unset($_SESSION['chambreId']);
+    unset($_SESSION['numberAdult']);
+    unset($_SESSION['numberChild']);
+    header('Location:../index.php');
 }
 
 ?>
@@ -72,7 +74,7 @@ header('Location:../index.php');
             <input type="text" name="numberAdult" value="<?php echo $numberAdult?>" hidden="hidden">
             <input type="text" name="numberChild" value="<?php echo $numberChild ?>" hidden="hidden">
             <input type="text" name="idReservation" value="<?php echo $idReservation?>" hidden="hidden">
-            <input  type="submit" id="decale" class="btn btn-primary taille" name="confirmReserv" value="Valider votre rÃ©servation">
+            <input  type="submit" id="decale" class="btn btn-primary taille" name="confirmReserv" value="Valider votre réservation">
         </form>
     </div>
     <?php

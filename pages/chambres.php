@@ -129,28 +129,34 @@ require_once 'bdd.php';
         }
         ?>
 
-        <?php if (!empty($chambres)): ?>
-                    <?php foreach ($chambres as $chambre): ?>
-                        <div class="chambre">
-                            <div class="picture"><img src="<?php echo($chambre['image'])?>"></div>
-                                <div class="text">
-                                    <h3>Chambre <?php echo($chambre['id'])?></h3>
-                                    <p class="description"><?php echo($chambre['description'])?></p>
-                                    <p class="capacity"><?php echo($chambre['capacite'])?>  <?php echo $chambre['capacite'] < 2 ? 'personne' : 'personnes' ;?></p>
-                                </div>
-                                <div class="prix" >
-                                    <h2 class="price"><?php echo($chambre['prix'])?> €</h2>
-                                    <a href="infoChambre.php?id=<?php echo($chambre['id'])?>"><button class="button">Réserver</button></a>
-                                </div>
-                        </div>
-                    <?php endforeach; ?>
-        <?php else: ?>
-            <div class="milieu">
-                <p> Aucun résultat pour votre recherche</p>
+<?php if (!empty($chambres)):
+        if(isset($_SESSION['id'])){
+            $client = getClient($dbh, $_SESSION['id']);
+            $type = $client['type'];
+        }
+        ?>
+        <?php foreach ($chambres as $chambre): ?>
+            <div class="chambre">
+                <div class="picture"><img src="<?php echo($chambre['image'])?>"></div>
+                <div class="text">
+                    <h3>Chambre <?php echo($chambre['id'])?></h3>
+                    <p class="description"><?php echo($chambre['description'])?></p>
+                    <p class="capacity"><?php echo($chambre['capacite'])?>  <?php echo $chambre['capacite'] < 2 ? 'personne' : 'personnes' ;?></p>
+                </div>
+                <div class="prix" >
+                    <h2 class="price"><?php echo($chambre['prix'])?> €</h2>
+                    <a href="infoChambre.php?id=<?php echo($chambre['id'])?>"><button class="button"><?php echo (isset($type) AND $type ==="admin")? "Voir" :"Réserver" ?></button></a>
+                </div>
             </div>
-        <?php endif; ?>
-        <br><br>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <div class="milieu">
+            <p> Aucun résultat pour votre recherche</p>
+        </div>
+    <?php endif; ?>
+    <br><br>
 </div>
+  
 
 
 

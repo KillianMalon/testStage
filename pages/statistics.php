@@ -30,6 +30,7 @@ foreach ($alls as $all){
     <?php
 foreach ($alls as $all){
     $prcnt = $all['vues'] * 100 / $total;
+    $prcnt = round($prcnt);
     $nb = $nb+1;
     ?>
         <p>
@@ -44,11 +45,11 @@ foreach ($alls as $all){
         Total des vues du site : <?= $total ?>
     </div>
 
-
     <!-- Graphique en construction-->
     <head>
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     </head>
+    <!--Code du graphique de google charts-->
     <script type="text/javascript">
         google.charts.load('current', {'packages':['corechart']});
         google.charts.setOnLoadCallback(drawVisualization);
@@ -57,11 +58,19 @@ foreach ($alls as $all){
             // Some raw data (not necessarily accurate)
             var data = google.visualization.arrayToDataTable([
                 ['Month', 'Vues', 'Réservations'],
-                ['2021/01',  1,      1,  ],
-                ['2021/02',  1,      1,   ],
-                ['2021/03',  7,      10,  ],
-                ['2021/04',  <?= $total ?> ,      10, ],
-                ['2021/05',  5,      1,   ]
+                <?php
+                $totalMonthSeeInformation = getAllMonth($dbh);
+                foreach ($totalMonthSeeInformation as $information){
+                    //je récupére qu'une partie de la date en base de donnée qui a cette forme 2021-04-12 ici je récup 2021-04
+                $TakeYearsAndMonths = substr($information['mois'], 0,-3);
+                //je remplace les tirets de la date pour un / pour un affichage plus jolie
+                $yearAndMonth = strtr($TakeYearsAndMonths, '-', '/');
+                $vues = $information['vuesTotale'];
+                ?>
+                ['<?= $yearAndMonth ?>',  <?= $vues ?>,  1],
+                <?php
+                }
+                ?>
             ]);
 
             var options = {
@@ -76,12 +85,9 @@ foreach ($alls as $all){
             chart.draw(data, options);
         }
     </script>
-
     <div id="chart_div" style="width: 900px; height: 500px;"></div>
 
 </div>
 
 </body>
 </html>
-statistics.php
-3 Ko
