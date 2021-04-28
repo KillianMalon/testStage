@@ -27,7 +27,6 @@ if(!empty($_POST['start']) && !empty($_POST['end']) && !empty($_POST['idChambre'
                 $capacite3 = $capacite2[0];
             }
         }
-        var_dump($_POST);
         $capacite = $numberAdult + $numberChild;
         if ($capacite <= $capacite3['capacite']) {
             $dateStart = new DateTime("$start");
@@ -114,6 +113,24 @@ if (!empty($_GET['id'])) {
     $numeroChambre = $_GET["id"];
 
     AddOneView($dbh, $numeroChambre);
+    $todayYearAndMonth = date("y-m");
+    $allMonth = getAllMonth($dbh);
+    $trueDate = date("y-m-01");
+    $no = 0;
+    $ok =0;
+    foreach($allMonth as $month){
+        $date = $month['mois'];
+        $yearAndMonth = substr($date,2,-3);
+        if($yearAndMonth === $todayYearAndMonth){
+            AddOneGlobalView($dbh,$trueDate);
+            $ok = 1;
+        }else{
+            $no = 1;
+        }
+    }
+if($no === 1 AND $ok === 0){
+    insertOneMonth($dbh,$trueDate);
+}
     $chambre = getRoom($dbh, $numeroChambre);
 
     if (!empty($chambre)) {

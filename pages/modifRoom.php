@@ -97,10 +97,13 @@ foreach ($rooms as $room) {
             <label>Vues :</label>
             <input type="text" name="vues" value="<?= $vues ?>">
         </div>
-        
+        <div>
+            <label>Image Link :</label>
+            <input type="text" name="image" value="<?= $image ?>">
+        </div>
         <input type="submit" value="Modifier">
     </form>
+        <img src="<?= $image ?>">
 </div>
-<img src="">
 <?php
 }

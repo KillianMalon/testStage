@@ -11,51 +11,58 @@ if (isset($_SESSION['id'])){
     $rlists = getReservations($dbh, $uid);
     $i = 0;
     
+    $reservationsByUsereId = reservationByUserId($dbh, $_SESSION['id']);
     
-    $arrayId = array('id'=> '');
 
-    foreach ($rlists as $rlist){
-        $idReservations = $rlists[$compteur]['idReservation'];
-        array_push($arrayId, $idReservations);
-        $compteur = $compteur +1;
-       
+    foreach($reservationsByUsereId as $reservationByUsereId){
+        $idReservation = $reservationByUsereId['idReservation'];
+    
+        $nombre = 0;
+        $reservations = ReservationByReservationId($dbh, $idReservation); 
+
+        $dateStart = $reservations[0]['jour'];
+        $idChambre = $reservations[0]['chambre_id'];
+        $acompte = $reservations[0]['acompte'];
+        $payed = $reservations[0]['paye'];
+        $priceperDay = gePriceRoom($dbh, $idChambre);
+        $price = $priceperDay['prix'];
+        $count = count($reservations);
+        $totalPrice = $price * $count;
+
+        $arrayIds[] = array('idChambre'=> $idChambre , 'idRservation'=> $reservationByUsereId['idReservation'], "date_de_départ" => $dateStart, 'nombre_de_jours' => $count, 'acompte'=> $acompte, 'payed'=>$payed, 'prix'=>$totalPrice);
+        foreach ($reservations as $reservations){
+            $nombre ++;
+        }
     }
-    var_dump($arrayId);
-
-    foreach ($rlists as $rlist){
-        $i = $i+1;
-        $chid = $rlist['chambre_id'];
-        $day = $rlist['jour'];
-        $acompte = $rlist['acompte'];
-        $payed = $rlist['paye'];
-
-?>
-
-    <div class="rlist">
-        <form>
-            <div class="">
-                <label>Chambre numéro</label>
-                <input readonly type="text" value="<?= $chid ?>">
-            </div>
-            <div class="">
-                <label>Date</label>
-                <input readonly type="date" value="<?= $day ?>">
-            </div>
-            <div class="">
-                <label>Acompte</label>
-                <input readonly type="text" value="<?php if ($acompte==1){echo "Il y a un acompte";}else{ echo "Il n'y a pas d'acompte";} ?>">
-            </div>
-            <div class="">
-                <label>Paiement</label>
-                <input readonly type="text" value="<?php if ($payed==1){echo "Chambre payée";}else{ echo "Chambre non payée";} ?>">
-            </div>
-        </form>
-    </div>
-        <br>
 
 
-<?php
-    }
-    echo "</div>";
+    
+
+    foreach ($arrayIds as $arrayId){ var_dump($arrayId);?>
+        <!-- <div class="">
+                    <label>Chambre numéro</label>
+                    <input readonly type="text" value="<?= $arrayId ?>">
+                </div>
+                <div class="">
+                    <label>Date</label>
+                    <input readonly type="date" value="<?= $day ?>">
+                </div>
+                <div class="">
+                    <label>Acompte</label>
+                    <input readonly type="text" value="<?php if ($acompte==1){echo "Il y a un acompte";}else{ echo "Il n'y a pas d'acompte";} ?>">
+                </div>
+                <div class="">
+                    <label>Paiement</label>
+                    <input readonly type="text" value="<?php if ($payed==1){echo "Chambre payée";}else{ echo "Chambre non payée";} ?>">
+        </div> -->
+        
+        
+
+    <?php } ?>
+
+
+    <?php
 }
-?>
+        echo "</div>";
+
+    ?>

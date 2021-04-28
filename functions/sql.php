@@ -29,9 +29,9 @@ function checkReservationsEmpty($dbh, $date, $id){
 }
 
 //Fonction pour réserver une chambre
-function addReservation($dbh, $chambreId, $dateStart, $id){
-    $query = $dbh->prepare( "INSERT INTO planning (chambre_id, jour, acompte, paye, client_id) VALUES(?, ?, '0', '0', ?)" );
-    $query->execute(array($chambreId,$dateStart, $id));
+function addReservation($dbh, $chambreId, $dateStart, $id, $idReservation){
+    $query = $dbh->prepare( "INSERT INTO planning (chambre_id, jour, acompte, paye, client_id, idReservation) VALUES(?, ?, '0', '0', ?, ?)" );
+    $query->execute(array($chambreId,$dateStart, $id, $idReservation));
     return $query->fetchAll();
 }
 
@@ -266,7 +266,75 @@ function ListEtage($dbh){
     return $etages = $query->fetchAll();
 }
 function getLastReservationId($dbh){
-    $query = $dbh->prepare('SELECT idReservation FROM planning ORDER BY idReservation DESC LIMIT 1');
+    $query = $dbh->prepare('SELECT * FROM planning ORDER BY idReservation DESC LIMIT 1');
     $query->execute();
     return $last = $query->fetch();
+}
+
+
+function reservationByUserId($dbh, $id){
+    $query = $dbh->prepare("SELECT DISTINCT idReservation FROM planning WHERE client_id = ?");
+    $query->execute(array($id));
+    return $last = $query->fetchAll();
+}
+
+function ReservationByReservationId($dbh, $idReservation){
+    $query = $dbh->prepare("SELECT * FROM planning WHERE idReservation = ?");
+    $query->execute(array($idReservation));
+    return $last = $query->fetchAll();
+}
+
+function gePriceRoom($dbh, $idChambre){
+    $query = $dbh->prepare("SELECT tarifs.prix FROM chambres,tarifs WHERE chambres.tarif_id = tarifs.id AND chambres.id = ? ");
+    $query->execute(array($idChambre));
+    return $price = $query->fetch();
+}
+
+function AddOneGlobalView($dbh, $month){
+    $query = $dbh->prepare('UPDATE vues SET vuesTotale = vuesTotale+1 WHERE mois = ?');
+    $query->execute(array($month));
+}
+function getAllMonth($dbh){
+    $query = $dbh->prepare('SELECT * FROM vues');
+    $query -> execute();
+    return $informations = $query->fetchAll();
+}
+function insertOneMonth($dbh,$trueDate){
+    $insert = $dbh->prepare('INSERT INTO vues (mois, vuesTotale) VALUES (?,1) ');
+    $insert->execute(array($trueDate));
+}
+
+function updateRoom($dbh, $id, $cap, $exposition, $douche, $etage, $tarif_id, $description, $image){
+    $query = $dbh->prepare('UPDATE chambres SET id = ?, capacite = ?, exposition = ?, douche = ?, etage = ?, tarif_id = ?, description = ?, image = ? WHERE id = ?');
+    $query->execute(array($id, $cap, $exposition, $douche, $etage, $tarif_id, $description, $image, $id));
+}
+
+function countCountry($dbh){
+    $query = $dbh->prepare('SELECT COUNT(*) FROM pays');
+    $query->execute();
+    return $end = $query->fetch();
+}
+
+function testpage($dbh, $premier, $parpage){
+    $query = $dbh->prepare('SELECT * FROM pays ORDER BY id DESC LIMIT ?, ?');
+    $query->execute(array($premier, $parpage));
+    return $toto = $query->fetchAll();
+}
+function get_list_page($page, $nb_page, $nb = 2)
+{
+    $list_page = array();
+    for ($i=1;$i <= $nb_page;$i++)
+    {
+        if (($i < $nb) OR ($i > $nb_page - 1) OR (($i < $page + $nb) AND ($i > $page -$nb)))
+            $list_page[] = $i;
+        else
+        {
+            if ($i >= $nb AND $i <= $page - $nb)
+                $i = $page - $nb;
+            elseif ($i >= $page + $nb AND $i <= $nb_page - $nb)
+                $i = $nb_page - $nb;
+            $list_page[] = '...';
+        }
+    }
+    return $list_page;
 }
