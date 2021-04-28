@@ -52,10 +52,11 @@ if (isset($_POST['depart']) and !empty($_POST['depart'])){
             //On effectue la requête SQL avec les tags et on la stock dans un tableau
             $tags = Search($dbh, $total, $exposition, $idprix);
             $dayoff = FreeTwo($dbh, $arrivee, $depart);
-
+            $count = count($dayoff);
             for ($i=0; $i < count($tags); $i++){
-                for ($in=0; $in < count($dayoff); $in++){
+                for ($in=0; $in < $count-1; $in++){
                     if ($tags[$i] == $dayoff[$in]){
+            
                         unset($tags[$i]);
                     }
                 }

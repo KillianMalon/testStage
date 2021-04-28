@@ -16,6 +16,7 @@ if (!empty($_SESSION['start']) && !empty($_SESSION['end']) &&  !empty($_SESSION[
     unset($_SESSION['chambreId']);
     unset($_SESSION['numberAdult']);
     unset($_SESSION['numberChild']);
+
     $searchIdRservation = getLastReservationId($dbh);
     $idReservationInArray = $searchIdRservation['idReservation'];
     $idReservation = $idReservationInArray + 1;
@@ -32,7 +33,7 @@ if (!empty($_SESSION['start']) && !empty($_SESSION['end']) &&  !empty($_SESSION[
     $startDateTime = new DateTime("$startPost");
     $endDateTime = new DateTime("$endPost");
 
-
+    
     while ($startDateTime < $endDateTime) {
         $chambreId =  $_POST['chambreId'];
         $id = $_SESSION['id'];
@@ -40,8 +41,21 @@ if (!empty($_SESSION['start']) && !empty($_SESSION['end']) &&  !empty($_SESSION[
         $dateEndFormatted = $endDateTime->format('Y-m-d H:i:s');
         addReservation($dbh, $chambreId, $dateStartFormatted, $id, $idReserv);
         $startDateTime->add(new DateInterval('P1D'));
+        header('Location:./reservations.php');
     }
-    header('Location:./reservations.php');
+    
+
+}else if (!empty($_POST['datestart']) && !empty($_POST['dateend']) &&  !empty($_POST['chambreId']) &&  !empty($_POST['numberAdult'])  &&  isset($_POST['numberChild'])){
+    
+    
+    $start = $_POST['datestart'];
+    $end = $_POST['dateend'];
+    $chambreId = $_POST['chambreId'];
+    $numberAdult = $_POST['numberAdult'];
+    $numberChild = $_POST['numberChild'];
+    $searchIdRservation = getLastReservationId($dbh);
+    $idReservationInArray = $searchIdRservation['idReservation'];
+    $idReservation = $idReservationInArray + 1;
 
 }elseif(isset($_POST['check']) && $_POST['check'] == 1  ){
 

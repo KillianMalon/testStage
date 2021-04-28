@@ -30,7 +30,7 @@ function checkReservationsEmpty($dbh, $date, $id){
 
 //Fonction pour réserver une chambre
 function addReservation($dbh, $chambreId, $dateStart, $id, $idReservation){
-    $query = $dbh->prepare( "INSERT INTO planning (chambre_id, jour, acompte, paye, client_id, idReservation) VALUES(?, ?, '0', '0', ?, ?)" );
+    $query = $dbh->prepare( "INSERT INTO planning (chambre_id, jour, paye, client_id, idReservation) VALUES(?, ?, '0', ?, ?)" );
     $query->execute(array($chambreId,$dateStart, $id, $idReservation));
     return $query->fetchAll();
 }
@@ -202,7 +202,7 @@ function updateRank($dbh, $rank, $id){
 }
 //Fonction de recherche multi-tag
 function Search($dbh, $total, $exposition, $idprix){
-    $type = "SELECT id FROM chambres WHERE capacite >= ?";
+    $type = "SELECT id FROM chambres c WHERE c.capacite >= ?";
     if ($idprix == 0) {
         if ($exposition == 0) {
             $query = $dbh->prepare( "$type" );
@@ -337,4 +337,11 @@ function get_list_page($page, $nb_page, $nb = 2)
         }
     }
     return $list_page;
+}
+
+function payedReservation($dbh, $idReservation){
+    
+    $query = $dbh->prepare('UPDATE planning SET paye = 1 WHERE idReservation = ?');
+    $query->execute(array($idReservation));
+
 }
