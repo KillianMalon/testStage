@@ -3,8 +3,10 @@ require_once '../component/header.php';
 require_once '../functions/sql.php';
 require_once 'bdd.php';
 
+//Récupération des informations des clients
 $clients = getAllClients($dbh);
 
+//Stockage des informations de chaque client
 foreach ($clients as $client){
     $id = $client['id'];
     $civilite = $client['civilite'];
@@ -20,7 +22,7 @@ foreach ($clients as $client){
     $image = $client['image'];
     $pays = getCountrybyid($dbh, $paysid);
     ?>
-
+    <!-- Affichage desdites informations -->
     <div class="content">
         <div class="client">
             <img class="mobile_profile_image" style="width: 100px; margin-right: 30px;" src="<?= $image ?>">

@@ -4,7 +4,7 @@ require_once '../functions/sql.php';
 require_once 'bdd.php';
 
 ?>
-
+<!-- Style de la page chambres -->
 <style>
     .chambre{
         width: 85%;
@@ -81,7 +81,7 @@ require_once 'bdd.php';
 
         <br><br>
         <?php
-
+// Requêtes de selectiond es informations des chambres
     ?>
         <?php
         if (empty($_GET['sort']) && empty($_POST['search'])){
@@ -129,7 +129,8 @@ require_once 'bdd.php';
         }
         ?>
 
-<?php if (!empty($chambres)):
+<?php //Affichage des informations récupérées pour chaque chambre
+    if (!empty($chambres)):
         if(isset($_SESSION['id'])){
             $client = getClient($dbh, $_SESSION['id']);
             $type = $client['type'];

@@ -3,14 +3,18 @@ require_once '../component/header.php';
 require_once '../functions/sql.php';
 require_once 'bdd.php';
 
+//Récupération de l'iD de la chambre en GET
 if(!isset($_GET['room']) || empty($_GET['room'])){
     header("Location: chambres.php");
     exit();
 }
 echo '<div class="content">';
 $id = intval($_GET['room']);
+
+//Récupération des informations de la chambre en fonctiond e l'iD
 $rooms = getRoom($dbh, $id);
-var_dump($rooms);
+
+//Affichage des informations de la chambre
 foreach ($rooms as $room) { 
     $capacite = $room['capacite'];
     $exposition = $room['exposition'];

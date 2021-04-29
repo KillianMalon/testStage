@@ -5,6 +5,8 @@ if(isset($_SESSION['id'])){
 require_once '../component/header.php';
 require_once '../functions/sql.php';
 require_once 'bdd.php';
+
+//Connexion au site
 if(isset($_POST['send']) AND !empty($_POST['send'])){
     $mail = htmlspecialchars($_POST['mail']);
     $password = sha1($_POST['password']);
@@ -30,6 +32,7 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
 }
 ?>
 
+<!-- Affichage de formulaire de connexion -->
 <div class="content">
     <form action="" method="post">
         <label for="">Email :</label>

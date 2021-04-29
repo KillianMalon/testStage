@@ -3,6 +3,7 @@ require_once '../component/header.php';
 require_once '../functions/sql.php';
 require_once 'bdd.php';
 
+//Si les informations sont bien envoyées en GET, on les stock en local
 if(isset($_GET['client'])){
     $id = intval($_GET['client']);
     $client = getClient($dbh, $id);
@@ -13,6 +14,8 @@ if(isset($_GET['client'])){
     $img = $client['image'];
     $rank = $client['type'];
 }
+
+//Si les informations sont bien envoyées en POST, on les stock en local
 if(isset($_POST['modif'])){
     if(isset($_POST['fname']) and !empty($_POST['fname']) and $_POST['fname'] != $fname){
         //on sécurise firtName pour éviter les injections direct dans la base de donnée
@@ -54,6 +57,7 @@ if(isset($_POST['modif'])){
     }
 }
 ?>
+<!-- Affichage des informations du client -->
 <div class="content">
     <form method="post">
         <div>

@@ -5,6 +5,7 @@ require '../functions/functions.php';
 require_once '../functions/sql.php';
 require_once  'bdd.php';
 
+//Si on a des informations en SESSION, on les stock en local
 if (!empty($_SESSION['start']) && !empty($_SESSION['end']) &&  !empty($_SESSION['chambreId'])  &&  !empty($_SESSION['numberAdult'])  && isset($_SESSION['numberChild'])) {
     $end = $_SESSION['end'];
     $start = $_SESSION['start'];
@@ -21,7 +22,7 @@ if (!empty($_SESSION['start']) && !empty($_SESSION['end']) &&  !empty($_SESSION[
     $idReservation = $idReservationInArray + 1;
 
 
-
+//Sinon, si on a des informations en POST, on les stock en local
 }elseif (!empty($_POST['start']) && !empty($_POST['end']) &&  !empty($_POST['chambreId']) &&  !empty($_POST['numberAdult'])  &&  isset($_POST['numberChild'])){
 
     $startPost = $_POST['start'];
@@ -32,7 +33,7 @@ if (!empty($_SESSION['start']) && !empty($_SESSION['end']) &&  !empty($_SESSION[
     $startDateTime = new DateTime("$startPost");
     $endDateTime = new DateTime("$endPost");
 
-
+    
     while ($startDateTime < $endDateTime) {
         $chambreId =  $_POST['chambreId'];
         $id = $_SESSION['id'];
@@ -40,8 +41,20 @@ if (!empty($_SESSION['start']) && !empty($_SESSION['end']) &&  !empty($_SESSION[
         $dateEndFormatted = $endDateTime->format('Y-m-d H:i:s');
         addReservation($dbh, $chambreId, $dateStartFormatted, $id, $idReserv);
         $startDateTime->add(new DateInterval('P1D'));
+        header('Location:./reservations.php');
     }
-    header('Location:./reservations.php');
+    
+}else if (!empty($_POST['datestart']) && !empty($_POST['dateend']) &&  !empty($_POST['chambreId']) &&  !empty($_POST['numberAdult'])  &&  isset($_POST['numberChild'])){
+    
+    
+    $start = $_POST['datestart'];
+    $end = $_POST['dateend'];
+    $chambreId = $_POST['chambreId'];
+    $numberAdult = $_POST['numberAdult'];
+    $numberChild = $_POST['numberChild'];
+    $searchIdRservation = getLastReservationId($dbh);
+    $idReservationInArray = $searchIdRservation['idReservation'];
+    $idReservation = $idReservationInArray + 1;
 
 }elseif(isset($_POST['check']) && $_POST['check'] == 1  ){
 
@@ -63,7 +76,7 @@ if (!empty($_SESSION['start']) && !empty($_SESSION['end']) &&  !empty($_SESSION[
 ?>
 
 
-
+<!-- Affichage de la demande de confirmation de réservation -->
 <main>
     <div class="content">
         <p>Confirmez votre chambre en appuyant sur le bouton</p>

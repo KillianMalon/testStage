@@ -3,6 +3,8 @@ require_once '../component/header.php';
 require_once '../functions/sql.php';
 require_once 'bdd.php';
 
+//Confirmation de l'inscription
+
 if(!isset($_SESSION['id'])){
    if(isset($_GET['key']) AND !empty($_GET['key'])){
         $key = htmlspecialchars($_GET['key']);
