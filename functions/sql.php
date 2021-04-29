@@ -30,7 +30,7 @@ function checkReservationsEmpty($dbh, $date, $id){
 
 //Fonction pour réserver une chambre
 function addReservation($dbh, $chambreId, $dateStart, $id, $idReservation){
-    $query = $dbh->prepare( "INSERT INTO planning (chambre_id, jour, paye, client_id, idReservation) VALUES(?, '0', '0', ?, ?)" );
+    $query = $dbh->prepare( "INSERT INTO planning (chambre_id, jour, paye, client_id, idReservation) VALUES(?, ?, '0', ?, ?)" );
     $query->execute(array($chambreId,$dateStart, $id, $idReservation));
     return $query->fetchAll();
 }
@@ -375,5 +375,77 @@ function payedReservation($dbh, $idReservation){
     
     $query = $dbh->prepare('UPDATE planning SET paye = 1 WHERE idReservation = ?');
     $query->execute(array($idReservation));
+}
 
+function getAllResrvationsOfClient($dbh, $id){
+    $query=$dbh->prepare("SELECT * FROM planning WhERE client_id = ?");
+    $query=$query(array($id));
+    return $resultat = $query->fetchAll();
+}
+
+function addCommentary($dbh, $id, $idChambre, $commentary, $today2){
+    $query=$dbh->prepare("INSERT INTO commentaires(client_id, chambre_id, contenu, date)  VALUES (?,?,?,?)");
+    $query-> execute(array($id, $idChambre, $commentary, $today2));
+}
+function getLastReservations($dbh){
+    $query = $dbh->prepare('SELECT * FROM planning ORDER BY idReservation DESC LIMIT 10');
+    $query -> execute();
+    return $clients = $query->fetchAll();
+}
+
+function getReservationbyrid($dbh, $id){
+    $query = $dbh->prepare('SELECT * FROM planning WHERE idReservation = ? ORDER BY jour');
+    $query->execute(array($id));
+    return $reservations = $query->fetchAll();
+}
+
+function countReservationbyid($dbh, $id){
+    $query = $dbh->prepare('SELECT COUNT(*) FROM planning WHERE idReservation = ?');
+    $query->execute(array($id));
+    return $reservations = $query->fetch();
+}
+
+function removeReservation($dbh, $id){
+    $query = $dbh->prepare('DELETE FROM planning WHERE idReservation = ?');
+    $query->execute(array($id));
+}
+function countPlanning($dbh){
+    $query = $dbh->prepare('SELECT COUNT(*) FROM planning');
+    $query->execute();
+    return $end = $query->fetch();
+}
+
+function getPlanningOrder($dbh, $premier, $parpage){
+    $query = $dbh->prepare('SELECT * FROM planning ORDER BY idReservation DESC LIMIT ?, ?');
+    $query->execute(array($premier, $parpage));
+    return $toto = $query->fetchAll();
+}
+
+function getAllMessages($dbh){
+    $query = $dbh->prepare('SELECT * FROM messages');
+    $query->execute();
+    return $final = $query->fetchAll();
+}
+
+function verifUser($dbh, $id){
+    $query = $dbh->prepare('SELECT nom FROM clients WHERE id = ?');
+    $query->execute($id);
+    return $retour = $query->fetch();
+}
+
+function addMessage($dbh, $id, $message, $date){
+    $query = $dbh->prepare('INSERT INTO messages (id_auteur, message, date) VALUES (?, ?, ?)');
+    $query->execute(array($id, $message, $date));
+}
+
+function getLastiD($dbh, $id){
+    $query = $dbh->prepare('SELECT id FROM messages WHERE id_auteur = ? ORDER BY date DESC LIMIT 1');
+    $query->execute(array($id));
+    return $select = $query->fetch();
+}
+
+function getLastMessage ($dbh, $id){
+    $query = $dbh->prepare('SELECT * FROM messages WHERE id = ? ORDER BY date');
+    $query->execute(array($id));
+    return $all = $query->fetchAll();
 }

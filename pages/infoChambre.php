@@ -62,6 +62,16 @@ if(!empty($_POST['start']) && !empty($_POST['end']) && !empty($_POST['idChambre'
         }
     }
 }
+if(!empty($_POST['textarea'])){
+    $id = $_SESSION['id'];
+    $idChambre = $_GET['id'];
+
+    $today2 = new DateTime();
+    $today2Formatted = $today2->format('Y-m-d H:i');
+    $commentary = $_POST['textarea'];
+    addCommentary($dbh, $id, $idChambre, $commentary, $today2Formatted);
+
+}
 ?>
 <!-- Style de la page -->
 <style>
@@ -92,7 +102,7 @@ if(!empty($_POST['start']) && !empty($_POST['end']) && !empty($_POST['idChambre'
         background-repeat: no-repeat;
         background-size: cover;
     }
-    label{
+    .label{
         text-decoration: underline;
     }
     h5{
@@ -104,6 +114,18 @@ if(!empty($_POST['start']) && !empty($_POST['end']) && !empty($_POST['idChambre'
     }
     img{
     width: 95%;
+    }
+    .souligne{
+        text-decoration : underline;
+    }
+    .textarea{
+        width : 90%;
+    }
+    .form{
+        width : 100%;
+    }
+    textarea{
+        resize : none;
     }
 </style>
 
@@ -150,99 +172,103 @@ $tomorrow->add(new DateInterval('P1D'));
 
 $tomorrowFormatted = $tomorrow->format('Y-m-d');
 
+
 ?>
 
-    <?php if (!empty($chambres)):
-    ?>
+<?php if (!empty($chambres)):?>
     <div class="content">
+        <br><br>
+        <!-- Affichage de ces informations -->    
+        <div class="container">
+            <div class="picture">
+                <img src="<?php echo($chambres['image'])?>" class="card-img-top" style="height: 100%;" alt="...">
+            </div>
+            <div class="text">
+                    <h3 class="card-title">Chambre <?php echo $numeroChambre;?></h3>
+                    <p class="card-text"><?php echo ($chambres['description']);?></p>
+                    <p>Etage : <?php echo ($chambres['etage']);?></p>
+                    <p>Equipement : <?php echo ($chambres['douche']);?> douche</p>
+                    <p>Capacité : <?php echo ($chambres['capacite']);?></p>
+                    <p>Exposition : <?php echo ($chambres['exposition']);?></p>
+                    <h4><?php echo ($chambres['prix']);?>€</h4>
 
-<br><br>
-    <!-- Affichage de ces informations -->    
-    <div class="container">
-        <div class="picture">
-            <img src="<?php echo($chambres['image'])?>" class="card-img-top" style="height: 100%;" alt="...">
-        </div>
-        <div class="text">
-                <h3 class="card-title">Chambre <?php echo $numeroChambre;?></h3>
-                <p class="card-text"><?php echo ($chambres['description']);?></p>
-                <p>Etage : <?php echo ($chambres['etage']);?></p>
-                <p>Equipement : <?php echo ($chambres['douche']);?> douche</p>
-                <p>Capacité : <?php echo ($chambres['capacite']);?></p>
-                <p>Exposition : <?php echo ($chambres['exposition']);?></p>
-                <h4><?php echo ($chambres['prix']);?>€</h4>
+                    <?php if(!empty($_POST['start']) && !empty($_POST['end'])) {
+                        if (!empty($diffFormatted)&&$diffFormatted >= 1){
+                            echo "<br><strong><h5>Veuillez rensiegner une durée de séjour d'un mois maximum</h5></strong>";
+                        }elseif (!isset($diffFormatted)){
+                            echo "<br><strong><h5>Veuillez rensiegner une date de départ supérieur à la date d'arrivée</h5></strong>";
+                        }elseif (!empty($arrayCheck)){
+                            echo "<br><strong><h5>Une date ou toutes les dates sélectionnés sont déja réservées</h5></strong>";
+                        }
+                    }?>
+                    <br>
 
-                <?php if(!empty($_POST['start']) && !empty($_POST['end'])) {
-                    if (!empty($diffFormatted)&&$diffFormatted >= 1){
-                        echo "<br><strong><h5>Veuillez rensiegner une durée de séjour d'un mois maximum</h5></strong>";
-                    }elseif (!isset($diffFormatted)){
-                        echo "<br><strong><h5>Veuillez rensiegner une date de départ supérieur à la date d'arrivée</h5></strong>";
-                    }elseif (!empty($arrayCheck)){
-                        echo "<br><strong><h5>Une date ou toutes les dates sélectionnés sont déja réservées</h5></strong>";
-                    }
-                }?>
-                <br>
+                <?php if(isset($_SESSION['id'])){
+                            $user = getClient($dbh, $_SESSION['id']);
+                            $isAdmin = $user['type'];
+                            if($isAdmin != "admin"){ ?>
+                                <form method="post" >
+                                    <div  class="reserver">
+                                        <div style="margin-right: 5%;">
+                                            <label class='label' for="" >Date d'arrivée</label class='label'>
+                                            <br>
+                                            <input type="date" name="start" value="<?php echo $today?>" min="<?php echo $today?>" >
+                                        </div>
+                                        <div>
+                                            <label class='label' for="start" >Date de départ</label class='label'>
+                                            <br>
+                                            <input type="date" name="end" value="<?php echo $tomorrowFormatted?>" min="<?php echo $tomorrowFormatted?>">
+                                        </div>
+                                        <div class="decale">
+                                            <label class='label' for="start">Nombres d'adultes</label class='label'>
+                                            <br>
+                                            <select class="form-select form-select-sm"  id="validationServer04" aria-describedby="validationServer04Feedback" name="numberAdult" required>
+                                                <option selected disabled value="">Choisir ...</option>
+                                                <?php for ($i = 1; $i <= $chambres['capacite']; $i++):?>
+                                                    <option><?php echo $i ?></option>
+                                                <?php endfor;?>
+                                            </select>
+                                        </div>
+                                        <div class="decale">
+                                            <label class='label' for="start">Nombres d'enfants</label class='label'>
+                                            <br>
+                                            <select class="form-select form-select-sm" aria-label class='label'=".form-select-sm example" name="numberChild" required>
+                                                <option selected disabled value="">Choisir ...</option>
+                                                <?php for ($i = 0; $i <= $chambres['capacite']; $i++):?>
+                                                    <option><?php echo $i ?></option>
+                                                <?php endfor;?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <br><br><br><br>
 
-               <?php if(isset($_SESSION['id'])){
-                   $user = getClient($dbh, $_SESSION['id']);
-                   $isAdmin = $user['type'];
-                   if($isAdmin != "admin"){
-                   ?>
-
-                <form method="post" >
-                <div  class="reserver">
-                    <div style="margin-right: 5%;">
-                        <label for="" >Date d'arrivée</label>
-                        <br>
-                        <input type="date" name="start" value="<?php echo $today?>" min="<?php echo $today?>" >
-                    </div>
-                    <div>
-                        <label for="start" >Date de départ</label>
-                        <br>
-                        <input type="date" name="end" value="<?php echo $tomorrowFormatted?>" min="<?php echo $tomorrowFormatted?>">
-                    </div>
-                    <div class="decale">
-                        <label for="start">Nombres d'adultes</label>
-                        <br>
-                        <select class="form-select form-select-sm"  id="validationServer04" aria-describedby="validationServer04Feedback" name="numberAdult" required>
-                            <option selected disabled value="">Choisir ...</option>
-                            <?php for ($i = 1; $i <= $chambres['capacite']; $i++):?>
-                                <option><?php echo $i ?></option>
-                            <?php endfor;?>
-                        </select>
-                    </div>
-                    <div class="decale">
-                        <label for="start">Nombres d'enfants</label>
-                        <br>
-                        <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="numberChild" required>
-                            <option selected disabled value="">Choisir ...</option>
-                            <?php for ($i = 0; $i <= $chambres['capacite']; $i++):?>
-                                <option><?php echo $i ?></option>
-                            <?php endfor;?>
-                        </select>
-                    </div>
-                </div>
-                <br><br><br><br>
-
-                    <input type="number" name="idChambre" hidden="hidden" value="<?php echo($chambres['id']); ?>">
-                    <input type="number" name="capacity" hidden="hidden" value="<?php echo($chambres['capacite']); ?>">
-                    <input type="submit"  class="btn btn-primary" value="Cliquez pour valider réservation">
-                    <?php
-                     }else{
-                       $id = intval($_GET['id']);
-                       ?>
-                       <a href="modifRoom.php?room=<?php echo $id ?>">Modifier</a>
-                       <?php
-                     }
-                    ?>
-
-                </form>
-<?php } ?>
+                                        <input type="number" name="idChambre" hidden="hidden" value="<?php echo($chambres['id']); ?>">
+                                        <input type="number" name="capacity" hidden="hidden" value="<?php echo($chambres['capacite']); ?>">
+                                        <input type="submit"  class="btn btn-primary" value="Cliquez pour valider réservation">
+                            <?php  }else{ $id = intval($_GET['id']);?>
+                                            <a href="modifRoom.php?room=<?php echo $id ?>">Modifier</a>
+                            <?php } ?>
+                            
+                            </form>
+                <?php } ?>
+            </div>   
         </div>
 
-</div>
-<br><br><br>
+        <div class='form'>
+        <h2 class='souligne'>Commentaires</h2>
+        <form action="" method="POST">
+            <label for=""></label class='label'>
+            <textarea name="textarea" class='textarea' id="" cols="30" rows="10" placeholder='Ajoutez votre commentaire'></textarea>
+            <input type="submit" value="Ajouter votre commentaire">
+        </form>
+        
+        
+        
+        </div>
+    </div>
+    <br><br><br>    
 <?php else: ?>
-<div class="bass">
-    <p> Aucune chambre trouvée</p>
-</div>
+    <div class="bass">
+        <p> Aucune chambre trouvée</p>
+    </div>
 <?php endif;?>

@@ -63,7 +63,7 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
                                                                     $msg = "Vous allez recevoir un email de confirmation, cliqué sur le lien pour confirmer votre inscription!";
                                                                     inscription($dbh, $firstName, $lastName, $mail, $password, $address, $postalCode, $city, $country, $civility, $image,$key);
                                                                 }else{
-                                                                    $error = "Email sending failed";
+                                                                    $error = "Echec de l'envoie de l'email";
                                                                 }
                                                             }else{
                                                                 $error = "Veuillez saisir une url d'image correcte!";
@@ -268,6 +268,7 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
                 ?>
             </p>
         </div>
+        <a href="connexion.php">Connectez-vous ici</a>
         <br>
         <div class="divInfos3">
             <input type="submit" name="send" value="S'inscrire">

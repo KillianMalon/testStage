@@ -42,6 +42,10 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
         <input type="password" name="password">
         <br>
         <input type="submit" value="Se connecter" name="send">
+        <br>
+        <a href="inscription.php">Inscrivez-vous ici</a>
+
+        <a href="lostPassword.php"> Mot de passe oublié ? </a>
     </form>
     <?php
     if(isset($error) AND !empty($error)){

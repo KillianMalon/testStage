@@ -1,16 +1,19 @@
 <?php
 require_once '../component/header.php';
 require_once '../functions/sql.php';
+require_once '../functions/functions.php';
 require_once 'bdd.php';
 
 $compteur = 0;
 if (isset($_SESSION['id'])){
     echo '<div class="content">';
     $uid = $_SESSION['id'];
+    $client = getClient($dbh, $uid);
+    $lname = $client['nom'];
+    $fname = $client['prenom'];
     // $count = countReservations($dbh, $uid);
     $rlists = getReservations($dbh, $uid);
     $i = 0;
-    
     if(!empty($rlists)){
         
         $reservationsByUsereId = reservationByUserId($dbh, $_SESSION['id']);
@@ -51,9 +54,9 @@ if (isset($_SESSION['id'])){
                 
                 
                 if ($reservationDateEnd < $today){
-                    $passed[$compteur] = array('chambre_id'=>$arrayId['idChambre'], 'idReservation'=>$arrayId['idReservation'],  'dateStart'=>$reservationDateStartFormatted, 'dateEnd'=>$reservationDateEndFormatted,'prix'=>$arrayId['prix'], 'paye'=>$arrayId['payed'],);
+                    $passed[$compteur] = array('chambre_id'=>$arrayId['idChambre'], 'idReservation'=>$arrayId['idReservation'],  'dateStart'=>$reservationDateStartFormatted, 'dateEnd'=>$reservationDateEndFormatted,'prix'=>$arrayId['prix'], 'paye'=>$arrayId['payed'],'nombreDeJours'=>$arrayId['nombreDeJours']);
                 }elseif ($reservationDateStart >= $today){
-                    $future[$compteur] = array('chambre_id'=>$arrayId['idChambre'], 'idReservation'=>$arrayId['idReservation'],  'dateStart'=>$reservationDateStartFormatted, 'dateEnd'=>$reservationDateEndFormatted, 'prix'=>$arrayId['prix'], 'paye'=>$arrayId['payed'],);
+                    $future[$compteur] = array('chambre_id'=>$arrayId['idChambre'], 'idReservation'=>$arrayId['idReservation'],  'dateStart'=>$reservationDateStartFormatted, 'dateEnd'=>$reservationDateEndFormatted, 'prix'=>$arrayId['prix'], 'paye'=>$arrayId['payed'],'nombreDeJours'=>$arrayId['nombreDeJours']);
                 }
                 $compteur ++;
             }
@@ -89,7 +92,20 @@ if (isset($_SESSION['id'])){
                                     </form> 
                                 </td>
                                 <td>
-                                    <?php echo ($future2['paye']? '<button>Télécharger</button>' : 'Payez la réservation');?>
+                                    <?php
+                                    $idReservation = $future2['idReservation'];
+
+                                    if($future2['paye'] === 1){ ?>
+                                    <form action="" method="post">
+                                        <input type="hidden" name="reservationId" value="<?php echo $idReservation ?>">
+                                        <input type="hidden" name="dateStart" value="<?php echo $future2['dateStart'] ?>">
+                                        <input type="hidden" name="dateEnd" value="<?php echo $future2['dateEnd'] ?>">
+                                        <input type="hidden" name="chambre_id" value="<?php echo $future2['chambre_id'] ?>">
+                                        <input type="hidden" name="nombreDeJours" value="<?php echo $future2['nombreDeJours'] ?>">
+                                        <input type="hidden" name="prix" value="<?php echo $future2['prix'] ?>">
+                                        <input type="submit" name="download"></form>
+                                        <?php }else{ echo 'Payez la réservation'; }?>
+
                                 </td>
                                 <td>
                                     <button>X</button>
@@ -100,9 +116,22 @@ if (isset($_SESSION['id'])){
                                         <input type="submit" class="btn btn-danger" value="X">
                                     </form> -->
                                 </td> 
-                                <td><?php echo($future2['prix'])?> €</td>   
+                                <td><?php echo($future2['prix'])?> €</td>
                             </tr>
-                        <?php endforeach;?>
+
+                        <?php
+                        endforeach;?>
+                    <?php
+                    if(isset($_POST['download'])) {
+                        $idReservation = $_POST['reservationId'];
+                        $dateStart = $_POST['dateStart'];
+                        $dateEnd = $_POST['dateEnd'];
+                        $chambreId  = $_POST['chambre_id'];
+                        $nombreDeJours2 = $_POST['nombreDeJours'];
+                        $prix = $_POST['prix'];
+                        generatePdf($dbh, $idReservation, $lname, $fname,$dateStart , $dateEnd, $chambreId, $nombreDeJours2, $prix);
+                    }
+                    ?>
                     <tbody>
                 </table>
                 <br>
@@ -136,7 +165,7 @@ if (isset($_SESSION['id'])){
                                     <?php echo ($passed2['paye']? '✅' : '🔴');?>      
                             </td>
                             <td>
-                                <?php echo ($future2['paye']? '<button>Télécharger</button>' : 'Indisponible');?>
+                                <?php echo ($passed2['paye']? '<form action=""method="get"><input type="submit" name="download" id=""></form>' : 'Indisponible');?>
                             </td>
                             <td>
                                 Pas disponible
@@ -149,38 +178,13 @@ if (isset($_SESSION['id'])){
                 <br>
 
 
+
             <?php endif;?>
 
+    <?php
+        } ?>
 
 
-
-
-
-
-
-
-                <!-- <div class="">
-                            <label>Chambre numéro</label>
-                            <input readonly type="text" value="<?= $arrayId ?>">
-                        </div>
-                        <div class="">
-                            <label>Date</label>
-                            <input readonly type="date" value="<?= $day ?>">
-                        </div>
-                        <div class="">
-                            <label>Acompte</label>
-                            <input readonly type="text" value="<?php if ($acompte==1){echo "Il y a un acompte";}else{ echo "Il n'y a pas d'acompte";} ?>">
-                        </div>
-                        <div class="">
-                            <label>Paiement</label>
-                            <input readonly type="text" value="<?php if ($payed==1){echo "Chambre payée";}else{ echo "Chambre non payée";} ?>">
-                </div> -->
-                
-                
-
-    <?php } ?>
-
-    
     
     <?php
 }
@@ -221,5 +225,4 @@ if (isset($_SESSION['id'])){
         }
         
     }
-    
     </style>
