@@ -4,7 +4,7 @@ require_once '../functions/functions.php';
 require_once '../functions/sql.php';
 require_once  'bdd.php';
 
-
+//Si le formulaire a bien été envoyé, on stock les informations en local
 if(!empty($_POST['start']) && !empty($_POST['end']) && !empty($_POST['idChambre']) && !empty($_POST['capacity']) && !empty($_POST['numberAdult']) && isset($_POST['numberChild'])){
 
     $start = $_POST['start'];
@@ -63,6 +63,7 @@ if(!empty($_POST['start']) && !empty($_POST['end']) && !empty($_POST['idChambre'
     }
 }
 ?>
+<!-- Style de la page -->
 <style>
 
     .reserver{
@@ -109,6 +110,7 @@ if(!empty($_POST['start']) && !empty($_POST['end']) && !empty($_POST['idChambre'
 
 
 <?php
+//Récupération des informations d'une chaambre s'il y a un GET avec un id de chambre
 if (!empty($_GET['id'])) {
     $numeroChambre = $_GET["id"];
 
@@ -155,7 +157,7 @@ $tomorrowFormatted = $tomorrow->format('Y-m-d');
     <div class="content">
 
 <br><br>
-
+    <!-- Affichage de ces informations -->    
     <div class="container">
         <div class="picture">
             <img src="<?php echo($chambres['image'])?>" class="card-img-top" style="height: 100%;" alt="...">

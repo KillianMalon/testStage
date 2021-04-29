@@ -3,10 +3,12 @@ require_once '../component/header.php';
 require_once '../functions/sql.php';
 require_once 'bdd.php';
 
+//Récupération des informations d'un client en focntion de son iD (stockée en SESSION)
 if (isset($_SESSION['id'])){
     $id = $_SESSION['id'];
     $clientinfo = getClient($dbh, $id);
 
+    //Stockage des informations dudit client
     $fname = $clientinfo['prenom'];
     $lname = $clientinfo['nom'];
     $mail = $clientinfo['mail'];
@@ -21,6 +23,7 @@ if (isset($_SESSION['id'])){
 
 
     ?>
+    <!-- Affichage des informations du client -->
     <div class="content">
         <div class="client">
             <img class="mobile_profile_image" style="width: 100px; margin-right: 30px;" src="<?= $img ?>">

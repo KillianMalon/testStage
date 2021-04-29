@@ -3,6 +3,7 @@ require_once '../component/header.php';
 require_once '../functions/sql.php';
 require_once '../functions/functions.php';
 require_once 'bdd.php';
+
 if(isset($_POST['send']) AND !empty($_POST['send'])){
     if(!empty($_POST['firstName']) AND !empty($_POST['lastName']) AND !empty($_POST['mail']) AND !empty($_POST['mailVerify']) AND !empty($_POST['password']) AND
         !empty($_POST['passwordVerify']) AND !empty($_POST['address']) AND !empty($_POST['postalCode']) AND !empty($_POST['city'])){
@@ -114,6 +115,29 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
 
 
 ?>
+<style>
+    input[type="checkbox"].demo3 {
+        display: none;
+    }
+    input[type="checkbox"].demo3 +label:hover{
+        cursor: pointer;
+    }
+    input[type="checkbox"].demo3 + label::before {
+        font-family: "Font Awesome 5 Free";
+        content: '\f070';
+        font-size: 1.2em;
+        margin-right: 0.3rem;
+    }
+    input[type="checkbox"].demo3:checked + label::before {
+        content:'\f06e';
+    }
+    .passwordGeneratorButton{
+        background-color: #ececec;
+        border: none;
+        
+    }
+</style>
+
 <div class="contentInscription">
     <div class="inscriptionH1">
         <h1>Formulaire d'inscription</h1>
@@ -163,7 +187,14 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
             <div>
                 <label for="">Mot de passe :*</label>
             </div>
-            <input type="password" name="password">
+            <input type="password" name="password" id="myInput">
+            <?php
+            $ok = 0;
+            ?>
+            <input type="checkbox" class="demo3" onclick="displayPassword()" id="demo3">
+            <label for="demo3"></label>
+
+            <i class="fas fa-random" id="btn" onclick="getPassword();"></i>
         </div>
         <br>
         <div class="divInfos2">
@@ -244,5 +275,30 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
     </form>
     <br>
 </div>
+
+<script>
+    function displayPassword() {
+        var x = document.getElementById("myInput");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    function getPassword(){
+        var chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        var passwordLength = 15;
+        var password = "";
+        for (var i=0; i<passwordLength;i++){
+            var randomNumber = Math.floor(Math.random()*chars.length);
+            password+=chars.substring(randomNumber,randomNumber+1);
+        }
+        document.getElementById("myInput").value = password
+    }
+</script>
+
 </body>
 </html>

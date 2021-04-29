@@ -56,11 +56,11 @@ require_once 'bdd.php';
         color: #19B3D3;
     }
 </style>
-
+<!-- oui -->
 <div class="content">
    <div class="globalAdmin">
         <div class="adminAffichage">
-            <h2>Administration Clients <i class="fas fa-user"></i> <a href="" class="viewAll"> Tout voir <i class="fas fa-arrow-right"></i></a></h2>
+            <h2>Administration Clients <i class="fas fa-user"></i> <a href="./administration-clients.php" class="viewAll"> Tout voir <i class="fas fa-arrow-right"></i></a></h2>
             <div>
 
                <table>

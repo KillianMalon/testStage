@@ -30,7 +30,7 @@ function checkReservationsEmpty($dbh, $date, $id){
 
 //Fonction pour réserver une chambre
 function addReservation($dbh, $chambreId, $dateStart, $id, $idReservation){
-    $query = $dbh->prepare( "INSERT INTO planning (chambre_id, jour, paye, client_id, idReservation) VALUES(?, ?, '0', ?, ?)" );
+    $query = $dbh->prepare( "INSERT INTO planning (chambre_id, jour, paye, client_id, idReservation) VALUES(?, '0', '0', ?, ?)" );
     $query->execute(array($chambreId,$dateStart, $id, $idReservation));
     return $query->fetchAll();
 }
@@ -142,64 +142,74 @@ function getPrices($dbh)
 }
 
 //Modification du compte utilisateur
-function updateFirstName($dbh, $firstName, $id){
-    $insertFname = $dbh->prepare('UPDATE clients SET prenom = ? WHERE id = ?');
-    $insertFname ->execute(array($firstName, $id));
-}
-function updateLastName($dbh, $lastName, $id){
-    $insertLname = $dbh->prepare('UPDATE clients SET nom = ? WHERE id = ?');
-    $insertLname ->execute(array($lastName, $id));
-}
-function updatePassword($dbh, $password, $id){
-    $insertPassword = $dbh->prepare('UPDATE clients SET password = ? WHERE id = ?');
-    $insertPassword ->execute(array($password, $id));
-}
-function updateMail($dbh, $mailModif, $id){
-    $insertMail = $dbh->prepare('UPDATE clients SET mail = ? WHERE id = ?');
-    $insertMail ->execute(array($mailModif, $id));
-}
-function updateAddress($dbh,$addressModif, $id){
-    $insertAddress = $dbh->prepare('UPDATE clients SET adresse = ? WHERE id = ?');
-    $insertAddress ->execute(array($addressModif, $id));
-}
-function updatePostalCode($dbh, $pcModif, $id){
-    $insertPC = $dbh->prepare('UPDATE clients SET codePostal = ? WHERE id = ?');
-    $insertPC ->execute(array($pcModif, $id));
-}
-function updateCity($dbh, $city, $id){
-    $insertTown = $dbh->prepare('UPDATE clients SET ville = ? WHERE id = ?');
-    $insertTown ->execute(array($city, $id));
-}
-function updateCountry($dbh, $countryModif, $id){
-    $insertCountry = $dbh->prepare('UPDATE clients SET pays_id = ? WHERE id = ?');
-    $insertCountry ->execute(array($countryModif, $id));
-}
-function updateCivility($dbh, $civilityModif, $id){
-    $insertCountry = $dbh->prepare('UPDATE clients SET civilite = ? WHERE id = ?');
-    $insertCountry ->execute(array($civilityModif, $id));
-}
-function updateUserPP($dbh, $image, $id){
-    $insertPP = $dbh->prepare('UPDATE clients SET image = ? WHERE id = ?');
-    $insertPP ->execute(array($image, $id));
-}
+    function updateFirstName($dbh, $firstName, $id){
+        $insertFname = $dbh->prepare('UPDATE clients SET prenom = ? WHERE id = ?');
+        $insertFname ->execute(array($firstName, $id));
+    }
+    function updateLastName($dbh, $lastName, $id){
+        $insertLname = $dbh->prepare('UPDATE clients SET nom = ? WHERE id = ?');
+        $insertLname ->execute(array($lastName, $id));
+    }
+    function updatePassword($dbh, $password, $id){
+        $insertPassword = $dbh->prepare('UPDATE clients SET password = ? WHERE id = ?');
+        $insertPassword ->execute(array($password, $id));
+    }
+    function updateMail($dbh, $mailModif, $id){
+        $insertMail = $dbh->prepare('UPDATE clients SET mail = ? WHERE id = ?');
+        $insertMail ->execute(array($mailModif, $id));
+    }
+    function updateAddress($dbh,$addressModif, $id){
+        $insertAddress = $dbh->prepare('UPDATE clients SET adresse = ? WHERE id = ?');
+        $insertAddress ->execute(array($addressModif, $id));
+    }
+    function updatePostalCode($dbh, $pcModif, $id){
+        $insertPC = $dbh->prepare('UPDATE clients SET codePostal = ? WHERE id = ?');
+        $insertPC ->execute(array($pcModif, $id));
+    }
+    function updateCity($dbh, $city, $id){
+        $insertTown = $dbh->prepare('UPDATE clients SET ville = ? WHERE id = ?');
+        $insertTown ->execute(array($city, $id));
+    }
+    function updateCountry($dbh, $countryModif, $id){
+        $insertCountry = $dbh->prepare('UPDATE clients SET pays_id = ? WHERE id = ?');
+        $insertCountry ->execute(array($countryModif, $id));
+    }
+    function updateCivility($dbh, $civilityModif, $id){
+        $insertCountry = $dbh->prepare('UPDATE clients SET civilite = ? WHERE id = ?');
+        $insertCountry ->execute(array($civilityModif, $id));
+    }
+    function updateUserPP($dbh, $image, $id){
+        $insertPP = $dbh->prepare('UPDATE clients SET image = ? WHERE id = ?');
+        $insertPP ->execute(array($image, $id));
+    }
+// Fin des fonctions de modification d'infos client
+
+//Fonction pour récupérer les informations des 10 premiers utilisateurs
 function getLastUsers($dbh){
     $query = $dbh->prepare('SELECT * FROM clients ORDER BY id DESC LIMIT 10');
     $query -> execute();
     return $clients = $query->fetchAll();
 }
+
+//Fonction pour récupérer les informations des 10 premieres chambres
 function getLastRooms($dbh){
     $query = $dbh -> prepare('SELECT * FROM chambres ORDER BY id DESC LIMIT 10');
     $query -> execute();
     return $rooms = $query->fetchAll();
 }
+
+//Mise à jour du statut du client en fonction de la clé
 function updateStatus($dbh, $key){
     $updateStatus = $dbh->prepare('UPDATE clients SET statut = ? WHERE cle = ?');
     $updateStatus ->execute(array(1, $key));
 }
+
+//Mise à jour du type de client en fonction de l'id
 function updateRank($dbh, $rank, $id){
     $upateClientRank = $dbh->prepare('UPDATE clients SET type = ? WHERE id = ?');
     $upateClientRank -> execute(array($rank, $id));
 }
+
 //Fonction de recherche multi-tag
 function Search($dbh, $total, $exposition, $idprix){
     $type = "SELECT id FROM chambres c WHERE c.capacite >= ?";
@@ -225,6 +235,7 @@ function Search($dbh, $total, $exposition, $idprix){
         }
     }
 }
+
 //Fonction de recherche multi-tag avec seulement une date de début (1 jour)
 function Free($dbh, $day){
     $query = $dbh->prepare('SELECT c.id FROM chambres c LEFT JOIN planning p ON c.id = p.chambre_id WHERE p.jour = ?');
@@ -238,88 +249,109 @@ function FreeTwo($dbh, $day, $dday){
     $query->execute( array($day, $dday) );
     return $notfree = $query->fetchAll();
 }
+
+//Vérification du nombre d'utilisateur
 function getClientByKey($dbh, $key){
     $query = $dbh->prepare('SELECT * FROM clients WHERE cle = ?');
     $query->execute(array($key));
     return $response = $query->rowCount();
 }
 
+//Récupération des informations client avec la clé
 function getClientInformationsByKey($dbh, $key){
     $query = $dbh->prepare('SELECT * FROM clients WHERE cle = ?');
     $query->execute(array($key));
     return $response = $query->fetch();
 }
 
+//Fonction qui permet d'ajouter une vue à une chambre
 function AddOneView($dbh, $id){
     $query = $dbh->prepare('UPDATE chambres SET vues = vues+1 WHERE id = ?');
     $query->execute(array($id));
 }
 
+//Fonction qui récupère le nombre de vues d'une chambre
 function getAllViews($dbh){
     $query = $dbh->prepare('SELECT vues FROM chambres');
     $query->execute();
     return $all = $query->fetchAll();
 }
+
+//Fonction qui liste les étages disponibles
 function ListEtage($dbh){
     $query = $dbh->prepare('SELECT DISTINCT etage FROM chambres');
     $query->execute();
     return $etages = $query->fetchAll();
 }
+
+//Fonction qui récupère la dernière réservation
 function getLastReservationId($dbh){
     $query = $dbh->prepare('SELECT * FROM planning ORDER BY idReservation DESC LIMIT 1');
     $query->execute();
     return $last = $query->fetch();
 }
 
-
+//Fonction qui récupère les réservations d'un client en supprimant les doublons
 function reservationByUserId($dbh, $id){
     $query = $dbh->prepare("SELECT DISTINCT idReservation FROM planning WHERE client_id = ?");
     $query->execute(array($id));
     return $last = $query->fetchAll();
 }
 
+//Fonction qui récupère les réservations en fonction d'un iD de réservation
 function ReservationByReservationId($dbh, $idReservation){
     $query = $dbh->prepare("SELECT * FROM planning WHERE idReservation = ?");
     $query->execute(array($idReservation));
     return $last = $query->fetchAll();
 }
 
+//Fonction qui récupère le prix d'une chambre en fonction de son id
 function gePriceRoom($dbh, $idChambre){
     $query = $dbh->prepare("SELECT tarifs.prix FROM chambres,tarifs WHERE chambres.tarif_id = tarifs.id AND chambres.id = ? ");
     $query->execute(array($idChambre));
     return $price = $query->fetch();
 }
 
+//Fonction qui ajoute une vue au nombre de vues/mois d'une chambre
 function AddOneGlobalView($dbh, $month){
     $query = $dbh->prepare('UPDATE vues SET vuesTotale = vuesTotale+1 WHERE mois = ?');
     $query->execute(array($month));
 }
+
+//Fonction qui récupère les vues des chambres
 function getAllMonth($dbh){
     $query = $dbh->prepare('SELECT * FROM vues');
     $query -> execute();
     return $informations = $query->fetchAll();
 }
+
+//Fonction qui crée un mois en bdd
 function insertOneMonth($dbh,$trueDate){
     $insert = $dbh->prepare('INSERT INTO vues (mois, vuesTotale) VALUES (?,1) ');
     $insert->execute(array($trueDate));
 }
 
+//Fonction de mise à jour des informations d'une chambre
 function updateRoom($dbh, $id, $cap, $exposition, $douche, $etage, $tarif_id, $description, $image){
     $query = $dbh->prepare('UPDATE chambres SET id = ?, capacite = ?, exposition = ?, douche = ?, etage = ?, tarif_id = ?, description = ?, image = ? WHERE id = ?');
     $query->execute(array($id, $cap, $exposition, $douche, $etage, $tarif_id, $description, $image, $id));
 }
 
-function countCountry($dbh){
-    $query = $dbh->prepare('SELECT COUNT(*) FROM pays');
+//Fonction qui compte le nombre total de clients
+function countClients($dbh){
+    $query = $dbh->prepare('SELECT COUNT(*) FROM clients');
     $query->execute();
     return $end = $query->fetch();
 }
 
-function testpage($dbh, $premier, $parpage){
-    $query = $dbh->prepare('SELECT * FROM pays ORDER BY id DESC LIMIT ?, ?');
+//Fonction qui récupère les informations de x clients à partir du client y
+function getClientOrder($dbh, $premier, $parpage){
+    $query = $dbh->prepare('SELECT * FROM clients ORDER BY id DESC LIMIT ?, ?');
     $query->execute(array($premier, $parpage));
     return $toto = $query->fetchAll();
 }
+
+//Fonction d'affichage "intelligent" de pagination
 function get_list_page($page, $nb_page, $nb = 2)
 {
     $list_page = array();
@@ -338,7 +370,7 @@ function get_list_page($page, $nb_page, $nb = 2)
     }
     return $list_page;
 }
-
+//Fonction qui permet de payer une réservation
 function payedReservation($dbh, $idReservation){
     
     $query = $dbh->prepare('UPDATE planning SET paye = 1 WHERE idReservation = ?');
