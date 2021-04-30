@@ -449,3 +449,15 @@ function getLastMessage ($dbh, $id){
     $query->execute(array($id));
     return $all = $query->fetchAll();
 }
+
+function getRoomCommentary($dbh, $idChambre){
+    $query = $dbh->prepare('SELECT commentaires.*, clients.nom,clients.prenom,clients.id FROM commentaires,clients WHERE chambre_id = ? AND commentaires.client_id = clients.id ORDER BY commentaires.id ASC');
+    $query->execute(array($idChambre));
+    return $select = $query->fetchAll();
+}
+
+function getLastReservationRoom($dbh, $client_id, $chambre_id){
+    $query = $dbh->prepare('SELECT * FROM planning WHERE client_id=? AND chambre_id = ?');
+    $query->execute(array($client_id, $chambre_id));
+    return $last = $query->fetch();
+}

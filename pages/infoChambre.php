@@ -67,10 +67,10 @@ if(!empty($_POST['textarea'])){
     $idChambre = $_GET['id'];
 
     $today2 = new DateTime();
-    $today2Formatted = $today2->format('Y-m-d H:i');
-    $commentary = $_POST['textarea'];
-    addCommentary($dbh, $id, $idChambre, $commentary, $today2Formatted);
-
+    $today2Formatted = $today2->format('Y-m-d H:i:s');
+    $contenu = $_POST['textarea'];
+    addCommentary($dbh, $id, $idChambre, $contenu, $today2Formatted);
+    
 }
 ?>
 <!-- Style de la page -->
@@ -105,7 +105,7 @@ if(!empty($_POST['textarea'])){
     .label{
         text-decoration: underline;
     }
-    h5{
+    .h5{
         text-decoration: underline;
     }
     .container{
@@ -126,6 +126,29 @@ if(!empty($_POST['textarea'])){
     }
     textarea{
         resize : none;
+    }
+    
+    .titre{
+        display: flex;
+        flex-direction: column;
+    }
+    .decale2{
+        margin-right: 1%;
+    }
+    .commentaire{
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+    }
+    .centre{
+        text-align: center;
+        width: 75%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .bold{
+        font-size: larger;
     }
 </style>
 
@@ -156,7 +179,6 @@ if($no === 1 AND $ok === 0){
     insertOneMonth($dbh,$trueDate);
 }
     $chambre = getRoom($dbh, $numeroChambre);
-
     if (!empty($chambre)) {
         $chambres = $chambre[0];
 
@@ -194,11 +216,11 @@ $tomorrowFormatted = $tomorrow->format('Y-m-d');
 
                     <?php if(!empty($_POST['start']) && !empty($_POST['end'])) {
                         if (!empty($diffFormatted)&&$diffFormatted >= 1){
-                            echo "<br><strong><h5>Veuillez rensiegner une durée de séjour d'un mois maximum</h5></strong>";
+                            echo "<br><strong><h5 class='h5'>Veuillez rensiegner une durée de séjour d'un mois maximum</h5></strong>";
                         }elseif (!isset($diffFormatted)){
-                            echo "<br><strong><h5>Veuillez rensiegner une date de départ supérieur à la date d'arrivée</h5></strong>";
+                            echo "<br><strong><h5 class='h5'>Veuillez rensiegner une date de départ supérieur à la date d'arrivée</h5></strong>";
                         }elseif (!empty($arrayCheck)){
-                            echo "<br><strong><h5>Une date ou toutes les dates sélectionnés sont déja réservées</h5></strong>";
+                            echo "<br><strong><h5 class='h5'>Une date ou toutes les dates sélectionnés sont déja réservées</h5></strong>";
                         }
                     }?>
                     <br>
@@ -253,17 +275,44 @@ $tomorrowFormatted = $tomorrow->format('Y-m-d');
                 <?php } ?>
             </div>   
         </div>
-
+            <?php 
+                if(!empty($_SESSION['id'])){
+                    $client_id = $_SESSION['id'];
+                    $chambre_id = $_GET['id'];
+                    $reservations = getLastReservationRoom($dbh, $client_id, $chambre_id);
+                    var_dump($reservations);
+                } 
+            ?>
         <div class='form'>
-        <h2 class='souligne'>Commentaires</h2>
-        <form action="" method="POST">
-            <label for=""></label class='label'>
-            <textarea name="textarea" class='textarea' id="" cols="30" rows="10" placeholder='Ajoutez votre commentaire'></textarea>
-            <input type="submit" value="Ajouter votre commentaire">
-        </form>
+            <h2 class='souligne'>Commentaires</h2>
+            <form action="" method="POST">
+                <label for=""></label class='label'>
+                <textarea name="textarea" class='textarea' id="" cols="30" rows="10" placeholder='Ajoutez votre commentaire'></textarea>
+                <input type="submit" value="Ajouter votre commentaire">
+            </form>
         
         
         
+        </div>
+        <div class="commentary">
+
+            <?php 
+                $idRoom = $_GET['id'];
+                $commentarys = getRoomCommentary($dbh, $idRoom);
+                foreach ($commentarys as $commentary):?>   
+                    <?php $jour = new DateTime("$commentary[date]");
+                        $jourFormatted = $jour->format('d-m-Y');
+                    ?>
+                    <div class="commentaire">
+                        <div class="titre">
+                            <h4 class="decale2"><?php echo $commentary['prenom']." ".$commentary['nom']?></h4>
+                            <p>Publiée le <?php echo $jourFormatted?></p>
+                        </div>
+                        <div class="centre"><p class="bold"><?php echo $commentary['contenu']?></p></div>
+                        
+                    </div>
+                    <hr>
+                <?php endforeach;?>
         </div>
     </div>
     <br><br><br>    
