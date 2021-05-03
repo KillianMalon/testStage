@@ -56,10 +56,10 @@ require_once 'bdd.php';
         color: #19B3D3;
     }
 </style>
-<!-- oui -->
+<!-- Affichage admin client -->
 <div class="content">
    <div class="globalAdmin">
-        <div class="adminAffichage">
+        <div class="adminAffichage"">
             <h2>Administration Clients <i class="fas fa-user"></i> <a href="./administration-clients.php" class="viewAll"> Tout voir <i class="fas fa-arrow-right"></i></a></h2>
             <div>
 
@@ -94,7 +94,40 @@ require_once 'bdd.php';
                </table>
             </div>
         </div>
-        <div class="adminAffichage">Administration Commentaires </div>
-        <div class="adminAffichage">Administration Reservations </div>
+        <div class="adminAffichage">Administration Réservations </div>
+        <div class="adminAffichage">
+            <h2>Administration Réservations <i class="fas fa-table"></i> <a href="./administration-reservations.php" class="viewAll"> Tout voir <i class="fas fa-arrow-right"></i></a></h2>
+            <div>
+
+                <table>
+                    <thead>
+                    <tr>
+                        <th>iD Réservation</th>
+                        <th>Jour</th>
+                        <th>Numéro Chambre</th>
+                        <th>Modifier</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    $rooms = getLastReservations($dbh);
+                    foreach($rooms as $room){
+                        $id = $room['idReservation'];
+                        $jour = $room['jour'];
+                        $chid = $room['chambre_id'];
+                        ?>
+                        <tr>
+                            <td><?php echo isset($id)? $id :" " ?></td>
+                            <td> <?php echo isset($jour)? $jour : " " ?> </td>
+                            <td> <?php echo isset($chid)? $chid : " " ?> </td>
+                            <td> <a href="modifReservation.php?reservation=<?php echo $id ?>">modifier</a> </td>
+                        </tr>
+
+                    <?php } ?>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
    </div>
 </div>
