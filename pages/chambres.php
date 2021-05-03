@@ -35,20 +35,20 @@ require_once 'bdd.php';
         border-radius: 10px;
     }
     .price{
-        color : #f57465;
+        color :linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
     }
     .button{
         padding: 30%;
         border-radius: 15px;
         border: none;
-        background-color: #f57465;
+        background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
         cursor:pointer;
         color: white;
-        transition: background-color 500ms ease-out ;
+        transition: background-color 500ms ease-out;
     }
     .button:hover{
-        background-color: rgb(241, 84, 84);
-        /*box-shadow: 2px 2px 12px grey;*/
+        background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
+        box-shadow: 2px 2px 12px grey;
     }
     .prix {
         display: flex;

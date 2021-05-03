@@ -8,7 +8,7 @@ body{
 header{  
   z-index: 1;
   position: fixed;
-  background: #22242A;
+  background: black;
   padding: 20px;
   width: calc(100% - 0%);
   top: 0;
@@ -24,17 +24,17 @@ header{
 }
 
 .left_area span{
-  color: #19B3D3;
+  color: #1992d3;
 }
 
 .logout_btn{
-  padding: 5px;
-  background: #19B3D3;
+  padding: 6px;
+  background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
   text-decoration: none;
   float: right;
   margin-top: -30px;
   margin-right: 40px;
-  border-radius: 5px;
+  border-radius: 10px;
   font-size: 15px;
   font-weight: 600;
   color: #fff;
@@ -42,33 +42,33 @@ header{
   transition-property: background;
 }
 .logout_btn2{
-  padding: 5px;
+  padding: 6px;
   background: #fff;
   text-decoration: none;
   float: right;
   margin-top: -30px;
   margin-right: 150px;
-  border-radius: 5px;
+  border-radius: 10px;
   font-size: 15px;
   font-weight: 600;
-  color: #19B3D3;
+  color: black;
   transition: 0.5s;
   transition-property: background;
 }
 
 .logout_btn:hover{
   background: #fff;
-  color: #19B3D3;
+  color: black;
 }
 .logout_btn2:hover{
-  background: #19B3D3;
+  background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
   color: #fff;
 }
 
 .sidebar{
   z-index: 1;
   top: 0;
-  background: #2f323a;
+  background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
   margin-top: 70px;
   padding-top: 30px;
   position: fixed;
@@ -114,7 +114,7 @@ header{
 }
 
 .sidebar a:hover{
-  background: #19B3D3;
+  background: black;
 }
 
 .sidebar i{

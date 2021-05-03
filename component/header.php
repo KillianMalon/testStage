@@ -54,7 +54,7 @@ if (isset($_SESSION['id']) and !empty($_SESSION['id'])) {
         <i class="fas fa-bars" id="sidebar_btn"></i>
     </label>
     <div class="left_area">
-        <h3>Hotel <span>Nom</span></h3>
+        <h3>Hotel <span class="nom">Nom</span></h3>
     </div>
     <?php if (isset($_SESSION['id']) and !empty($_SESSION['id'])){ ?>
         <div class="right_area">
@@ -94,8 +94,12 @@ if (isset($_SESSION['id']) and !empty($_SESSION['id'])) {
         <?php } ?>
         <!--
         <a href="#"><i class="fas fa-th"></i><span>Forms</span></a>-->
-    </div>
+    </div> 
 </div>
+
+
+
+
 <!--mobile navigation bar end-->
 <!--sidebar start-->
 <div class="sidebar">

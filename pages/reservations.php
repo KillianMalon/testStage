@@ -26,7 +26,7 @@ if (isset($_SESSION['id'])){
             $dateStart = $reservations[0]['jour'];
             $idChambre = $reservations[0]['chambre_id'];
             $payed = $reservations[0]['paye'];
-            $priceperDay = gePriceRoom($dbh, $idChambre);
+            $priceperDay = getPriceRoom($dbh, $idChambre);
             $price = $priceperDay['prix'];
             $count = count($reservations);
             $totalPrice = $price * $count;
@@ -96,13 +96,15 @@ if (isset($_SESSION['id'])){
                                     $idReservation = $future2['idReservation'];
 
                                     if($future2['paye'] === 1){ ?>
-                                    <form action="" method="post">
+                                    <form action="pdfGenerator.php" method="post">
                                         <input type="hidden" name="reservationId" value="<?php echo $idReservation ?>">
                                         <input type="hidden" name="dateStart" value="<?php echo $future2['dateStart'] ?>">
                                         <input type="hidden" name="dateEnd" value="<?php echo $future2['dateEnd'] ?>">
                                         <input type="hidden" name="chambre_id" value="<?php echo $future2['chambre_id'] ?>">
                                         <input type="hidden" name="nombreDeJours" value="<?php echo $future2['nombreDeJours'] ?>">
                                         <input type="hidden" name="prix" value="<?php echo $future2['prix'] ?>">
+                                        <input type="hidden" name="lname" value="<?php echo $lname ?>">
+                                        <input type="hidden" name="fname" value="<?php echo $fname ?>">
                                         <input type="submit" name="download"></form>
                                         <?php }else{ echo 'Payez la réservation'; }?>
 
@@ -121,17 +123,7 @@ if (isset($_SESSION['id'])){
 
                         <?php
                         endforeach;?>
-                    <?php
-                    if(isset($_POST['download'])) {
-                        $idReservation = $_POST['reservationId'];
-                        $dateStart = $_POST['dateStart'];
-                        $dateEnd = $_POST['dateEnd'];
-                        $chambreId  = $_POST['chambre_id'];
-                        $nombreDeJours2 = $_POST['nombreDeJours'];
-                        $prix = $_POST['prix'];
-                        generatePdf($dbh, $idReservation, $lname, $fname,$dateStart , $dateEnd, $chambreId, $nombreDeJours2, $prix);
-                    }
-                    ?>
+                    
                     <tbody>
                 </table>
                 <br>

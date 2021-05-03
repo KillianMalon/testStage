@@ -76,32 +76,8 @@ if(!empty($_POST['textarea'])){
 <!-- Style de la page -->
 <style>
 
-    .reserver{
-        display: flex;
-        flex-direction: column;
-    }
-    @media screen and (max-width: 780px) {
-        .reserver{
-            display: flex;
-            flex-direction: column;
-        }
-    }
-    .decale{
-        margin-left: 5%;
-    }
-    .bass{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        font-size: 3.9rem;
-        color: rgb(37, 34, 34);
-        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-        height: 100vh;
-        text-shadow: 2px 0 0 rgb(255, 255, 255), 2px 2px 0 rgb(255, 255, 255), 0 2px 0 rgb(255, 255, 255), -2px 2px 0 rgb(255, 255, 255), -2px 0 0 rgb(255, 255, 255), -2px -2px 0 rgb(255, 255, 255), 0 -2px 0 rgb(255, 255, 255), 2px -2px 0 rgb(255, 255, 255);
-        background-repeat: no-repeat;
-        background-size: cover;
-    }
+    
+    
     .label{
         text-decoration: underline;
     }
@@ -110,10 +86,10 @@ if(!empty($_POST['textarea'])){
     }
     .container{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     }
     img{
-    width: 95%;
+    width: 45%;
     }
     .souligne{
         text-decoration : underline;
@@ -127,7 +103,9 @@ if(!empty($_POST['textarea'])){
     textarea{
         resize : none;
     }
-    
+    .text{
+        display: flex;
+    }
     .titre{
         display: flex;
         flex-direction: column;
@@ -149,6 +127,56 @@ if(!empty($_POST['textarea'])){
     }
     .bold{
         font-size: larger;
+    }
+    .texte{
+        margin-right: 30%;
+    }
+    .date{
+        display: flex;
+        flex-direction: row;
+    }
+    .capacity{
+        display: flex;
+        flex-direction: row;
+    }
+    .button{
+        padding: 4%;
+        border-radius: 15px;
+        border: none;
+        background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
+        cursor:pointer;
+        color: white;
+        transition: background-color 500ms ease-out;
+        box-shadow: 0px 0px 0px;
+    }
+    .button:hover{
+        box-shadow: 1px 1px 12px #555;
+        /*box-shadow: 2px 2px 12px grey;*/
+    }
+    .reserver{
+        width: 100%;
+    }
+    /* input, select{
+        padding: 10%;
+    } */
+    .formulaire{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: grey;
+        background-color: white;
+        padding: 10%;
+    }
+    .date, .capacity, .exposition{
+    display: flex;
+    flex-direction: row;
+    text-align: left;
+    }
+    .form2{
+        border: 1px solid #c7ccd4;
+        padding: 10%;
+        border-radius: 7%;
+        box-shadow: 1px 1px 8px #c7ccd4;
     }
 </style>
 
@@ -181,7 +209,7 @@ if($no === 1 AND $ok === 0){
     $chambre = getRoom($dbh, $numeroChambre);
     if (!empty($chambre)) {
         $chambres = $chambre[0];
-
+    
     }
 }
 ?>
@@ -194,6 +222,48 @@ $tomorrow->add(new DateInterval('P1D'));
 
 $tomorrowFormatted = $tomorrow->format('Y-m-d');
 
+if(!empty($_SESSION['id'])){
+    $client_id = $_SESSION['id'];
+    $chambre_id = $_GET['id'];
+
+    $reservationByUserIdAndRoomId = reservationByUserIdAndRoomId($dbh, $client_id, $chambre_id);
+
+
+
+foreach($reservationByUserIdAndRoomId as $reservationByUserIdAndRoomIds){
+    $idReservation = $reservationByUserIdAndRoomIds['idReservation'];
+    $nombre = 0;
+    $reservations = ReservationByReservationId($dbh, $idReservation); 
+    $dateStart = $reservations[0]['jour'];
+    $idChambre = $reservations[0]['chambre_id'];
+    $payed = $reservations[0]['paye'];
+    $priceperDay = getPriceRoom($dbh, $idChambre);
+    $price = $priceperDay['prix'];
+    $count = count($reservations);
+    $totalPrice = $price * $count;
+    $arrayIds[] = array('idChambre'=> $idChambre , 'idReservation'=> $reservationByUserIdAndRoomIds['idReservation'], "dateDeDepart" => $dateStart, 'nombreDeJours' => $count,  'payed'=>$payed, 'prix'=>$totalPrice);
+}
+$todays = date("Y-m-d");
+            $today3 = New DateTime("$todays");   
+            $compteur = 0;
+            if(!empty($arrayIds)){
+                foreach ($arrayIds as $arrayId){
+                    $jour = $arrayId['dateDeDepart'];
+                    $reservationDateStart = new DateTime("$jour");
+                    $reservationDateStartFormatted = $reservationDateStart->format('Y-m-d');
+                    $reservationDateEnd = $reservationDateStart;
+                    $reservationDateEnd-> add(new DateInterval("P$arrayId[nombreDeJours]D"));
+                    $reservationDateEndFormatted = $reservationDateEnd->format('Y-m-d');
+                    if ($reservationDateEnd < $today3){
+                        $passed[$compteur] = array('chambre_id'=>$arrayId['idChambre'], 'idReservation'=>$arrayId['idReservation'],  'dateStart'=>$reservationDateStartFormatted, 'dateEnd'=>$reservationDateEndFormatted,'prix'=>$arrayId['prix'], 'paye'=>$arrayId['payed'],'nombreDeJours'=>$arrayId['nombreDeJours']);
+                    }
+                    $compteur ++;
+                }
+            }    
+} 
+
+
+
 
 ?>
 
@@ -202,95 +272,169 @@ $tomorrowFormatted = $tomorrow->format('Y-m-d');
         <br><br>
         <!-- Affichage de ces informations -->    
         <div class="container">
+            <h2 >Chambre <?php echo $numeroChambre;?></h2>
             <div class="picture">
                 <img src="<?php echo($chambres['image'])?>" class="card-img-top" style="height: 100%;" alt="...">
             </div>
             <div class="text">
-                    <h3 class="card-title">Chambre <?php echo $numeroChambre;?></h3>
-                    <p class="card-text"><?php echo ($chambres['description']);?></p>
-                    <p>Etage : <?php echo ($chambres['etage']);?></p>
-                    <p>Equipement : <?php echo ($chambres['douche']);?> douche</p>
-                    <p>Capacité : <?php echo ($chambres['capacite']);?></p>
-                    <p>Exposition : <?php echo ($chambres['exposition']);?></p>
-                    <h4><?php echo ($chambres['prix']);?>€</h4>
+                    <div class="texte">
+                        <h3>Chambre <?php echo $chambres['libelle'];?></h3>
+                        <p class="card-text"><?php echo ($chambres['description']);?></p>
+                        <p>Etage : <?php echo ($chambres['etage']);?></p>
+                        <p>Equipement : <?php echo ($chambres['douche']);?> douche</p>
+                        <p>Capacité : <?php echo ($chambres['capacite']);?></p>
+                        <p>Exposition : <?php echo ($chambres['exposition']);?></p>
+                        <h4><?php echo ($chambres['prix']);?>€</h4>
 
-                    <?php if(!empty($_POST['start']) && !empty($_POST['end'])) {
-                        if (!empty($diffFormatted)&&$diffFormatted >= 1){
-                            echo "<br><strong><h5 class='h5'>Veuillez rensiegner une durée de séjour d'un mois maximum</h5></strong>";
-                        }elseif (!isset($diffFormatted)){
-                            echo "<br><strong><h5 class='h5'>Veuillez rensiegner une date de départ supérieur à la date d'arrivée</h5></strong>";
-                        }elseif (!empty($arrayCheck)){
-                            echo "<br><strong><h5 class='h5'>Une date ou toutes les dates sélectionnés sont déja réservées</h5></strong>";
-                        }
-                    }?>
+                        <?php if(!empty($_POST['start']) && !empty($_POST['end'])) {
+                            if (!empty($diffFormatted)&&$diffFormatted >= 1){
+                                echo "<br><strong><h5 class='h5'>Veuillez rensiegner une durée de séjour d'un mois maximum</h5></strong>";
+                            }elseif (!isset($diffFormatted)){
+                                echo "<br><strong><h5 class='h5'>Veuillez rensiegner une date de départ supérieur à la date d'arrivée</h5></strong>";
+                            }elseif (!empty($arrayCheck)){
+                                echo "<br><strong><h5 class='h5'>Une date ou toutes les dates sélectionnés sont déja réservées</h5></strong>";
+                            }
+                        }?>
+                    </div>    
                     <br>
 
                 <?php if(isset($_SESSION['id'])){
                             $user = getClient($dbh, $_SESSION['id']);
                             $isAdmin = $user['type'];
                             if($isAdmin != "admin"){ ?>
-                                <form method="post" >
-                                    <div  class="reserver">
-                                        <div style="margin-right: 5%;">
-                                            <label class='label' for="" >Date d'arrivée</label class='label'>
-                                            <br>
-                                            <input type="date" name="start" value="<?php echo $today?>" min="<?php echo $today?>" >
+                            <div class="formulaire">
+                                <form class="form2" method="post" >
+                                        <div class="date">
+                                            <div class="date2 line">
+                                                <label class='label' for="" >Date d'arrivée</label class='label'>
+                                                <br>
+                                                <input type="date" name="start" value="<?php echo $today?>" min="<?php echo $today?>" >
+                                            </div>
+                                            <div class="date2">
+                                                <label class='label' for="start" >Date de départ</label class='label'>
+                                                <br>
+                                                <input type="date" name="end" value="<?php echo $tomorrowFormatted?>" min="<?php echo $tomorrowFormatted?>">
+                                            </div>
                                         </div>
-                                        <div>
-                                            <label class='label' for="start" >Date de départ</label class='label'>
-                                            <br>
-                                            <input type="date" name="end" value="<?php echo $tomorrowFormatted?>" min="<?php echo $tomorrowFormatted?>">
-                                        </div>
-                                        <div class="decale">
-                                            <label class='label' for="start">Nombres d'adultes</label class='label'>
-                                            <br>
-                                            <select class="form-select form-select-sm"  id="validationServer04" aria-describedby="validationServer04Feedback" name="numberAdult" required>
-                                                <option selected disabled value="">Choisir ...</option>
-                                                <?php for ($i = 1; $i <= $chambres['capacite']; $i++):?>
-                                                    <option><?php echo $i ?></option>
-                                                <?php endfor;?>
-                                            </select>
-                                        </div>
-                                        <div class="decale">
-                                            <label class='label' for="start">Nombres d'enfants</label class='label'>
-                                            <br>
-                                            <select class="form-select form-select-sm" aria-label class='label'=".form-select-sm example" name="numberChild" required>
-                                                <option selected disabled value="">Choisir ...</option>
-                                                <?php for ($i = 0; $i <= $chambres['capacite']; $i++):?>
-                                                    <option><?php echo $i ?></option>
-                                                <?php endfor;?>
-                                            </select>
-                                        </div>
-                                    </div>
+
+
+                                        <div class="capacity">
+                                            <div class="capacity2 line">
+                                                <label class='label' for="start">Nombres d'adultes</label class='label'>
+                                                <br>
+                                                <select class="form-select form-select-sm"  id="validationServer04" aria-describedby="validationServer04Feedback" name="numberAdult" required>
+                                                    <option selected disabled value="">Choisir ...</option>
+                                                    <?php for ($i = 1; $i <= $chambres['capacite']; $i++):?>
+                                                        <option><?php echo $i ?></option>
+                                                    <?php endfor;?>
+                                                </select>
+                                            </div>
+                                            <div class="capacity2" >
+                                                <label class='label' for="start">Nombres d'enfants</label class='label'>
+                                                <br>
+                                                <select class="form-select form-select-sm" aria-label class='label'=".form-select-sm example" name="numberChild" required>
+                                                    <option selected disabled value="">Choisir ...</option>
+                                                    <?php for ($i = 0; $i <= $chambres['capacite']; $i++):?>
+                                                        <option><?php echo $i ?></option>
+                                                    <?php endfor;?>
+                                                </select>
+                                            </div>
+                                        </div>    
                                     <br><br><br><br>
 
                                         <input type="number" name="idChambre" hidden="hidden" value="<?php echo($chambres['id']); ?>">
                                         <input type="number" name="capacity" hidden="hidden" value="<?php echo($chambres['capacite']); ?>">
-                                        <input type="submit"  class="btn btn-primary" value="Cliquez pour valider réservation">
-                            <?php  }else{ $id = intval($_GET['id']);?>
-                                            <a href="modifRoom.php?room=<?php echo $id ?>">Modifier</a>
-                            <?php } ?>
-                            
-                            </form>
-                <?php } ?>
-            </div>   
+                                        <input type="submit"  class="button" value="Réserver">
+                                    <?php  }else{ $id = intval($_GET['id']);?>
+                                                    <a href="modifRoom.php?room=<?php echo $id ?>">Modifier</a>
+                                    <?php } ?>                          
+                                </form>
+                            </div>    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <?php } ?>  
+            </div>  
+             <!-- PARTIE POUR LA MISE EN FAVORIS-->
+
+             <?php
+            $chambreId = $_GET['id'];
+            if(!empty($_SESSION['id'])){
+                $id = $_SESSION['id'];
+                    if(isset($_POST['addFavorite'])){
+                        addFavorite($dbh, $id,$chambreId);
+                        ?>
+                        <meta http-equiv="refresh" content="0">
+                    <?php 
+                    }
+                    if(isset($_POST['removeFavorite'])){
+                        $favoriteInformation = getFavorite($dbh,$id,$chambreId);
+                    $favoriteId = $favoriteInformation['id'];
+                    removeFavorite($dbh, $favoriteId);
+                    ?>
+                        <meta http-equiv="refresh" content="0">
+                    <?php
+                    }
+                ?>
+                <form action="" method="post">
+                    <?php
+                        $result = countFavorite($dbh,$id,$chambreId);
+                        var_dump($result);
+                        if($result === 1){
+                            ?>
+                            <button type="submit" name="removeFavorite" >Supprimer des favoris</button>
+                        <?php
+                        }else if($result === 0){
+                            ?>
+                            <button type="submit" name="addFavorite" >Ajouter au favoris</button>
+                        <?php
+                        }
+                    ?>
+                </form>
+            <?php } ?>    
+<!-- FIN DE LA PARTIE MISE EN FAVORIS--> 
         </div>
             <?php 
                 if(!empty($_SESSION['id'])){
                     $client_id = $_SESSION['id'];
                     $chambre_id = $_GET['id'];
                     $reservations = getLastReservationRoom($dbh, $client_id, $chambre_id);
-                    var_dump($reservations);
                 } 
             ?>
         <div class='form'>
             <h2 class='souligne'>Commentaires</h2>
-            <form action="" method="POST">
-                <label for=""></label class='label'>
-                <textarea name="textarea" class='textarea' id="" cols="30" rows="10" placeholder='Ajoutez votre commentaire'></textarea>
-                <input type="submit" value="Ajouter votre commentaire">
-            </form>
-        
+            <?php if(!empty($passed)):?>   
+                <form action="" method="POST">
+                    <label for=""></label class='label'>
+                    <textarea name="textarea" class='textarea' id="" cols="30" rows="10" placeholder='Ajoutez votre commentaire'></textarea>
+                    <input type="submit" value="Ajouter votre commentaire">
+                </form>
+            <?php endif;?>
         
         
         </div>

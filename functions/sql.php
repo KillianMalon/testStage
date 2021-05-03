@@ -9,7 +9,7 @@ function getCountry($dbh){
 
 //Fonction pour obtenir les informations d'une chambre et son prix avec l'id de la chambre
 function getRoom($dbh, $numeroChambre){
-    $query = $dbh->prepare( 'SELECT chambres.*,tarifs.prix FROM chambres,tarifs WHERE chambres.tarif_id = tarifs.id AND chambres.id = ?');
+    $query = $dbh->prepare( 'SELECT chambres.*,tarifs.prix, tarifs.libelle FROM chambres,tarifs WHERE chambres.tarif_id = tarifs.id AND chambres.id = ?');
     $query->execute(array($numeroChambre)); // execute le SQL dans la base de données (MySQL / MariaDB)
     return $query->fetchAll( PDO::FETCH_ASSOC );
 }
@@ -306,7 +306,7 @@ function ReservationByReservationId($dbh, $idReservation){
 }
 
 //Fonction qui récupère le prix d'une chambre en fonction de son id
-function gePriceRoom($dbh, $idChambre){
+function getPriceRoom($dbh, $idChambre){
     $query = $dbh->prepare("SELECT tarifs.prix FROM chambres,tarifs WHERE chambres.tarif_id = tarifs.id AND chambres.id = ? ");
     $query->execute(array($idChambre));
     return $price = $query->fetch();
@@ -435,6 +435,7 @@ function verifUser($dbh, $id){
 
 function addMessage($dbh, $id, $message, $date){
     $query = $dbh->prepare('INSERT INTO messages (id_auteur, message, date) VALUES (?, ?, ?)');
+    $query = $dbh->prepare('INSERT INTO messages (id_auteur, message, date) VALUES (?, ?, ?)');
     $query->execute(array($id, $message, $date));
 }
 
@@ -460,4 +461,39 @@ function getLastReservationRoom($dbh, $client_id, $chambre_id){
     $query = $dbh->prepare('SELECT * FROM planning WHERE client_id=? AND chambre_id = ?');
     $query->execute(array($client_id, $chambre_id));
     return $last = $query->fetch();
+}
+
+function reservationByUserIdAndRoomId($dbh, $client_id, $chambre_id){
+    $query = $dbh->prepare("SELECT DISTINCT idReservation FROM planning WHERE client_id = ? AND chambre_id = ?");
+    $query->execute(array($client_id, $chambre_id));
+    return $last = $query->fetchAll();
+}
+
+function addFavorite($dbh, $id, $chambreId){
+    $query = $dbh->prepare('INSERT INTO favoris (chambre_id,client_id) VALUES (?,?)');
+    $query->execute(array($chambreId,$id));
+}
+function countFavorite($dbh, $id, $chambreId){
+    $query = $dbh->prepare('SELECT * FROM favoris WHERE client_id = ? AND chambre_id = ? ');
+    $query->execute(array($id ,$chambreId));
+    return $nb = $query->rowCount();
+}
+function removeFavorite($dbh, $id){
+    $statement = $dbh->prepare('DELETE FROM favoris WHERE id = ?');
+    $statement ->execute(array($id));
+}
+function getFavorite($dbh, $id,$chambreId){
+    $query = $dbh->prepare('SELECT * FROM favoris WHERE chambre_id = ?  AND client_id = ? ');
+    $query->execute(array($chambreId ,$id));
+    return $result = $query->fetch();
+}
+function getNumberOfFavorite($dbh,$id){
+    $query = $dbh->prepare('SELECT * FROM favoris WHERE client_id = ? ');
+    $query->execute(array($id));
+    return $result = $query->rowCount();
+}
+function getFavoriteOfClient($dbh, $id){
+    $query = $dbh->prepare('SELECT * FROM favoris WHERE client_id = ? ');
+    $query->execute(array($id));
+    return $result = $query->fetchAll();
 }
