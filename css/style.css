@@ -8,8 +8,8 @@ body{
 header{  
   z-index: 1;
   position: fixed;
-  background: black;
-  padding: 20px;
+  background: rgb(32, 32, 32);
+  padding: 24px;
   width: calc(100% - 0%);
   top: 0;
   height: 30px; 
@@ -69,7 +69,7 @@ header{
   z-index: 1;
   top: 0;
   background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
-  margin-top: 70px;
+  margin-top: 78px;
   padding-top: 30px;
   position: fixed;
   left: 0;

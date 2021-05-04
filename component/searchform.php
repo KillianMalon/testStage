@@ -11,6 +11,13 @@ else{
 
 $prices = getPrices($dbh);
 
+$today =date("Y-m-d");
+
+$tomorrow  = new DateTime();
+
+$tomorrow->add(new DateInterval('P1D'));
+
+$tomorrowFormatted = $tomorrow->format('Y-m-d');
 
 //Formulaire de recherche de disponibilité des chambres
 ?>
@@ -92,11 +99,11 @@ input, select{
             <div class="date">
                 <div class="date2 line"> 
                     <label for="">Date d'aarivée</label>
-                    <input class="input" name="arrivee" type="date" placeholder="Arrivée" required pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2}$">
+                    <input class="input" value="<?php echo $today ?>" name="arrivee" type="date" placeholder="Arrivée" required pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2}$">
                 </div>
                 <div class="date2">
                     <label for="">Date de départ</label>
-                    <input class="input" name="depart" type="date" placeholder="Départ" pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2}$">
+                    <input class="input" value="<?php echo $tomorrowFormatted ?>"   name="depart" type="date" placeholder="Départ" required pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2}$">
                 </div>
             </div>
             <div class="capacity">

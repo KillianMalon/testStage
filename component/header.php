@@ -54,7 +54,7 @@ if (isset($_SESSION['id']) and !empty($_SESSION['id'])) {
         <i class="fas fa-bars" id="sidebar_btn"></i>
     </label>
     <div class="left_area">
-        <h3>Hotel <span class="nom">Nom</span></h3>
+        <h3>Hotel <span>Nom</span></h3>
     </div>
     <?php if (isset($_SESSION['id']) and !empty($_SESSION['id'])){ ?>
         <div class="right_area">
@@ -82,11 +82,16 @@ if (isset($_SESSION['id']) and !empty($_SESSION['id'])) {
         <?php if (!isset($_SESSION['id'])){ ?>
             <a href="<?php echo (isset($index)) ? "index.php" : "../index.php"; ?>"><i class="fas fa-home"></i><span>Accueil</span></a>
             <a href="<?php echo (isset($index)) ? "./pages/chambres.php" : "chambres.php"?>"><i class="fas fa-bed"></i><span>Chambres</span></a>
-        <?php }else{?>
+        <?php }else{
+            $nbOfFavorites = getNumberOfFavorite($dbh, $_SESSION['id']);
+            ?>
+
             <a href="<?php echo (isset($index)) ? "index.php" : "../index.php"; ?>"><i class="fas fa-home"></i><span>Accueil</span></a>
             <a href="<?php echo (isset($index)) ? "./pages/chambres.php" : "chambres.php"?>"><i class="fas fa-bed"></i><span>Chambres</span></a>
             <a href="<?php echo (isset($index)) ? "./pages/espace_client.php" : "espace_client.php" ?>"><i class="fas fa-user"></i><span>Mon compte</span></a>
             <a href="<?php echo (isset($index)) ? "./pages/reservations.php" : "reservations.php" ?>"><i class="fas fa-table"></i><span>Mes Réservations</span></a>
+            <a href="<?php echo (isset($index)) ? "./pages/favorites.php" : "favorites.php" ?>"><i class="fas fa-bookmark"></i><span>Mes Favoris <?php echo ($nbOfFavorites > 0)? "($nbOfFavorites)":""?></span></a>
+
             <?php if(isset($admin)){ ?>
                 <a href="<?php echo (isset($index)) ? "./pages/statistics.php" : "statistics.php"?>"><i class="fas fa-chart-bar"></i><span>Statistiques</span></a>
                 <a href="<?php echo (isset($index)) ? "./pages/administration.php" : "administration.php"?>"><i class="fas fa-users-cog"></i><span>Administration</span></a>
@@ -94,12 +99,8 @@ if (isset($_SESSION['id']) and !empty($_SESSION['id'])) {
         <?php } ?>
         <!--
         <a href="#"><i class="fas fa-th"></i><span>Forms</span></a>-->
-    </div> 
+    </div>
 </div>
-
-
-
-
 <!--mobile navigation bar end-->
 <!--sidebar start-->
 <div class="sidebar">
@@ -117,6 +118,7 @@ if (isset($_SESSION['id']) and !empty($_SESSION['id'])) {
         <a href="<?php echo (isset($index)) ? "./pages/chambres.php" : "chambres.php"?>"><i class="fas fa-bed"></i><span>Chambres</span></a>
         <a href="<?php echo (isset($index)) ? "./pages/espace_client.php" : "espace_client.php" ?>"><i class="fas fa-user"></i><span>Mon compte</span></a>
         <a href="<?php echo (isset($index)) ? "./pages/reservations.php" : "reservations.php" ?>"><i class="fas fa-table"></i><span>Mes Réservations</span></a>
+        <a href="<?php echo (isset($index)) ? "./pages/favorites.php" : "favorites.php" ?>"><i class="fas fa-bookmark"></i><span>Mes Favoris <?php echo ($nbOfFavorites > 0)? "($nbOfFavorites)":""?></span></a>
         <?php if(isset($admin)){ ?>
             <a href="<?php echo (isset($index)) ? "./pages/statistics.php" : "statistics.php"?>"><i class="fas fa-chart-bar"></i><span>Statistiques</span></a>
             <a href="<?php echo (isset($index)) ? "./pages/administration.php" : "administration.php"?>"><i class="fas fa-users-cog"></i><span>Administration</span></a>
