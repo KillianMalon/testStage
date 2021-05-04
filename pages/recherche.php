@@ -56,7 +56,7 @@ if (isset($_POST['depart']) and !empty($_POST['depart'])){
             for ($i=0; $i < count($tags); $i++){
                 for ($in=0; $in < $count-1; $in++){
                     if ($tags[$i] == $dayoff[$in]){
-            
+    
                         unset($tags[$i]);
                     }
                 }
