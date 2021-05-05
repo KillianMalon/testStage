@@ -136,6 +136,9 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
         border: none;
         
     }
+    .send{
+        background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
+    }
 </style>
 
 <div class="contentInscription">
@@ -271,7 +274,7 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
         <a href="connexion.php">Connectez-vous ici</a>
         <br>
         <div class="divInfos3">
-            <input type="submit" name="send" value="S'inscrire">
+            <input type="submit" name="send" class="send" value="S'inscrire">
         </div>
     </form>
     <br>

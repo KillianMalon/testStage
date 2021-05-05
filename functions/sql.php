@@ -497,3 +497,28 @@ function getFavoriteOfClient($dbh, $id){
     $query->execute(array($id));
     return $result = $query->fetchAll();
 }
+function searchClient($dbh,$search){
+    $query = $dbh->prepare("SELECT * FROM clients WHERE UPPER(civilite) LIKE UPPER('%$search%') OR UPPER(nom) LIKE UPPER('%$search%') OR UPPER(prenom) LIKE UPPER('%$search%') OR UPPER(adresse) LIKE UPPER('%$search%') OR UPPER(codePostal) LIKE UPPER('%$search%') OR UPPER(ville) LIKE UPPER('%$search%') OR UPPER(mail) LIKE UPPER('%$search%') OR UPPER(type) LIKE UPPER('%$search%') ");
+    $query->execute();
+    return $query;
+}
+function countChambers($dbh){
+    $query = $dbh->prepare('SELECT COUNT(*) FROM chambres');
+    $query->execute();
+    return $count = $query->fetch();
+}
+
+function addChamber($dbh, $id, $capacite, $exposition, $douche, $etage, $prix, $description, $img){
+    $query = $dbh->prepare('INSERT INTO chambres VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0)');
+    $query->execute(array($id, $capacite, $exposition, $douche, $etage, $prix, $description, $img));
+}
+function getMailsNewsletter($dbh){
+    $query = $dbh->prepare('SELECT mail FROM clients WHERE newsletter = 1');
+    $query->execute();
+    return $all = $query->fetchAll();
+}
+function getSearchIfClientPostCommentary($dbh,$idClient, $idRoom2){
+    $query = $dbh ->prepare('SELECT * FROM commentaires WHERE chambre_id=? AND client_id = ?');
+    $query->execute(array($idRoom2, $idClient ));
+    return $commentary = $query->fetchAll();
+}

@@ -12,12 +12,14 @@ require_once 'bdd.php';
         flex-direction: row;
         align-items: center;
         border-radius: 15px;
-        margin-bottom: -4%;
+        margin-bottom: -2%;
         padding: 3%;
         margin-left: 2%;
     }
+    
     .picture{
         width: 25%;
+        align-items: center;
     }
     .text{
         width: 100%;
@@ -54,6 +56,8 @@ require_once 'bdd.php';
         display: flex;
         flex-direction: column;
         justify-content: center;
+        align-items: center;
+        width: 20%;
     }
     #check:checked ~ .content{
         margin-left: 60px;
@@ -144,7 +148,7 @@ require_once 'bdd.php';
                     <p class="description"><?php echo($chambre['description'])?></p>
                     <p class="capacity"><?php echo($chambre['capacite'])?>  <?php echo $chambre['capacite'] < 2 ? 'personne' : 'personnes' ;?></p>
                 </div>
-                <div class="prix" >
+                <div class="prix">
                     <h2 class="price"><?php echo($chambre['prix'])?> €</h2>
                     <a href="infoChambre.php?id=<?php echo($chambre['id'])?>"><button class="button"><?php echo (isset($type) AND $type ==="admin")? "Voir" :"Réserver" ?></button></a>
                 </div>

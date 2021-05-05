@@ -34,7 +34,7 @@ function generateRandomString($longueur = 35, $CharList = '0123456789abcdefghijk
 
 function generatePdf($dbh, $id,$lname ,$fname, $arrival,$departure, $roomId, $nbOfDay, $total){
     require_once "../fpdf/fpdf.php";
-    $roomPrice = gePriceRoom($dbh, $roomId);
+    $roomPrice = getPriceRoom($dbh, $roomId);
     $reservationDateStart = new DateTime("$arrival");
     if (setlocale(LC_TIME, 'fr_FR') == '') {
         setlocale(LC_TIME, 'FRA');  //correction problème pour windows
@@ -65,7 +65,6 @@ function generatePdf($dbh, $id,$lname ,$fname, $arrival,$departure, $roomId, $nb
     $pdf->Text(140, 28, "22 rue je connais pas l'adresse");
     $pdf->Text(140, 33, "34 900 Montpellier, France");
     $pdf->Text(140, 38, utf8_decode("Téléphone : +33 48 99 99 99"));
-
     $pdf->Text(8, 48, "$num de facture : " . $id);
     $pdf->Text(8, 53, utf8_decode("Nom ") . ": ". utf8_decode($lname));
     $pdf->Text(8,58, utf8_decode("Prénom : ".$fname));
@@ -125,16 +124,31 @@ function generatePdf($dbh, $id,$lname ,$fname, $arrival,$departure, $roomId, $nb
     $nom = 'Facture-' . $id . '.pdf';
     $folderName = "Facture";
     if(is_dir($folderName)){
+        ob_end_clean();
         //création et téléchargement du pdf
-        $pdf->Output("Facture//$nom", "F");
+        $pdf->Output("Facture//$nom", "I");
     }else{
         mkdir($folderName);
+        ob_end_clean();
         //création et téléchargement du pdf
-        $pdf->Output("Facture//$nom", "F");
+        $pdf->Output("Facture//$nom", "I");
+        ob_end_clean();
     }
 
 
         //Création et ouverture du pdf
         //$pdf->Output($nom, 'I');
 
+}
+
+function sendMailChamber($dbh){
+    $allmails = getMailsNewsletter($dbh);
+    $contenu = "Une nouvelle chambre est disponible dans notre Hotel : elle n'attend que vous !";
+    $headers  = 'From: envoiedemailtest@gmail.com'. "\r\n" .
+        'MIME-Version: 1.0' . "\r\n" .
+        'Content-type: text/html; charset=utf-8';
+    foreach ($allmails as $allmail){
+        $mail = $allmail['mail'];
+        mail($mail, "Newsletter Hotel", $contenu, $headers);
+    }
 }

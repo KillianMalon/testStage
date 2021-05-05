@@ -55,6 +55,19 @@ require_once 'bdd.php';
         background-color: #ffffff;
         color: #19B3D3;
     }
+    .buton-submit{
+        color: white;
+        text-decoration: none;
+        padding: 4px;
+        border-radius: 5px;
+        background-color: #19B3D3;
+        margin-bottom: 5%;
+        width: 30%;
+    }
+    .buton-submit:hover{
+        background-color: #ffffff;
+        color: #19B3D3;
+    }
 </style>
 <!-- Affichage admin client -->
 <div class="content">
@@ -94,7 +107,6 @@ require_once 'bdd.php';
                </table>
             </div>
         </div>
-        <div class="adminAffichage">Administration Réservations </div>
         <div class="adminAffichage">
             <h2>Administration Réservations <i class="fas fa-table"></i> <a href="./administration-reservations.php" class="viewAll"> Tout voir <i class="fas fa-arrow-right"></i></a></h2>
             <div>
@@ -129,5 +141,10 @@ require_once 'bdd.php';
                 </table>
             </div>
         </div>
+    <div class="adminAffichage"><h2>Ajouter une Chambre</h2>
+        <form name="addchambre" style="text-align: center" method="post" action="addchambre.php">
+            <input class="buton-submit" name="submit" type="submit" value="Ajouter">
+        </form>
+    </div>
    </div>
 </div>

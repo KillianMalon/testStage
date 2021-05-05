@@ -28,6 +28,7 @@ $list = get_list_page($currentPage, $pages);
 
 //On récupère les informations des  "20" premiers clients à partir du premier client de la page
 $premiere = getClientOrder($dbh, $premier, $parpage);
+
 ?>
 <!-- Feuilles de style de la page -->
 <style>
@@ -112,8 +113,27 @@ $premiere = getClientOrder($dbh, $premier, $parpage);
         background-color: #ffffff;
     }
 </style>
+<?php
+if(isset($_GET['search']) AND !empty($_GET['search'])){
+    $search = htmlspecialchars($_GET['search']);
+    $query = searchClient($dbh,$search);
+    $premiere = $query->fetchAll();
+    $clientCount = $query->rowCount();
+    $none = 1;
+        ?>
+    <meta http-equiv="refresh" content="80000">
+    <?php
+    if($clientCount === 0){
+       $none = 0;
+        $message = "Pas de résultat";
+    }
+}
+?>
 <!-- Affichage des clients -->
 <div class="content">
+    <form action="" method="get">
+        <input type="search" name="search" placeholder="Chercher un client" value="<?php echo (isset($_POST['search']) AND !empty($_POST['search']))? $_POST['search']: ""?>">
+    </form>
     <div class="globalAdmin">
         <div class="adminAffichage">
         <h2><a href="./administration.php" class="viewAll"><i class="fas fa-arrow-left"></i> Retour</a> Administration Clients <i class="fas fa-user"></i></h2>
@@ -130,6 +150,8 @@ $premiere = getClientOrder($dbh, $premier, $parpage);
                 </thead>
                 <tbody>
                 <?php
+                if ((isset($_GET['search']) and !empty($_GET['search']) and isset($search) and !empty($search) and $none === 1)
+                || !(isset($_GET['search']) and !empty($_GET['search']))){
                 foreach ($premiere as $client){
                     $id = $client['id'];
                     $nom = $client['nom'];
@@ -145,10 +167,17 @@ $premiere = getClientOrder($dbh, $premier, $parpage);
                     <td> <a href="modifClient.php?client=<?php echo $id ?>">modifier</a> </td>
                 </tr>
                 <?php } ?>
+
                 </tbody>
+
             </table>
 
             <!-- Affichage de la pagination -->
+
+<?php
+if ((isset($clientCount) && $clientCount > $parpage) ||
+    ($count > $parpage && !isset($clientCount)) ||
+    ($count > $parpage && isset($clientCount) && $clientCount > $parpage)){ ?>
             <div class="pagination">
                 <?php
                 foreach($list AS $link) {
@@ -163,7 +192,21 @@ $premiere = getClientOrder($dbh, $premier, $parpage);
                     }
                 }
                 ?></div>
+                <?php
+                }
+?>
         </div>
         </div>
+
     </div>
+
+    <?php
+    }else{
+    ?>
+        <tr>
+            <th><?= $message ?></th>
+        </tr>
+    <?php
+    }
+    ?>
 </div>
