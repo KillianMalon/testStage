@@ -28,14 +28,52 @@ if(isset($_POST['verify']) AND !empty($_POST['verify'])){
     }
 }
 ?>
-
+<style>
+    .form{
+        border: 1px solid #c7c7c7;
+        border-radius: 20px;
+        width: 20%;
+        text-align: center;
+    }
+    .input{
+        padding: 4%;
+        margin: 9%;
+        margin-top: 2%;
+        background-color: #ececec;
+        border-radius: 10px;
+        border: 1px solid #c7c7c7;
+    }
+    .divInput{
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+    }
+    .oui{
+        padding-top: 5%;
+    }
+    .container{
+        display: flex;
+        justify-content: center;
+    }
+    .submit{
+        background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
+        border: none;
+        border-radius: 0px 0px 15px 15px;
+        width: 100%;
+        color: white;
+        padding: 6%;
+    }    
+</style>
 <div class="content">
-    <form action="" method="post">
-        <label for="">Votre mail : </label>
-        <input type="text" name="mail">
-        <br>
-        <input type="submit" name="verify" >
-    </form>
+    <div class="container">
+        <form class="form" action="" method="post">
+            <div class="divInput oui">
+                <label for="">Votre mail : </label>
+                <input class='input' type="text" name="mail">
+            </div>
+                <input class="submit" type="submit" name="verify" >
+        </form>
+    </div>    
     <?php
     if(isset($error) AND !empty($error)){
         echo $msg;
@@ -44,4 +82,7 @@ if(isset($_POST['verify']) AND !empty($_POST['verify'])){
         echo $msg;
     }
     ?>
-    <div>
+<div>
+
+
+    

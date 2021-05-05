@@ -69,6 +69,22 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
     label{
         font-weight: bold;
     }
+    .lien{
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 2%;
+    }
+    a{
+        background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
+        border: none;
+        color: white;
+        border-radius: 15px;
+        padding: 1%;
+        text-decoration: none;
+        font-size: small;
+    }
 </style>
 <!-- Affichage de formulaire de connexion -->
 <div class="content">
@@ -85,11 +101,17 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
 
             <input type="submit" class="submit" value="Se connecter" name="send">
             <br>
-            <!-- <a href="inscription.php">Inscrivez-vous ici</a>
-
-            <a href="lostPassword.php"> Mot de passe oublié ? </a> -->
+            
         </form>
+        
     </div>    
+
+    <div class="lien">
+        <a href="inscription.php">Inscrivez-vous ici</a>
+        <br>
+        <a href="lostPassword.php">Mot de passe oublié ? </a>
+    </div>
+
     <?php
     if(isset($error) AND !empty($error)){
         echo $error;
