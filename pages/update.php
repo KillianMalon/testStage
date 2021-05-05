@@ -130,49 +130,91 @@ if (isset($_SESSION['id'])){
         }
     var_dump($_POST);
     ?>
+    <style>
+        form{
+            border: 1px solid #c7c7c7;
+            width: 40%;
+            border-radius: 20px;
+            margin-top: 0%;
+        }
+        .client{
+            display: flex;
+            justify-content: center;
+        }
+        .divForm{
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 3%;
+            margin: 5%;
+        }
+        
+        .input{
+            padding: 2%;
+            border-radius: 20px;
+            border: 1px solid #c7c7c7;
+            background-color: #ececec;
+        }
+        .select{
+            padding: 2%;
+            border-radius: 20px;
+            border: 1px solid #c7c7c7;
+            background-color: #ececec;
+        }
+        .label{
+            font-weight: bold;
+            margin-bottom: 1%;
+        }
+        .submit{
+        background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
+        border: none;
+        border-radius: 0px 0px 15px 15px;
+        width: 100%;
+        color: white;
+        padding: 4%;
+    }
+    </style>
     <div class="content">
         <div class="client">
-            <img class="mobile_profile_image" style="width: 100px; margin-right: 30px;" src="<?= $img ?>">
-            <form method="post">
-                <div>
-                    <label>Prénom</label>
-                    <input name="fname" type="text" value="<?= $fname ?>">
+            <form class="form" method="post">
+                <div class="divForm">
+                    <label class="label">Prénom</label>
+                    <input class="input" name="fname" type="text" value="<?= $fname ?>">
                 </div>
-                <div>
-                    <label>Nom</label>
-                    <input name="lname" type="text" value="<?= $lname ?>">
+                <div class="divForm">
+                    <label class="label">Nom</label>
+                    <input class="input" name="lname" type="text" value="<?= $lname ?>">
                 </div>
-                <div>
-                    <label>Mail</label>
-                    <input name="mail" type="email" value="<?= $mail ?>">
+                <div class="divForm">
+                    <label class="label">Mail</label>
+                    <input class="input" name="mail" type="email" value="<?= $mail ?>">
                 </div>
-                <div>
-                    <label>Mot de passe</label>
-                    <input name="pwd" type="password" value="">
+                <div class="divForm">
+                    <label class="label">Mot de passe</label>
+                    <input class="input" name="pwd" type="password" value="">
                 </div>
-                <div>
-                    <label>Confirmer mot de passe</label>
-                    <input name="pwd2" type="password">
+                <div class="divForm">
+                    <label class="label">Confirmer mot de passe</label>
+                    <input class="input" name="pwd2" type="password">
                 </div>
-                <div>
-                    <label>Adresse</label>
-                    <input name="address" type="text" value="<?= $address ?>">
+                <div class="divForm">
+                    <label class="label">Adresse</label>
+                    <input class="input" name="address" type="text" value="<?= $address ?>">
                 </div>
-                <div>
-                    <label>Code Postal</label>
-                    <input name="pc" type="text" value="<?= $pc ?>">
+                <div class="divForm">
+                    <label class="label">Code Postal</label>
+                    <input class="input" name="pc" type="text" value="<?= $pc ?>">
                 </div>
-                <div>
-                    <label>Ville</label>
-                    <input name="town" type="text" value="<?= $town ?>">
+                <div class="divForm">
+                    <label class="label">Ville</label>
+                    <input class="input" name="town" type="text" value="<?= $town ?>">
                 </div>
-                <div>
-                    <label>Image :</label>
-                    <input name="img" type="link" value="<?= $img ?>">
+                <div class="divForm">
+                    <label class="label">Image :</label>
+                    <input class="input" name="img" type="link" value="<?= $img ?>">
                 </div>
-                <div>
-                    <label>Pays</label>
-                    <select name="country" id="">
+                <div class="divForm">
+                    <label class="label">Pays</label>
+                    <select class="select" name="country" id="">
                         <option default value="<?php echo $cid?>"><?php echo $country['nom_fr_fr'] ?></option>
                         <?php
                         $allCountry = getCountry($dbh);
@@ -189,8 +231,9 @@ if (isset($_SESSION['id'])){
                         ?>
                         </select>
                 </div>
-                <div>
-                    <select name="civility">
+                <div class="divForm">
+                <label class="label">Civilité</label>
+                    <select class="select" name="civility">
                         <option <?php if($civility === "Monsieur"){ echo "selected";}else{ " "; } ?>>Monsieur</option>
                         <option <?php if($civility === "Madame"){ echo "selected";}else{ " "; } ?>>Madame</option>
                     </select>
@@ -198,10 +241,11 @@ if (isset($_SESSION['id'])){
                 </div>
                 <br>
                 <div>
-                    <input type="submit" name="formModifications"  value="Modifier">
+                    <input class="submit" type="submit" name="formModifications"  value="Modifier">
                 </div>
             </form>
         </div>
+        <br><br>
     </div>
-
+    
             <?php } ?>

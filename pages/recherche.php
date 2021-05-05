@@ -6,7 +6,21 @@ require_once 'bdd.php';
 $nbjour = 0;
 
 $today = date("Y-m-d");
+?>
 
+<style>
+    .chambre{
+        border: 1px solid black;
+        width: 30%;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+</style>
+
+
+
+<?php
 //Si la réservation dure plus d'une nuit :
 if (isset($_POST['depart']) and !empty($_POST['depart'])){
     ?>
@@ -26,6 +40,8 @@ if (isset($_POST['depart']) and !empty($_POST['depart'])){
             //On transforme un string en date
             $datearrivee = new DateTime("$arrivee");
             $datedepart = new DateTime("$depart");
+            $datedepart->sub(new DateInterval('P1D'));
+            $depart = $datedepart->format('Y-m-d H:i:s');
 
 
             //Si la date entrée est avant aujourd'hui, ou que la date de départ est avant la date d'arrivée : afficher une erreur/
@@ -42,22 +58,16 @@ if (isset($_POST['depart']) and !empty($_POST['depart'])){
             }else{
 
 
-            //On compte le nombre de jours séléctionnés
-            while ($datearrivee <= $datedepart){
-                $nbjour++;
-
-                $datearrivee->add(new DateInterval('P1D'));
-            }
-
             //On effectue la requête SQL avec les tags et on la stock dans un tableau
             $tags = Search($dbh, $total, $exposition, $idprix);
             $dayoff = FreeTwo($dbh, $arrivee, $depart);
             $count = count($dayoff);
             for ($i=0; $i < count($tags); $i++){
-                for ($in=0; $in < $count-1; $in++){
-                    if ($tags[$i] == $dayoff[$in]){
-    
-                        unset($tags[$i]);
+                for ($in=0; $in < $count; $in++){
+                    if (isset($tags[$i])){
+                        if ($tags[$i] == $dayoff[$in]){
+                            unset($tags[$i]);
+                        }
                     }
                 }
             }
@@ -73,6 +83,7 @@ if (isset($_POST['depart']) and !empty($_POST['depart'])){
             $chexp = $all['exposition'];
             $chcap = $all['capacite'];
             $chetage = $all['etage'];
+            $chimage = $all['image'];
 
             if (isset($_SESSION['id']) && !empty($_SESSION['id'])){
             ?>
@@ -84,34 +95,36 @@ if (isset($_POST['depart']) and !empty($_POST['depart'])){
                 <form method="post" action="./connexion.php">
 
                     <?php } ?>
-                    <h3>2 dates</h3>
-                    <div>
-                        <label>Chambre numéro <?= $chid ?></label>
-                    </div>
-                    <div>
-                        <label>Prix : <?= $chprix ?> €</label>
-                    </div>
-                    <div>
-                        <label>Capacité : <?= $chcap ?> personnes</label>
-                    </div>
-                    <div>
-                        <label>Exposition : <?= $chexp ?></label>
-                    </div>
-                    <div>
-                        <label>Etage numéro <?= $chetage ?></label>
-                    </div>
-                    <div style="display: none">
-                        <input name="datestart" value="<?= $arrivee ?>">
-                        <input name="dateend" value="<?= $depart ?>">
-                        <input name="chambreId" value="<?= $chid ?>">
-                        <input name="capacity" value="<?= $chcap ?>">
-                        <input name="numberAdult" value="<?= $adulte ?>">
-                        <input name="numberChild" value="<?= $enfant ?>">
-                        <input name="check" value="1">
-                    </div>
-                    <div>
-                        <input  type="submit" name="confirmReserv" value="Valider votre réservation">
-                    </div>
+                    <div class="chambre">
+                        <h3>2 dates</h3>
+                        <div>
+                            <label>Chambre numéro <?= $chid ?></label>
+                        </div>
+                        <div>
+                            <label>Prix : <?= $chprix ?> €</label>
+                        </div>
+                        <div>
+                            <label>Capacité : <?= $chcap ?> personnes</label>
+                        </div>
+                        <div>
+                            <label>Exposition : <?= $chexp ?></label>
+                        </div>
+                        <div>
+                            <label>Etage numéro <?= $chetage ?></label>
+                        </div>
+                        <div style="display: none">
+                            <input name="datestart" value="<?= $arrivee ?>">
+                            <input name="dateend" value="<?= $depart ?>">
+                            <input name="chambreId" value="<?= $chid ?>">
+                            <input name="capacity" value="<?= $chcap ?>">
+                            <input name="numberAdult" value="<?= $adulte ?>">
+                            <input name="numberChild" value="<?= $enfant ?>">
+                            <input name="check" value="1">
+                        </div>
+                        <div>
+                            <input  type="submit" name="confirmReserv" value="Valider votre réservation">
+                        </div>
+                        </div>    
                 </form>
                 <?php
                 }
@@ -162,8 +175,6 @@ else{
             }
         }
 
-
-
         foreach ($tags as $tag){
 
             $id = $tag['id'];
@@ -211,7 +222,7 @@ else{
                     <input type="text" name="numberChild" value="<?= $enfant ?>">
                     <input name="check" value="1">
                 </div>
-                <div>
+                <div class="divButton">
                     <button type="submit">Réserver</button>
                 </div>
                 </form>

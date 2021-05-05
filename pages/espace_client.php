@@ -23,32 +23,72 @@ if (isset($_SESSION['id'])){
 
 
     ?>
+    <style>
+        li{
+            list-style:  none;
+            border: 1px solid #B5B2B2;
+            padding: 2%;
+            border-bottom: none;
+        }
+        p{
+            font-weight: bold;
+        }
+        .client{
+            margin-top: 3%;
+            width: 60%;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .button{
+        padding: 2%;
+        border-radius: 0px 0px 15px 15px;
+        border: none;
+        background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
+        cursor:pointer;
+        color: white;
+        transition: background-color 500ms ease-out;
+        width: 100%;
+        }
+        .button:hover{
+            background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
+            box-shadow: 2px 2px 12px grey;
+        }
+        .divButton{
+            margin-top: 3%;
+            margin-bottom: 3%;
+        }
+        .liHaut{
+            border-radius: 15px 15px 0px 0px;
+        }
+    </style>
     <!-- Affichage des informations du client -->
     <div class="content">
         <div class="client">
-            <img class="mobile_profile_image" style="width: 100px; margin-right: 30px;" src="<?= $img ?>">
+            <!-- <img class="mobile_profile_image" style="width: 100px; margin-right: 30px;" src="<?= $img ?>"> -->
             <!-- le "=" a la place de "php" remplace le "php" et un "echo" -->
-            <h4> Prénom : <?= $fname ?></h4>
+            <li class="liHaut"><p>Prénom : </p></p><?= $fname ?></li>
 
-            <h4>Nom : <?= $lname ?></h4>
+            <li><p>Nom : </p></p><?= $lname ?></li>
 
-            <h4>Mail : <?= $mail ?></h4>
+            <li><p>Mail : </p><?= $mail ?></li>
 
-            <h4>Mot de passe : ********* </h4>
+            <li><p>Mot de passe :</p> ********* </li>
 
-            <h4>Adresse : <?= $address ?></h4>
+            <li><p>Adresse : </p><?= $address ?></li>
 
-            <h4>Code Postal : <?= $pc ?></h4>
+            <li><p>Code Postal : </p><?= $pc ?></li>
 
-            <h4>Vile : <?= $town ?></h4>
+            <li><p>Ville : </p><?= $town ?></li>
 
-            <h4> Pays :<?= $country['nom_fr_fr'] ?> </h4>
-            <h4>Civilité : <?= $civility ?></h4>
-            <h4>Image : <?= $img ?></h4>
-            <a href="update.php">Modifier </a>
+            <li><p> Pays :</p><?= $country['nom_fr_fr'] ?> </li>
+            <li><p>Civilité : </p><?= $civility ?></li>
+            <li><p>Image :</p> <?= $img ?></li>
+            <a href="update.php"><button class="button">Modifier</button> </a>
         </div>
+        <br><br>
     </div>
-
+        <br>
 <!--    </div>-->
 <!--    </div>-->
 
