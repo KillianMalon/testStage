@@ -93,7 +93,13 @@ require_once 'bdd.php';
     .linkRoom{
         text-decoration: none;
     }
-    
+    <?php if($_SESSION['theme']=="sombre"):?>
+        .chambre, .price{
+            background-color: #222;
+            color: white;
+        }
+
+    <?php endif;?>    
     @media screen and (max-width:600px){
         .description{
             display: none;

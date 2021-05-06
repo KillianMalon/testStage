@@ -284,6 +284,21 @@ if(!empty($_POST['textarea'])){
         font-weight: bold;
         font-size: x-large;
     }
+    <?php if($_SESSION['theme']=="sombre"):?>
+            .favoriteButton{
+                background-color: #222;
+            }
+            .input, .select{
+                background-color: #464644;
+                color: #ececec;
+            }
+            .textarea{
+                background-color: #464644;
+                color: white;
+            }
+    <?php endif;?>   
+    
+  
 </style>
 
 <!-- PARTIE POUR LA MISE EN FAVORIS-->
@@ -294,8 +309,7 @@ if(!empty($_POST['textarea'])){
                 $id = $_SESSION['id'];
                     if(isset($_POST['addFavorite'])){
                         addFavorite($dbh, $id,$chambreId);
-                        ?>
-                        <meta http-equiv="refresh" content="0">
+                        ?>               <meta http-equiv="refresh" content="0">
                     <?php 
                     }
                     if(isset($_POST['removeFavorite'])){

@@ -172,6 +172,16 @@ if (isset($_SESSION['id'])){
         color: white;
         padding: 4%;
     }
+    <?php if($_SESSION['theme']=="sombre"):?>
+  
+        .favoriteButton{
+            background-color: #222;
+        }
+        .input, .select{
+            background-color: #464644;
+            color: #ececec;
+        }
+    <?php endif;?>
     </style>
     <div class="content">
         <div class="client">

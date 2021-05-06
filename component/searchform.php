@@ -92,6 +92,12 @@ input, select{
 .line{
     border-right: 1px solid #c7ccd4;
 }
+<?php if($_SESSION['theme']=="sombre"):?>
+    input, select{
+        background-color: #464644;
+        color: #ececec;
+    }
+<?php endif;?>
 </style>
 <div class="content">
     <div class="formulaire">

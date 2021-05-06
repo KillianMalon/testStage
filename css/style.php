@@ -1,9 +1,12 @@
+<style>
+
 body{
   margin: 0;
   padding: 0;
   font-family: "Roboto", sans-serif; 
   background-color: #ececec;
 }
+
 
 header{  
   z-index: 1;
@@ -114,7 +117,7 @@ header{
 }
 
 .sidebar a:hover{
-  background: black;
+  background: #222;
 }
 
 .sidebar i{
@@ -419,3 +422,10 @@ form{
     display: block;
   }
 }
+<?php if($_SESSION['theme']=="sombre"):?>
+    body{
+      background-color: #222;
+      color: white;
+    }
+  <?php endif; ?>
+</style>

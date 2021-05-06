@@ -197,6 +197,13 @@ if (isset($_SESSION['id'])){
         padding-top : 2%;
         padding-bottom : 2%;
     }
+    @media (prefers-color-scheme: dark){
+  
+        td, th{
+            border: 1px solid #cecece;
+        }
+    
+    }
     .futur{
         text-decoration: underline;
         font-style: italic;
