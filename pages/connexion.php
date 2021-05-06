@@ -72,11 +72,10 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
     .lien{
         display: flex;
         justify-content: center;
-        flex-direction: column;
-        align-items: center;
+        flex-direction: row;
         margin-top: 2%;
     }
-    a{
+    .a{
         background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
         border: none;
         color: white;
@@ -84,6 +83,9 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
         padding: 1%;
         text-decoration: none;
         font-size: small;
+    }
+    .decale{
+        margin-right: 3%;
     }
 </style>
 <!-- Affichage de formulaire de connexion -->
@@ -107,9 +109,9 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
     </div>    
 
     <div class="lien">
-        <a href="inscription.php">Inscrivez-vous ici</a>
+        <a class="a decale" href="inscription.php">Inscrivez-vous ici</a>
         <br>
-        <a href="lostPassword.php">Mot de passe oublié ? </a>
+        <a class="a" href="lostPassword.php">Mot de passe oublié ? </a>
     </div>
 
     <?php

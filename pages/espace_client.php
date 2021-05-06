@@ -3,6 +3,12 @@ require_once '../component/header.php';
 require_once '../functions/sql.php';
 require_once 'bdd.php';
 
+if(!isset($_SESSION['lang']) || empty($_SESSION['lang'])){
+    $_SESSION['lang'] = 'fr';
+}
+var_dump($_SESSION);
+$url = "../languages/".$_SESSION['lang'].".php";
+require_once $url;
 //Récupération des informations d'un client en focntion de son iD (stockée en SESSION)
 if (isset($_SESSION['id'])){
     $id = $_SESSION['id'];
@@ -36,6 +42,7 @@ if (isset($_SESSION['id'])){
         .client{
             margin-top: 3%;
             width: 60%;
+            margin-left: 20%;
             display: flex;
             justify-content: center;
             flex-direction: column;
@@ -87,6 +94,13 @@ if (isset($_SESSION['id'])){
             <a href="update.php"><button class="button">Modifier</button> </a>
         </div>
         <br><br>
+        <div>
+            <form action="configurationLang.php" method="post">
+                <button type="submit" <?php if(isset($_SESSION['lang']) AND $_SESSION['lang'] === 'fr'){?> disabled="disabled" <?php }else{ ""; } ?> name="lang" value="fr"><?php echo isset($_SESSION['lang']) ? $lang['lang_fr']: ""; ?></button>
+                <button type="submit" <?php if(isset($_SESSION['lang']) AND $_SESSION['lang'] === 'en'){?> disabled="disabled" <?php }else{ ""; } ?> name="lang" value="en"><?php echo isset($_SESSION['lang']) ? $lang['lang_en']: ""; ?></button>
+            </form>
+        </div>
+        <br>
     </div>
         <br>
 <!--    </div>-->

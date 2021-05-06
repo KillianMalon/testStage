@@ -13,7 +13,8 @@ if (isset($index)){
     require_once "bdd.php";
     $oui =  "index existe pas fd2p";
 }
-
+$_SESSION['theme']="sombre";
+unset($_SESSION['theme']);
 if (isset($_SESSION['id']) and !empty($_SESSION['id'])) {
     $uid = $_SESSION['id'];
     $user = getClient($dbh, $uid);
@@ -29,21 +30,21 @@ if (isset($_SESSION['id']) and !empty($_SESSION['id'])) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Sidebar Dashboard Template</title>
+    <title>Hotel</title>
     <?php
     //utiliser une seule page css pour plusieurs fichiers (pas au meme niveau de répertoire)
     if(isset($index) and $index = 1){
         ?>
-        <link rel="stylesheet" href="./css/style.css">
-        <?php
+        
+        <?php require_once('./css/style.php');
     }else{
         ?>
-        <link rel="stylesheet" href="../css/style.css">
-        <?php
+        <?php  require_once('../css/style.php');
     }
     ?>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" charset="utf-8"></script>
+
 </head>
 <body>
 
@@ -58,6 +59,7 @@ if (isset($_SESSION['id']) and !empty($_SESSION['id'])) {
     </div>
     <?php if (isset($_SESSION['id']) and !empty($_SESSION['id'])){ ?>
         <div class="right_area">
+            <!-- <i class="fas fa-moon"></i> -->
             <a href="<?php echo (isset($index)) ? "./pages/logout.php" : "logout.php" ?>" class="logout_btn">Déconnexion</a>
         </div>
     <?php } else { ?>
@@ -95,6 +97,7 @@ if (isset($_SESSION['id']) and !empty($_SESSION['id'])) {
             <?php if(isset($admin)){ ?>
                 <a href="<?php echo (isset($index)) ? "./pages/statistics.php" : "statistics.php"?>"><i class="fas fa-chart-bar"></i><span>Statistiques</span></a>
                 <a href="<?php echo (isset($index)) ? "./pages/administration.php" : "administration.php"?>"><i class="fas fa-users-cog"></i><span>Administration</span></a>
+                <a href="<?php echo (isset($index)) ? "./pages/newsletter.php" : "newsletter.php"?>"><i class="fas fa-users-cog"></i><span>Newsletter</span></a>    
             <?php } ?>
         <?php } ?>
         <!--
@@ -122,6 +125,7 @@ if (isset($_SESSION['id']) and !empty($_SESSION['id'])) {
         <?php if(isset($admin)){ ?>
             <a href="<?php echo (isset($index)) ? "./pages/statistics.php" : "statistics.php"?>"><i class="fas fa-chart-bar"></i><span>Statistiques</span></a>
             <a href="<?php echo (isset($index)) ? "./pages/administration.php" : "administration.php"?>"><i class="fas fa-users-cog"></i><span>Administration</span></a>
+            <a href="<?php echo (isset($index)) ? "./pages/newsletter.php" : "newsletter.php"?>"><i class="fas fa-users-cog"></i><span>Newsletter</span></a>
             <?php
         }
     }
