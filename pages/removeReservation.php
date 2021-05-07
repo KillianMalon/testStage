@@ -12,5 +12,5 @@ if (isset($_GET['id'])){
 }
 ?>
 <div class="content">
-    <p style="background-color: forestgreen; color: white; text-align: center;">La Réservation numéro <?= $id ?> a bien été supprimée !</p>
+    <p style="background-color: forestgreen; color: white; text-align: center;"><?= $lang['reservationNumber'] ?> <?= $id ?> <?= $lang['deleteOk'] ?></p>
 </div>

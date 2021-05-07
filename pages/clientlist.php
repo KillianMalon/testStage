@@ -32,42 +32,42 @@ foreach ($clients as $client){
                     <input name="id" type="text" value="<?= $id ?>">
                 </div>
                 <div>
-                    <label>Civilité</label>
+                    <label><?= $lang['civility'] ?></label>
                     <select name="type" id="">
                         <option default value="<?php if($civilite == '1'){ echo '1';} elseif ($civilite == '2'){ echo '2';} ?>"><?php if($civilite == '1'){ echo 'Monsieur';} elseif ($civilite == '2'){ echo 'Madame';} ?></option>
                         <option value="<?php if($civilite == '1'){ echo '2';} elseif ($civilite == '2'){ echo '1';} ?>"><?php if($civilite == '1'){ echo 'Madame';} elseif ($civilite == '2'){ echo 'Monsieur';} ?></option>
                     </select>
                 </div>
                 <div>
-                    <label>Prénom</label>
+                    <label><?= $lang['fname'] ?></label>
                     <input name="fname" type="text" value="<?= $prenom ?>">
                 </div>
                 <div>
-                    <label>Nom</label>
+                    <label><?= $lang['lname'] ?></label>
                     <input name="lname" type="text" value="<?= $nom ?>">
                 </div>
                 <div>
-                    <label>Mail</label>
+                    <label>Email</label>
                     <input name="mail" type="email" value="<?= $mail ?>">
                 </div>
                 <div>
-                    <label>Mot de passe</label>
+                    <label><?= $lang['password'] ?></label>
                     <input name="pwd" type="password" value="<?= $pwd ?>">
                 </div>
                 <div>
-                    <label>Adresse</label>
+                    <label><?= $lang['address'] ?></label>
                     <input name="address" type="text" value="<?= $adresse ?>">
                 </div>
                 <div>
-                    <label>Code Postal</label>
+                    <label><?= $lang['postalCode'] ?></label>
                     <input name="PC" type="text" value="<?= $cp ?>">
                 </div>
                 <div>
-                    <label>Ville</label>
+                    <label><?= $lang['town'] ?></label>
                     <input name="town" type="text" value="<?= $ville ?>">
                 </div>
                 <div>
-                    <label>Pays</label>
+                    <label><?= $lang['country'] ?></label>
                     <select name="civility" id="">
                         <option default value="<?php echo $paysid?>"><?php echo $pays['nom_fr_fr'] ?></option>
                         <?php
@@ -92,7 +92,7 @@ foreach ($clients as $client){
                         </select>
                     </div>
                     <br>
-                    <button type="submit">Modifier</button>
+                    <button type="submit"><?= $lang['edit'] ?></button>
                 </div>
             </form>
         </div>

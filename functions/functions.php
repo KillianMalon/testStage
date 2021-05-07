@@ -32,7 +32,8 @@ function generateRandomString($longueur = 35, $CharList = '0123456789abcdefghijk
     return $chaine;
 } 
 
-function generatePdf($dbh, $id,$lname ,$fname, $arrival,$departure, $roomId, $nbOfDay, $total){
+function generatePdf($dbh, $id,$lname ,$fname, $arrival,$departure, $roomId, $nbOfDay, $total, $auto, $clientId){
+    ob_start();
     require_once "../fpdf/fpdf.php";
     $roomPrice = getPriceRoom($dbh, $roomId);
     $reservationDateStart = new DateTime("$arrival");
@@ -44,10 +45,6 @@ function generatePdf($dbh, $id,$lname ,$fname, $arrival,$departure, $roomId, $nb
     }
      $formattedArrival = mbUcfirst(strftime("%A $format_jour %B %Y", strtotime($arrival)));
      $formattedDeparture = mbUcfirst(strftime("%A $format_jour %B %Y", strtotime($departure)));
-
-// Création de la class PDF
-
-
     // Activation de la classe
     $pdf = new FPDF('P', 'mm', 'A4');
     //ajout d'une page (que l'on pourra refaire au besoin)
@@ -98,7 +95,6 @@ function generatePdf($dbh, $id,$lname ,$fname, $arrival,$departure, $roomId, $nb
         }
     }
     entete_table($position_entete, $pdf);
-
 // Liste des détails
     $position_detail = 81; // Position à 8mm de l'entête
         $pdf->SetY($position_detail);
@@ -118,27 +114,35 @@ function generatePdf($dbh, $id,$lname ,$fname, $arrival,$departure, $roomId, $nb
         $pdf->SetX(168);
         $pdf->MultiCell(40, 8, utf8_decode($total."euros"), 1, 'C');
         $position_detail += 8;
-
-
 // Nom du fichier
     $nom = 'Facture-' . $id . '.pdf';
     $folderName = "Facture";
-    if(is_dir($folderName)){
-        ob_end_clean();
-        //création et téléchargement du pdf
-        $pdf->Output("Facture//$nom", "I");
-    }else{
-        mkdir($folderName);
-        ob_end_clean();
-        //création et téléchargement du pdf
-        $pdf->Output("Facture//$nom", "I");
-        ob_end_clean();
+    $folder2 = $clientId;
+    if ($auto === 1){
+        if(is_dir($folderName)){
+            //création et téléchargement du pdf
+            echo getcwd() . "\n";
+            chdir("$folderName");
+            // dossier courant
+            echo getcwd() . "\n";
+            if(is_dir($folder2)) {
+                $pdf->Output("$folder2/$nom", "F");
+                ob_end_flush();
+            }else{
+                mkdir($folder2);
+                $pdf->Output("$folder2/$nom", "F");
+                ob_end_flush();
+            }
+        }else{
+            mkdir($folderName);
+            //création et téléchargement du pdf
+            chdir("$folderName");
+            mkdir($folder2);
+            chdir($folder2);
+            $pdf->Output("$nom", "F");
+            ob_end_flush();
+        }
     }
-
-
-        //Création et ouverture du pdf
-        //$pdf->Output($nom, 'I');
-
 }
 
 function sendMailChamber($dbh){

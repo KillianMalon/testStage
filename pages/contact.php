@@ -7,12 +7,12 @@ require_once  'bdd.php';
 
 <div class="content">
     <form method="post" action="send_mail.php">
-        <label>Votre Mail</label>
+        <label><?= $lang['yourMail']; ?></label>
         <input name="email" type="text">
         <br>
-        <label>Votre message</label>
+        <label><?= $lang['yourMessage'] ?></label>
         <textarea name="text"></textarea>
         <br>
-        <input type="submit" value="Envoyer">
+        <input type="submit" value="<?= $lang['send'] ?>">
     </form>
 </div>

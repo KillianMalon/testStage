@@ -54,7 +54,9 @@ if(!empty($_POST['start']) && !empty($_POST['end']) && !empty($_POST['idChambre'
                         $_SESSION['numberAdult'] = $numberAdult;
                         $_SESSION['numberChild'] = $numberChild;
                         if (!empty($_SESSION['start']) && !empty($_SESSION['end']) &&  !empty($_SESSION['chambreId'])  &&  !empty($_SESSION['numberAdult']) && isset($_SESSION['numberChild'])) {
-                        header('Location:./confirmReservation.php');
+                        ?>
+                            <meta http-equiv="refresh" content="0;URL=./confirmReservation.php">
+                                <?php
                         }
                     }
                 }
@@ -415,7 +417,7 @@ $todays = date("Y-m-d");
             
         <div class="container">
             <div class="favoris">
-                <h2 >Chambre <?php echo $numeroChambre;?></h2>
+                <h2 > <?= $lang['room']; ?>  <?php echo $numeroChambre;?></h2>
                 <form action="" class="formFavoris" method="post">
                     <?php
                     if(!empty($_SESSION['id'])){
@@ -438,11 +440,11 @@ $todays = date("Y-m-d");
                 <div class="texte">
                         
                         <p class="card-text"><?php echo ($chambres['description']);?></p>
-                        <p>Catégorie : <?php echo $chambres['libelle'];?></p>
-                        <p>Etage : <?php echo ($chambres['etage']);?></p>
-                        <p>Equipement : <?php echo ($chambres['douche']);?> douche</p>
-                        <p>Capacité : <?php echo ($chambres['capacite']);?></p>
-                        <p>Exposition : <?php echo ($chambres['exposition']);?></p>
+                        <p> <?= $lang['category']; ?> : <?php echo $chambres['libelle'];?></p>
+                        <p> <?= $lang['floor']; ?> : <?php echo ($chambres['etage']);?></p>
+                        <p> <?= $lang['equipment']; ?> : <?php echo ($chambres['douche']);?> douche</p>
+                        <p> <?= $lang['capacity']; ?> : <?php echo ($chambres['capacite']);?></p>
+                        <p> <?= $lang['exposure']; ?> : <?php echo ($chambres['exposition']);?></p>
                         <h4><?php echo ($chambres['prix']);?>€</h4>
 
                         <?php if(!empty($_POST['start']) && !empty($_POST['end'])) {
@@ -468,11 +470,11 @@ $todays = date("Y-m-d");
                                 <form class="form2" method="post" >
                                         <div class="date">
                                             <div class="date2 line">
-                                                <label class='label' for="" >Date d'arrivée</label class='label'>
+                                                <label class='label' for="" ><?= $lang['arrivalDate']; ?></label class='label'>
                                                 <input class="input" type="date" name="start" value="<?php echo $today?>" min="<?php echo $today?>" >
                                             </div>
                                             <div class="date2">
-                                                <label class='label' for="start" >Date de départ</label class='label'>
+                                                <label class='label' for="start" ><?= $lang['departureDate']; ?></label class='label'>
                                                 <input class="input" type="date" name="end" value="<?php echo $tomorrowFormatted?>" min="<?php echo $tomorrowFormatted?>">
                                             </div>
                                         </div>
@@ -480,18 +482,18 @@ $todays = date("Y-m-d");
 
                                         <div class="capacity">
                                             <div class="capacity2 line">
-                                                <label class='label' for="start">Nombres d'adultes</label class='label'>
+                                                <label class='label' for="start"><?= $lang['numberOfAdults']; ?></label class='label'>
                                                 <select class="select"   name="numberAdult" required>
-                                                    <option selected disabled value="">Choisir ...</option>
+                                                    <option selected disabled value=""><?= $lang['choose']; ?> ...</option>
                                                     <?php for ($i = 1; $i <= $chambres['capacite']; $i++):?>
                                                         <option><?php echo $i ?></option>
                                                     <?php endfor;?>
                                                 </select>
                                             </div>
                                             <div class="capacity2" >
-                                                <label class='label' for="start">Nombres d'enfants</label class='label'>
+                                                <label class='label' for="start"><?= $lang['numberOfChildren']; ?></label class='label'>
                                                 <select class="select" name="numberChild" required>
-                                                    <option selected disabled value="">Choisir ...</option>
+                                                    <option selected disabled value=""><?= $lang['choose']; ?> ...</option>
                                                     <?php for ($i = 0; $i <= $chambres['capacite']; $i++):?>
                                                         <option><?php echo $i ?></option>
                                                     <?php endfor;?>
@@ -502,9 +504,9 @@ $todays = date("Y-m-d");
                                     <div class="boutton">
                                             <input type="number" name="idChambre" hidden="hidden" value="<?php echo($chambres['id']); ?>">
                                             <input type="number" name="capacity" hidden="hidden" value="<?php echo($chambres['capacite']); ?>">
-                                            <input type="submit"  class="bouton" value="Réserver">
+                                            <input type="submit"  class="bouton" value="<?= $lang['book']; ?>">
                                         <?php  }else{ $id = intval($_GET['id']);?>
-                                                        <a href="modifRoom.php?room=<?php echo $id ?>">Modifier</a>
+                                                        <a href="modifRoom.php?room=<?php echo $id ?>"><?= $lang['edit']; ?></a>
                                         <?php } ?>   
                                     </div>
                                 </form>
@@ -521,7 +523,7 @@ $todays = date("Y-m-d");
                 } 
             ?>
         <div class='form'>
-            <h2 class='souligne'>Commentaires</h2>
+            <h2 class='souligne'><?= $lang['comments']?></h2>
             <?php if(!empty($passed)){
                 
                 $search = $passed[0];
@@ -560,7 +562,7 @@ $todays = date("Y-m-d");
                            
                             <div class="titre">
                                 <h4 class="decale2"><?php echo $commentary['prenom']." ".$commentary['nom']?></h4>
-                                <p>Publiée le <?php echo $jourFormatted?></p>
+                                <p><?= $lang['publishedOn']?> <?php echo $jourFormatted?></p>
                             </div>
                             <div class="centre"><p class="bold"><?php echo $commentary['contenu']?></p></div>
                             
@@ -570,7 +572,7 @@ $todays = date("Y-m-d");
                 <?php else:?>
                     <br><br><br>
                 <hr class=hr>
-                    <div class="noCommentaire"><p class="p">Aucun commentaire pour le moment</p></div>
+                    <div class="noCommentaire"><p class="p"><?= $lang['noComment']?></p></div>
                     <br><br><br><br>
                 <?php endif;?>
         </div>
@@ -578,6 +580,6 @@ $todays = date("Y-m-d");
     <br><br><br>    
 <?php else: ?>
     <div class="bass">
-        <p> Aucune chambre trouvée</p>
+        <p><?= $lang['noRoom']?></p>
     </div>
 <?php endif;?>

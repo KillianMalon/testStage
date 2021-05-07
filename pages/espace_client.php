@@ -3,12 +3,6 @@ require_once '../component/header.php';
 require_once '../functions/sql.php';
 require_once 'bdd.php';
 
-if(!isset($_SESSION['lang']) || empty($_SESSION['lang'])){
-    $_SESSION['lang'] = 'fr';
-}
-var_dump($_SESSION);
-$url = "../languages/".$_SESSION['lang'].".php";
-require_once $url;
 //Récupération des informations d'un client en focntion de son iD (stockée en SESSION)
 if (isset($_SESSION['id'])){
     $id = $_SESSION['id'];
@@ -74,28 +68,28 @@ if (isset($_SESSION['id'])){
         <div class="client">
             <!-- <img class="mobile_profile_image" style="width: 100px; margin-right: 30px;" src="<?= $img ?>"> -->
             <!-- le "=" a la place de "php" remplace le "php" et un "echo" -->
-            <li class="liHaut"><p>Prénom : </p></p><?= $fname ?></li>
+        <li class="liHaut"><p><?= $lang['fname']; ?> : </p></p><?= $fname ?></li>
 
-            <li><p>Nom : </p></p><?= $lname ?></li>
+            <li><p><?= $lang['lname']; ?> : </p></p><?= $lname ?></li>
 
-            <li><p>Mail : </p><?= $mail ?></li>
+            <li><p>Email : </p><?= $mail ?></li>
 
-            <li><p>Mot de passe :</p> ********* </li>
+            <li><p><?= $lang['password']; ?> :</p> ********* </li>
 
-            <li><p>Adresse : </p><?= $address ?></li>
+            <li><p><?= $lang['address']; ?>  : </p><?= $address ?></li>
 
-            <li><p>Code Postal : </p><?= $pc ?></li>
+            <li><p><?= $lang['postalCode']; ?>  : </p><?= $pc ?></li>
 
-            <li><p>Ville : </p><?= $town ?></li>
+            <li><p><?= $lang['town']; ?>  : </p><?= $town ?></li>
 
-            <li><p> Pays :</p><?= $country['nom_fr_fr'] ?> </li>
-            <li><p>Civilité : </p><?= $civility ?></li>
-            <li><p>Image :</p> <?= $img ?></li>
-            <a href="update.php"><button class="button">Modifier</button> </a>
+            <li><p> <?= $lang['country']; ?>  :</p><?= $country['nom_fr_fr'] ?> </li>
+            <li><p><?= $lang['civility']; ?>: </p><?= $civility ?></li>
+            <li><p><?= $lang['profilePicture']; ?> :</p> <?= $img ?></li>
+            <a href="update.php"><button class="button"><?= $lang['edit']; ?></button> </a>
         </div>
         <br><br>
         <div>
-            <form action="configurationLang.php" method="post">
+            <form action="../languages/configurationLang.php" method="post">
                 <button type="submit" <?php if(isset($_SESSION['lang']) AND $_SESSION['lang'] === 'fr'){?> disabled="disabled" <?php }else{ ""; } ?> name="lang" value="fr"><?php echo isset($_SESSION['lang']) ? $lang['lang_fr']: ""; ?></button>
                 <button type="submit" <?php if(isset($_SESSION['lang']) AND $_SESSION['lang'] === 'en'){?> disabled="disabled" <?php }else{ ""; } ?> name="lang" value="en"><?php echo isset($_SESSION['lang']) ? $lang['lang_en']: ""; ?></button>
             </form>

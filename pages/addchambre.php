@@ -6,25 +6,25 @@ require_once 'bdd.php';
 <div class="content">
     <form method="post" action="confirmaddchamber.php">
         <div>
-            <label>Capacité :</label>
+            <label><?= $lang['capacity'] ?> :</label>
             <input required type="text" name="capacite" value="">
         </div>
         <div>
-            <label>Exposition :</label>
+            <label><?= $lang['exposure'] ?> :</label>
             <select required name="exposition">
                 <option default value="rempart">rempart</option>
                 <option value="port">port</option>
             </select>
         </div>
         <div>
-            <label>Douche :</label>
+            <label><?= $lang['shower'] ?> :</label>
             <select required name="douche">
                 <option default value="0">Non</option>
                 <option value="1">Oui</option>
             </select>
         </div>
         <div>
-            <label>Etage :</label>
+            <label><?= $lang['floor'] ?> :</label>
             <select required name="etage">
                 <option default value="1">1</option>
                 <?php $stages = ListEtage($dbh);
@@ -39,7 +39,7 @@ require_once 'bdd.php';
             </select>
         </div>
         <div>
-            <label>Prix :</label>
+            <label><?= $lang['price'] ?> :</label>
             <select required name="prix">
                 <?php
                 $prices = getPrices($dbh);
@@ -53,17 +53,17 @@ require_once 'bdd.php';
             </select>
         </div>
         <div>
-            <label>Description :</label>
+            <label><?= $lang['description'] ?> :</label>
             <input required type="text" name="description" value="">
         </div>
         <div>
-            <label>Vues :</label>
+            <label><?= $lang['views'] ?> :</label>
             <input readonly type="text" name="vues" value="">
         </div>
         <div>
-            <label>Image Link :</label>
+            <label><?= $lang['pictureLink'] ?> :</label>
             <input required type="text" name="image" value="">
         </div>
-        <input type="submit" value="Ajouter">
+        <input type="submit" value="<?= $lang['add'] ?>">
     </form>
 </div>

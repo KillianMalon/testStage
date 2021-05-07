@@ -410,16 +410,21 @@ function removeReservation($dbh, $id){
     $query->execute(array($id));
 }
 function countPlanning($dbh){
-    $query = $dbh->prepare('SELECT COUNT(*) FROM planning');
+    $query = $dbh->prepare('SELECT COUNT(DISTINCT idReservation) FROM planning');
     $query->execute();
     return $end = $query->fetch();
 }
 
 function getPlanningOrder($dbh, $premier, $parpage){
-    $query = $dbh->prepare('SELECT * FROM planning ORDER BY idReservation DESC LIMIT ?, ?');
+    $query = $dbh->prepare('SELECT DISTINCT idReservation FROM planning ORDER BY idReservation DESC LIMIT ?, ?');
     $query->execute(array($premier, $parpage));
     return $toto = $query->fetchAll();
 }
+// function getPlanningOrder($dbh, $premier, $parpage){
+//     $query = $dbh->prepare('SELECT * FROM planning ORDER BY idReservation DESC LIMIT ?, ?');
+//     $query->execute(array($premier, $parpage));
+//     return $toto = $query->fetchAll();
+// }
 
 function getAllMessages($dbh){
     $query = $dbh->prepare('SELECT * FROM messages');
@@ -521,4 +526,10 @@ function getSearchIfClientPostCommentary($dbh,$idClient, $idRoom2){
     $query = $dbh ->prepare('SELECT * FROM commentaires WHERE chambre_id=? AND client_id = ?');
     $query->execute(array($idRoom2, $idClient ));
     return $commentary = $query->fetchAll();
+}
+         
+function reservationByReservId($dbh, $idChambre){
+    $query = $dbh->prepare("SELECT * FROM planning WHERE idReservation = ?");
+    $query->execute(array($idChambre));
+    return $last = $query->fetchAll();
 }

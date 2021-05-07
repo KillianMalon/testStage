@@ -3,7 +3,7 @@ require_once '../component/header.php';
 require_once '../functions/sql.php';
 require_once 'bdd.php';
 
-$rooms = getAllRooms($dbh);
+$rooms = getAllRoom($dbh);
 
 foreach ($rooms as $room){
     $id = $room['id'];

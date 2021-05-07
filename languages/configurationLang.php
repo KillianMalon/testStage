@@ -1,18 +1,20 @@
 <?php
+session_start();
 $langue = $_POST['lang'];
-if(isset($_SESSION['lang'])){
-    if(!empty($_SESSION['lang']) && $_SESSION['lang'] =! $langue){
-        if($langue === 'fr'){
-            echo "hey";
-            $_SESSION['lang'] = 'fr';
-        }
-        if($langue === 'en'){
-            $_SESSION['lang'] = 'en';
-        }
+echo "le post :";
+echo $langue;
+echo "<br>";
+
+if(!isset($_SESSION['lang'])) {
+    $_SESSION['lang'] = 'fr';
+}else if (isset($langue) && $_SESSION['lang'] != $langue && !empty($langue)){
+    if($langue == 'fr'){
+        $_SESSION['lang'] = 'fr';
     }
-}else{
-    $_SESSION['lang'] == 'fr';
+    else if ($langue == 'en') {
+        $_SESSION['lang'] = 'en';
+    }
 }
 ?>
-<meta http-equiv="refresh" content="0">
+<meta http-equiv="refresh" content="0;URL=../pages/espace_client.php">
 

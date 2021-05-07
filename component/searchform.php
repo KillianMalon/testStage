@@ -28,6 +28,7 @@ $tomorrowFormatted = $tomorrow->format('Y-m-d');
     flex-direction: column;
     align-items: center;
     color: grey;
+    margin-top: 50px;
 }
 /* form{
     border: 1px solid #c7ccd4;
@@ -49,7 +50,7 @@ $tomorrowFormatted = $tomorrow->format('Y-m-d');
 }
 .exposition{
     border: 1px solid #c7ccd4;
-    border-bottom: none;
+    
 }
 button{
     width: 100%;
@@ -92,6 +93,16 @@ input, select{
 .line{
     border-right: 1px solid #c7ccd4;
 }
+.option{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-content: space-around;
+    border-left: 1px solid #c7ccd4;
+    border-right: 1px solid #c7ccd4;
+    padding: 10%;
+    
+}
 <?php if($_SESSION['theme']=="sombre"):?>
     input, select{
         background-color: #464644;
@@ -104,7 +115,7 @@ input, select{
         <form method="post" action="./pages/recherche.php">
             <div class="date">
                 <div class="date2 line"> 
-                    <label for="">Date d'aarivée</label>
+                    <label for="">Date d'arrivée</label>
                     <input class="input" value="<?php echo $today ?>" name="arrivee" type="date" placeholder="Arrivée" required pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2}$">
                 </div>
                 <div class="date2">
@@ -156,6 +167,8 @@ input, select{
                         <option value="port">Port</option>
                         <option value="rempart">Rempart</option>
                     </select>
+                    <br>
+
                 </div>
                 <div class="exposition2">
                     <label for="">Prix maximum</label>
@@ -172,8 +185,22 @@ input, select{
                         }
                         ?>
                     </select>
+                    
+                       
                 </div>
-            </div>    
+                       
+
+            </div>  
+            <div class="option">
+                <div>
+                    <label>Wi-Fi</label>
+                    <input type="checkbox" name="options[]" value="wifi">
+                </div>  
+                <div>  
+                    <label>Piscine</label>
+                    <input type="checkbox" name="options[]" value="piscine">
+                </div>        
+            </div>   
             <button type="submit">Rechercher</button>
         </form>
     </div>    

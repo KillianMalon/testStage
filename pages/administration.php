@@ -73,16 +73,16 @@ require_once 'bdd.php';
 <div class="content">
    <div class="globalAdmin">
         <div class="adminAffichage"">
-            <h2>Administration Clients <i class="fas fa-user"></i> <a href="./administration-clients.php" class="viewAll"> Tout voir <i class="fas fa-arrow-right"></i></a></h2>
+            <h2><?= $lang['customerAdministration'] ?> <i class="fas fa-user"></i> <a href="./administration-clients.php" class="viewAll"> <?= $lang['seeAll'] ?> <i class="fas fa-arrow-right"></i></a></h2>
             <div>
 
                <table>
                    <thead>
                        <tr>
-                           <th>Nom</th>
-                           <th>mail</th>
+                           <th><?= $lang['lname'] ?></th>
+                           <th>Email</th>
                            <th>Type</th>
-                           <th>Modifier</th>
+                           <th><?= $lang['edit'] ?></th>
                        </tr>
                    </thead>
                    <tbody>
@@ -98,7 +98,7 @@ require_once 'bdd.php';
                             <td><?php echo isset($lname)? $lname :" " ?></td>
                             <td> <?php echo isset($mail)? $mail : " " ?> </td>
                             <td> <?php echo isset($type)? $type : " " ?> </td>
-                            <td> <a href="modifClient.php?client=<?php echo $id ?>">modifier</a> </td>
+                            <td> <a href="modifClient.php?client=<?php echo $id ?>"><?= $lang['edit'] ?></a> </td>
                         </tr>
 
                    <?php } ?>
@@ -108,16 +108,16 @@ require_once 'bdd.php';
             </div>
         </div>
         <div class="adminAffichage">
-            <h2>Administration Réservations <i class="fas fa-table"></i> <a href="./administration-reservations.php" class="viewAll"> Tout voir <i class="fas fa-arrow-right"></i></a></h2>
+            <h2><?= $lang['bookingsAdministration'] ?> <i class="fas fa-table"></i> <a href="./administration-reservations.php" class="viewAll"> <?= $lang['seeAll'] ?> <i class="fas fa-arrow-right"></i></a></h2>
             <div>
 
                 <table>
                     <thead>
                     <tr>
-                        <th>iD Réservation</th>
-                        <th>Jour</th>
-                        <th>Numéro Chambre</th>
-                        <th>Modifier</th>
+                        <th>iD <?= $lang['booking'] ?></th>
+                        <th><?= $lang['day'] ?></th>
+                        <th> <?= $lang['roomNumber'] ?></th>
+                        <th> <?= $lang['edit'] ?></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -132,7 +132,7 @@ require_once 'bdd.php';
                             <td><?php echo isset($id)? $id :" " ?></td>
                             <td> <?php echo isset($jour)? $jour : " " ?> </td>
                             <td> <?php echo isset($chid)? $chid : " " ?> </td>
-                            <td> <a href="modifReservation.php?reservation=<?php echo $id ?>">modifier</a> </td>
+                            <td> <a href="modifReservation.php?reservation=<?php echo $id ?>"><?= $lang['edit'] ?></a> </td>
                         </tr>
 
                     <?php } ?>
@@ -141,9 +141,9 @@ require_once 'bdd.php';
                 </table>
             </div>
         </div>
-    <div class="adminAffichage"><h2>Ajouter une Chambre</h2>
+    <div class="adminAffichage"><h2><?= $lang['addARoom'] ?></h2>
         <form name="addchambre" style="text-align: center" method="post" action="addchambre.php">
-            <input class="buton-submit" name="submit" type="submit" value="Ajouter">
+            <input class="buton-submit" name="submit" type="submit" value="<?= $lang['add'] ?>">
         </form>
     </div>
    </div>

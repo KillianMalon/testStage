@@ -71,6 +71,7 @@ if (isset($_SESSION['id'])){
                             <th>Date de départ</th>
                             <th>Chambre payée</th>
                             <th>Télécharger la facture</th>
+                            <th>Mail de la facture</th>
                             <th>Supprimer</th>
                             <th>Prix</th>
                         </tr>
@@ -88,6 +89,13 @@ if (isset($_SESSION['id'])){
                                         <?php if ($future2['paye'] == '0'):?>
                                             <input type="hidden" name="idReservation" value="<?php echo($future2['idReservation'])?>">
                                             <input type="submit" class="btn btn-info" value="Payer">
+                                            <input type="hidden" name="dateStart" value="<?php echo $future2['dateStart'] ?>">
+                                            <input type="hidden" name="dateEnd" value="<?php echo $future2['dateEnd'] ?>">
+                                            <input type="hidden" name="chambre_id" value="<?php echo $future2['chambre_id'] ?>">
+                                            <input type="hidden" name="nombreDeJours" value="<?php echo $future2['nombreDeJours'] ?>">
+                                            <input type="hidden" name="prix" value="<?php echo $future2['prix'] ?>">
+                                            <input type="hidden" name="lname" value="<?php echo $lname ?>">
+                                            <input type="hidden" name="fname" value="<?php echo $fname ?>">
                                         <?php endif;?>     
                                     </form> 
                                 </td>
@@ -96,18 +104,17 @@ if (isset($_SESSION['id'])){
                                     $idReservation = $future2['idReservation'];
 
                                     if($future2['paye'] === 1){ ?>
-                                    <form action="pdfGenerator.php" method="post">
-                                        <input type="hidden" name="reservationId" value="<?php echo $idReservation ?>">
-                                        <input type="hidden" name="dateStart" value="<?php echo $future2['dateStart'] ?>">
-                                        <input type="hidden" name="dateEnd" value="<?php echo $future2['dateEnd'] ?>">
-                                        <input type="hidden" name="chambre_id" value="<?php echo $future2['chambre_id'] ?>">
-                                        <input type="hidden" name="nombreDeJours" value="<?php echo $future2['nombreDeJours'] ?>">
-                                        <input type="hidden" name="prix" value="<?php echo $future2['prix'] ?>">
-                                        <input type="hidden" name="lname" value="<?php echo $lname ?>">
-                                        <input type="hidden" name="fname" value="<?php echo $fname ?>">
+                                    <form action="Facture/<?=$_SESSION['id']?>/Facture-<?= $idReservation ?>.pdf" method="post">
                                         <input type="submit" name="download"></form>
                                         <?php }else{ echo 'Payez la réservation'; }?>
-
+                                </td>
+                                <td>
+                                    <form action="sendPdf.php" method="post">
+                                        <input type="hidden" name="idReservation" value="<?= $future2['idReservation'] ?>">
+                                        <input type="hidden" name="dateStart" value="<?= $future2['dateStart']; ?>">
+                                        <input type="hidden" name="prix" value="<?php echo $future2['prix'] ?>">
+                                        <input type="submit" name="sendMail">
+                                    </form>
                                 </td>
                                 <td>
                                     <button>X</button>
@@ -197,13 +204,6 @@ if (isset($_SESSION['id'])){
         padding-top : 2%;
         padding-bottom : 2%;
     }
-    @media (prefers-color-scheme: dark){
-  
-        td, th{
-            border: 1px solid #cecece;
-        }
-    
-    }
     .futur{
         text-decoration: underline;
         font-style: italic;
@@ -224,4 +224,11 @@ if (isset($_SESSION['id'])){
         }
         
     }
+    <?php if($_SESSION['theme']=="sombre"):?>
+  
+    td, th{
+        border: 1px solid grey;
+    }
+
+    <?php endif;?>
     </style>

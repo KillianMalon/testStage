@@ -136,16 +136,16 @@ if(isset($_GET['search']) AND !empty($_GET['search'])){
     </form>
     <div class="globalAdmin">
         <div class="adminAffichage">
-        <h2><a href="./administration.php" class="viewAll"><i class="fas fa-arrow-left"></i> Retour</a> Administration Clients <i class="fas fa-user"></i></h2>
+        <h2><a href="./administration.php" class="viewAll"><i class="fas fa-arrow-left"></i> <?= $lang['back']?></a> <?= $lang['customerAdministration']?> <i class="fas fa-user"></i></h2>
         <div>
             <table>
                 <thead>
                 <tr>
-                    <th>Nom</th>
-                    <th>Prénom</th>
-                    <th>Mail</th>
+                    <th><?= $lang['lname']?></th>
+                    <th><?= $lang['fname']?></th>
+                    <th>Email</th>
                     <th>Type</th>
-                    <th>Modifier</th>
+                    <th><?= $lang['edit']?></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -164,7 +164,7 @@ if(isset($_GET['search']) AND !empty($_GET['search'])){
                     <td><?php echo isset($prenom)? $prenom :" " ?></td>
                     <td> <?php echo isset($mail)? $mail : " " ?> </td>
                     <td> <?php echo isset($type)? $type : " " ?> </td>
-                    <td> <a href="modifClient.php?client=<?php echo $id ?>">modifier</a> </td>
+                    <td> <a href="modifClient.php?client=<?php echo $id ?>"><?= $lang['edit']?></a> </td>
                 </tr>
                 <?php } ?>
 

@@ -28,7 +28,42 @@ $list = get_list_page($currentPage, $pages);
 
 //On récupère les informations des  "20" premiers clients à partir du premier client de la page
 $premiere = getPlanningOrder($dbh, $premier, $parpage);
-?>
+// var_dump($premiere);
+foreach($premiere as $premieres){
+    $idReservation = $premieres['idReservation'];
+    $resultat = reservationByReservId($dbh, $idReservation);
+    // var_dump($resultat);
+            $clientId = $resultat[0]['client_id'];            
+            $dateStart = $resultat[0]['jour'];
+            $idChambre = $resultat[0]['chambre_id'];
+            $payed = $resultat[0]['paye'];
+            $priceperDay = getPriceRoom($dbh, $idChambre);
+            $price = $priceperDay['prix'];
+            $count = count($resultat);
+            $totalPrice = $price * $count;
+
+            $arrayIds[] = array('idChambre'=> $idChambre , 'idReservation'=> $premieres['idReservation'], "dateDeDepart" => $dateStart, 'nombreDeJours' => $count,  'payed'=>$payed, 'prix'=>$totalPrice, 'client_id'=> $clientId);
+                     
+}
+// var_dump($arrayIds);
+            $todays = date("Y-m-d");
+            $today = New DateTime("$todays");   
+            $compteur = 0;
+            foreach ($arrayIds as $arrayId){
+                // var_dump($arrayId);
+                $jour = $arrayId['dateDeDepart'];
+                $reservationDateStart = new DateTime("$jour");
+                $reservationDateStartFormatted = $reservationDateStart->format('Y-m-d');
+                $reservationDateEnd = $reservationDateStart;
+                $reservationDateEnd-> add(new DateInterval("P$arrayId[nombreDeJours]D"));
+                $reservationDateEndFormatted = $reservationDateEnd->format('Y-m-d');
+                
+                    $resultat[$compteur] = array('chambre_id'=>$arrayId['idChambre'], 'idReservation'=>$arrayId['idReservation'],  'dateStart'=>$reservationDateStartFormatted, 'dateEnd'=>$reservationDateEndFormatted, 'prix'=>$arrayId['prix'], 'paye'=>$arrayId['payed'],'nombreDeJours'=>$arrayId['nombreDeJours'], 'client_id'=>$arrayId['client_id']);
+                
+                $compteur ++;
+            }
+            // var_dump($resultat);
+// ?>
 <!-- Feuilles de style de la page -->
 <style>
     /* Style de la page Administration.php*/
@@ -116,31 +151,34 @@ $premiere = getPlanningOrder($dbh, $premier, $parpage);
 <div class="content">
     <div class="globalAdmin">
         <div class="adminAffichage">
-        <h2><a href="./administration.php" class="viewAll"><i class="fas fa-arrow-left"></i> Retour</a> Administration Réservations <i class="fas fa-table"></i></h2>
+        <h2><a href="./administration.php" class="viewAll"><i class="fas fa-arrow-left"></i> <?= $lang['back']?></a> <?= $lang['bookingsAdministration']?> <i class="fas fa-table"></i></h2>
         <div>
             <table>
                 <thead>
                 <tr>
-                    <th>iD réservation</th>
-                    <th>Numéro chambre</th>
-                    <th>Date</th>
-                    <th>Chambre payée</th>
-                    <th>Supprimer</th>
+                    <th>iD <?= $lang['booking']?></th>
+                    <th><?= $lang['roomNumber']?></th>
+                    <th><?= $lang['arrivalDate']?></th>
+                    <th><?= $lang['departureDate']?></th>
+                    <th><?= $lang['paidRoom']?></th>
+                    <th><?= $lang['delete']?></th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php
-                foreach ($premiere as $res){
+                foreach ($resultat as $res){
                     $id = $res['idReservation'];
                     $chid = $res['chambre_id'];
-                    $jour = $res['jour'];
+                    $dateStart = $res['dateStart'];
+                    $dateEnd = $res['dateEnd'];
                     $paye = $res['paye'];
                     $cid = $res['client_id'];
                 ?>
                 <tr>
                         <td style="font-weight: bold;" class="idres"><?= $id ?></td>
                         <td class="id"><?= $chid ?></td>
-                        <td class="jour"><?= mb_substr($jour, 0, 10) ?></td>
+                        <td class="jour"><?= mb_substr($dateStart, 0, 10) ?></td>
+                        <td class="jour"><?= mb_substr($dateEnd, 0, 10) ?></td>
                         <td class="paye">
                             <form class='form' method="post" action="payeChambre.php">
                                 <?php echo ($paye? '✅' : '🔴');?>
@@ -149,7 +187,7 @@ $premiere = getPlanningOrder($dbh, $premier, $parpage);
                                 <?php endif;?>
                             </form>
                         </td>
-                    <td><a class="delete-button" href="./removeReservation.php?id=<?= $id ?>">Supprimer</a></td>
+                    <td><a class="delete-button" href="./removeReservation.php?id=<?= $id ?>"><?= $lang['delete']?></a></td>
                     </tr>
                 <?php } ?>
                 </tbody>

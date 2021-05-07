@@ -5,7 +5,9 @@ require_once 'bdd.php';
 
 //Récupération de l'iD de la chambre en GET
 if(!isset($_GET['room']) || empty($_GET['room'])){
-    header("Location: chambres.php");
+    ?>
+    <meta http-equiv="refresh" content="0;URL=../index.php">
+        <?php
     exit();
 }
 echo '<div class="content">';
@@ -32,11 +34,11 @@ foreach ($rooms as $room) {
             <input type="text" name="id" value="<?php echo isset($id)? $id: ""?>">
         </div>
         <div>
-            <label>Capacité :</label>
+            <label><?= $lang['capacity'] ?> :</label>
             <input type="text" name="capacite" value="<?php echo isset($capacite)? $capacite: " " ?>">
         </div>
         <div>
-            <label>Exposition :</label>
+            <label><?= $lang['exposure'] ?> :</label>
             <select name="exposition">
                 <option default value="<?= $exposition ?>"><?= $exposition ?></option>
                 <?php if ($exposition == "port"){
@@ -48,7 +50,7 @@ foreach ($rooms as $room) {
             </select>
         </div>
         <div>
-            <label>Douche :</label>
+            <label><?= $lang['shower'] ?> :</label>
             <select name="douche">
                 <option default value="<?= $douche ?>"><?php if($douche==1){echo "Oui";}else{echo "Non";} ?></option>
                 <?php if ($douche == 1){
@@ -60,7 +62,7 @@ foreach ($rooms as $room) {
             </select>
         </div>
         <div>
-            <label>Etage :</label>
+            <label><?= $lang['floor'] ?> :</label>
             <select name="etage">
                 <option default value="<?= $etage ?>"><?= $etage ?></option>
                 <?php $stages = ListEtage($dbh);
@@ -74,7 +76,7 @@ foreach ($rooms as $room) {
             </select>
         </div>
         <div>
-        <label>Prix :</label>
+        <label><?= $lang['price'] ?> :</label>
         <select name="prix">
             <?php
             $prixx = getPricebyid($dbh, $tarif_id);
@@ -94,18 +96,18 @@ foreach ($rooms as $room) {
         </select>
         </div>
         <div>
-            <label>Description :</label>
+            <label><?= $lang['description'] ?> :</label>
             <input type="text" name="description" value="<?= $description ?>">
         </div>
         <div>
-            <label>Vues :</label>
+            <label><?= $lang['views'] ?> :</label>
             <input type="text" name="vues" value="<?= $vues ?>">
         </div>
         <div>
-            <label>Image Link :</label>
+            <label><?= $lang['pictureLink'] ?> :</label>
             <input type="text" name="image" value="<?= $image ?>">
         </div>
-        <input type="submit" value="Modifier">
+        <input type="submit" value="<?= $lang['edit'] ?>">
     </form>
         <img src="<?= $image ?>">
 </div>

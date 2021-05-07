@@ -61,32 +61,32 @@ if(isset($_POST['modif'])){
 <div class="content">
     <form method="post">
         <div>
-            <label>Prénom :</label>
+            <label><?= $lang['fname']; ?> :</label>
             <input type="text" name="fname" value="<?php echo isset($fname)? $fname: ""?>">
         </div>
         <div>
-            <label>Nom :</label>
+            <label><?= $lang['lname']; ?> :</label>
             <input type="text" name="lname" value="<?php echo isset($lname)? $lname: " " ?>">
         </div>
         <div>
-            <h4>Mail :<?php echo isset($mail)? $mail : " " ?> </h4>
+            <h4>Email :<?php echo isset($mail)? $mail : " " ?> </h4>
         </div>
         <div>
-            <p>Civilité : <?php echo isset($civility)? $civility :" "?></p>
+            <p><?= $lang['civility']; ?> : <?php echo isset($civility)? $civility :" "?></p>
         </div>
         <div>
-            <label>Image :</label>
+            <label><?= $lang['profilePicture']; ?> :</label>
             <input type="text" name="img" value="<?php echo isset($img)?$img: " " ?>">
         </div>
         <div>
             <select name="rank" id="">
                 <!--je selectionne le select qui correspond vrai role de l'utilisateur-->
                 <option value="admin" <?php echo $rank === "admin"? "selected" : " " ?> >Admin</option>
-                <option value="client" <?php echo $rank === "client"? "selected" : " " ?>>Client</option>
+                <option value="client" <?php echo $rank === "client"? "selected" : " " ?>><?= $lang['client']; ?></option>
             </select>
         </div>
 
-        <input type="submit" name="modif" value="Modifier">
+        <input type="submit" name="modif" value="<?= $lang['edit']; ?>">
     </form>
     <br>
     <img style="width: 250px;height: auto;" src="<?php echo isset($img)? $img :" " ?>">
