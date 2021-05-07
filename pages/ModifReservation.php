@@ -14,8 +14,8 @@ echo "<div class='content'> <div></div>";
     <div class="adminAffichage">
         <table>
             <tr>
-                <td>Durée de la réservation : <?= $count['0'] ?> jours</td>
-                <td><a href="./removeReservation.php?id=<?= $id ?>">Supprimer</a></td>
+                <td> <?= $lang['bookingDuration'] ?> : <?= $count['0'] ?> <?= $lang['days'] ?></td>
+                <td><a href="./removeReservation.php?id=<?= $id ?>"><?= $lang['delete']?></a></td>
             </tr>
         </table>
     </div>
@@ -30,10 +30,10 @@ echo "<div class='content'> <div></div>";
         <table>
                     <thead>
                         <tr>
-                            <th>iD réservation</th>
-                            <th>Numéro chambre</th>
+                            <th>iD <?= $lang['booking'] ?></th>
+                            <th><?= $lang['roomNumber'] ?></th>
                             <th>Date</th>
-                            <th>Chambre payée</th>
+                            <th><?= $lang['paidRoom'] ?></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -47,7 +47,7 @@ echo "<div class='content'> <div></div>";
                                 <?php echo ($paye? '✅' : '🔴');?>
                                 <?php if ($paye == '0'):?>
                                     <input type="hidden" name="idReservation" value="<?= $id ?>">
-                                    <input type="submit" class="btn btn-info" value="Payer">
+                                    <input type="submit" class="btn btn-info" value="<?= $lang['paidReservation'] ?>">
                                 <?php endif;?>
                             </form>
                         </td>

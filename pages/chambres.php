@@ -2,7 +2,6 @@
 require_once '../component/header.php';
 require_once '../functions/sql.php';
 require_once 'bdd.php';
-
 ?>
 <!-- Style de la page chambres -->
 <style>
@@ -144,13 +143,13 @@ require_once 'bdd.php';
             <div class="chambre">
                 <div class="picture"><img src="<?php echo($chambre['image'])?>"></div>
                 <div class="text">
-                    <h3>Chambre <?php echo($chambre['id'])?></h3>
+                    <h3><?= $lang['room']; ?>  <?php echo($chambre['id'])?></h3>
                     <p class="description"><?php echo($chambre['description'])?></p>
-                    <p class="capacity"><?php echo($chambre['capacite'])?>  <?php echo $chambre['capacite'] < 2 ? 'personne' : 'personnes' ;?></p>
+                    <p class="capacity"><?php echo($chambre['capacite'])?>  <?php echo $chambre['capacite'] < 2 ? $lang['aPerson']  : $lang['people'];;?></p>
                 </div>
                 <div class="prix">
                     <h2 class="price"><?php echo($chambre['prix'])?> €</h2>
-                    <a href="infoChambre.php?id=<?php echo($chambre['id'])?>"><button class="button"><?php echo (isset($type) AND $type ==="admin")? "Voir" :"Réserver" ?></button></a>
+                    <a href="infoChambre.php?id=<?php echo($chambre['id'])?>"><button class="button"><?php echo (isset($type) AND $type ==="admin")? $lang['see'] : $lang['book'] ?></button></a>
                 </div>
             </div>
         <?php endforeach; ?>

@@ -10,7 +10,7 @@ require_once 'bdd.php';
             <textarea name="contenu" >
 
             </textarea>
-            <input type="submit" name="submit">
+            <input type="submit" name="submit" value="<?= $lang['sendNewsletter']; ?>">
         </form>
     </div>
 </div>

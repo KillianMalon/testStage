@@ -16,7 +16,7 @@ if(!isset($_SESSION['id'])){
             $client = getClientInformationsByKey($dbh,$key);
             $_SESSION['id'] = $client['id'];
 
-            $ok = "Votre inscription à été enregistré, bienvenue sur notre site!";
+            $ok =  $lang['confirmInscription'];
             header('Refresh: 2; URL=../index.php');
 
         }

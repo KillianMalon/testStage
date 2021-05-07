@@ -123,7 +123,7 @@ require_once 'bdd.php';
     if($numberOfFavorites === 0){
         ?>
         <div class="content">
-            <p>Vous n'avez aucun favoris pour le moment</p>
+            <p><?= $lang['noFavourites'] ?></p>
         </div>
             <?php
     }
@@ -154,14 +154,14 @@ require_once 'bdd.php';
         <div class="chambre">
             <div class="picture"><img src="<?php echo($img)?>"></div>
             <div class="text">
-                <h3>Chambre <?php echo($chambreId)?></h3>
+                <h3><?= $lang['room'] ?> <?php echo($chambreId)?></h3>
                 <p class="description"><?php echo($categorie)?></p>
-                <p class="capacity"><?php echo($capacite)?>  <?php echo $capacite < 2 ? 'personne' : 'personnes' ;?></p>
+                <p class="capacity"><?php echo($capacite)?>  <?php echo $capacite < 2 ? $lang['aPerson'] : $lang['people'] ;?></p>
             </div>
             <div class="prix" >
                 <h2 class="price"><?php echo($prix)?> €</h2>
                 <!-- <a href="infoChambre.php?id=<?php echo($chambreId)?>"><button class="boutton">Réserver</button></a> -->
-                <form action="" method="post"><input type="hidden" name="favoriteId" value="<?= $favoriteId ?>"><button type="submit" name="delete" class="button">Supprimer le favori</button></form>
+                <form action="" method="post"><input type="hidden" name="favoriteId" value="<?= $favoriteId ?>"><button type="submit" name="delete" class="button"><?= $lang['deleteBookmark'] ?></button></form>
             </div>
         </div>
         </a>

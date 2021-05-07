@@ -41,7 +41,9 @@ if (!empty($_SESSION['start']) && !empty($_SESSION['end']) &&  !empty($_SESSION[
         $dateEndFormatted = $endDateTime->format('Y-m-d H:i:s');
         addReservation($dbh, $chambreId, $dateStartFormatted, $id, $idReserv);
         $startDateTime->add(new DateInterval('P1D'));
-        header('Location:./reservations.php');
+        ?>
+        <meta http-equiv="refresh" content="0;URL=./reservations.php">
+        <?php
     }
     
 }else if (!empty($_POST['datestart']) && !empty($_POST['dateend']) &&  !empty($_POST['chambreId']) &&  !empty($_POST['numberAdult'])  &&  isset($_POST['numberChild'])){
@@ -79,7 +81,7 @@ if (!empty($_SESSION['start']) && !empty($_SESSION['end']) &&  !empty($_SESSION[
 <!-- Affichage de la demande de confirmation de réservation -->
 <main>
     <div class="content">
-        <p>Confirmez votre chambre en appuyant sur le bouton</p>
+        <p><?= $lang['ConfirmReservation']; ?></p>
         <form method="post" action="">
             <input type="text" name="chambreId" value="<?php echo $chambreId ?>" hidden="hidden">
             <input type="text" name="start" value="<?php echo $start?>" hidden="hidden">
@@ -87,7 +89,7 @@ if (!empty($_SESSION['start']) && !empty($_SESSION['end']) &&  !empty($_SESSION[
             <input type="text" name="numberAdult" value="<?php echo $numberAdult?>" hidden="hidden">
             <input type="text" name="numberChild" value="<?php echo $numberChild ?>" hidden="hidden">
             <input type="text" name="idReservation" value="<?php echo $idReservation?>" hidden="hidden">
-            <input  type="submit" id="decale" class="btn btn-primary taille" name="confirmReserv" value="Valider votre réservation">
+            <input  type="submit" id="decale" class="btn btn-primary taille" name="confirmReserv" value="<?= $lang['ValidateYourBooking'] ?>">
         </form>
     </div>
     <?php

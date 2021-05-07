@@ -58,7 +58,47 @@ header{
   transition: 0.5s;
   transition-property: background;
 }
+.theme{
+  padding: 6px;
+  background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
+  text-decoration: none;
+  float: right;
+  width: 30px;
+  margin-top: -30px;
+  margin-right: 180px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  color: black;
+  transition: 0.5s;
+  transition-property: background;
+  border: none;
+  cursor: pointer;
+}
+.fa-moon{
+  color: white;
+}
+.fa-sun{
+  color: white;
+}
 
+.theme2{
+  padding: 6px;
+  background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
+  text-decoration: none;
+  float: right;
+  width: 30px;
+  margin-top: -30px;
+  margin-right: 240px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  color: black;
+  transition: 0.5s;
+  transition-property: background;
+  border: none;
+  cursor: pointer;
+}
 .logout_btn:hover{
   background: #fff;
   color: black;
@@ -205,9 +245,9 @@ label #sidebar_btn:hover{
 #check:checked ~ .contentInscription{
   margin-left: 60px;
 }
-form{
+/* form{
   margin-top:50px;
-}
+} */
 .divInfos{
   margin-left: 7.5%;
   width: 85%;

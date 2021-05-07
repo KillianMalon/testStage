@@ -18,7 +18,10 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
             $user = $query->fetch();
             if($user['statut'] === 1) {
                 $_SESSION['id'] = $user['id'];
-                header("Location:../index.php");
+                
+                    ?>
+                    <meta http-equiv="refresh" content="0;URL=../index.php">
+                        <?php                   
                 exit();
             }else{
                 $error = "Veuillez confirmer votre compte en cliquant sur le lien que vous avez reçu par mail";

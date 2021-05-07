@@ -17,11 +17,12 @@ $image = $_POST['image'];
 updateRoom($dbh, $id, $capacite, $exposition, $douche, $etage, $tarif_id, $description, $image);
 
 //Envoi de confirmation de mise à jour
-$ok = "La modification a bien été sauvegardée";
+$ok = $lang['roomModificationOk'];
 
 //Redirection automatique (au bout de 2 secondes)
-header('Refresh: 2; URL=./infoChambre.php?id='.$id);
 ?>
+<meta http-equiv="refresh" content="2;URL=./infochambre.php?id=<?= $id ?>">
+
 <!-- Affichage de la confirmation -->
 <div class="content">
     <p style="background-color: forestgreen; color: white; text-align: center;"><?php echo isset($ok)? $ok : "";?></p>

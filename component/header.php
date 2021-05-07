@@ -1,4 +1,5 @@
 <?php session_start();
+
 if (isset($index)){
     require_once "./functions/sql.php";
     $oui = "index existe";
@@ -6,6 +7,17 @@ if (isset($index)){
     require_once "../functions/sql.php";
     $oui =  "index existe pas fdp";
 }
+if(!isset($_SESSION['lang']) && empty($_SESSION['lang'])){
+    $_SESSION['lang'] = 'fr';
+}
+if(isset($index)){
+    $url = "./languages/".$_SESSION['lang'].".php";
+    require_once $url;
+}else{
+    $url = "../languages/".$_SESSION['lang'].".php";
+    require_once $url;
+}
+
 if (isset($index)){
     require_once "./pages/bdd.php";
     $oui =  "index existe 2";
@@ -13,8 +25,8 @@ if (isset($index)){
     require_once "bdd.php";
     $oui =  "index existe pas fd2p";
 }
-$_SESSION['theme']="sombre";
-unset($_SESSION['theme']);
+// $_SESSION['theme']="sombre";
+// unset($_SESSION['theme']);
 if (isset($_SESSION['id']) and !empty($_SESSION['id'])) {
     $uid = $_SESSION['id'];
     $user = getClient($dbh, $uid);
@@ -23,6 +35,14 @@ if (isset($_SESSION['id']) and !empty($_SESSION['id'])) {
     if($user['type'] === "admin"){
         $admin = $user['type'];
     }
+}
+if(!empty($_POST['theme']) && $_POST['theme'] === 'black'){
+    $_SESSION['theme'] = 'sombre';
+    ?><meta http-equiv="refresh" content="0"><?php
+}else if(!empty($_POST['theme']) && $_POST['theme'] === 'white'){
+    unset($_SESSION['theme']);
+    ?><meta http-equiv="refresh" content="0"><?php
+    // $_SESSION['theme'] = 'clair';
 }
 ?>
 <!DOCTYPE html>
@@ -58,16 +78,42 @@ if (isset($_SESSION['id']) and !empty($_SESSION['id'])) {
         <h3>Hotel <span>Nom</span></h3>
     </div>
     <?php if (isset($_SESSION['id']) and !empty($_SESSION['id'])){ ?>
-        <div class="right_area">
-            <!-- <i class="fas fa-moon"></i> -->
-            <a href="<?php echo (isset($index)) ? "./pages/logout.php" : "logout.php" ?>" class="logout_btn">Déconnexion</a>
+            
+        
+        <div class="right_area for">
+            <form class="formu" action="" method='POST'>
+            <?php
+            if(empty($_SESSION['theme'])):?>
+                <button type="submit" name="theme" value="black" class="theme"><i class="fas fa-moon"></i></button>
+            <?php else:?>
+                <button type="submit" name="theme" value="white" class="theme"><i class="fas fa-sun"></i></button>
+            <?php endif;?>
+
+            </form>
         </div>
+        <div class="right_area">
+            <a href="<?php echo (isset($index)) ? "./pages/logout.php" : "logout.php" ?>" class="logout_btn"><?= $lang['logOut']; ?></a>
+        </div>
+        
+        
+        
     <?php } else { ?>
         <div class="right_area">
-            <a href="<?php echo (isset($index)) ? "./pages/inscription.php" : "inscription.php" ?>" class="logout_btn2">S'inscrire</a>
+            <form class="formu" action="" method='POST'>
+            <?php
+            if(empty($_SESSION['theme'])):?>
+                <button type="submit" name="theme" value="black" class="theme2"><i class="fas fa-moon"></i></button>
+            <?php else:?>
+                <button type="submit" name="theme" value="white" class="theme2"><i class="fas fa-sun"></i></button>
+            <?php endif;?>
+
+            </form>
         </div>
         <div class="right_area">
-            <a href="<?php echo (isset($index)) ? "./pages/connexion.php" : "connexion.php" ?>" class="logout_btn">Se connecter</a>
+            <a href="<?php echo (isset($index)) ? "./pages/inscription.php" : "inscription.php" ?>" class="logout_btn2"><?= $lang['signUp']; ?></a>
+        </div>
+        <div class="right_area">
+            <a href="<?php echo (isset($index)) ? "./pages/connexion.php" : "connexion.php" ?>" class="logout_btn"><?= $lang['logIn']; ?></a>
         </div>
     <?php } ?>
 </header>
@@ -82,21 +128,21 @@ if (isset($_SESSION['id']) and !empty($_SESSION['id'])) {
     </div>
     <div class="mobile_nav_items">
         <?php if (!isset($_SESSION['id'])){ ?>
-            <a href="<?php echo (isset($index)) ? "index.php" : "../index.php"; ?>"><i class="fas fa-home"></i><span>Accueil</span></a>
-            <a href="<?php echo (isset($index)) ? "./pages/chambres.php" : "chambres.php"?>"><i class="fas fa-bed"></i><span>Chambres</span></a>
+            <a href="<?php echo (isset($index)) ? "index.php" : "../index.php"; ?>"><i class="fas fa-home"></i><span><?= $lang['home']; ?></span></a>
+            <a href="<?php echo (isset($index)) ? "./pages/chambres.php" : "chambres.php"?>"><i class="fas fa-bed"></i><span><?= $lang['rooms']; ?></span></a>
         <?php }else{
             $nbOfFavorites = getNumberOfFavorite($dbh, $_SESSION['id']);
             ?>
 
-            <a href="<?php echo (isset($index)) ? "index.php" : "../index.php"; ?>"><i class="fas fa-home"></i><span>Accueil</span></a>
-            <a href="<?php echo (isset($index)) ? "./pages/chambres.php" : "chambres.php"?>"><i class="fas fa-bed"></i><span>Chambres</span></a>
-            <a href="<?php echo (isset($index)) ? "./pages/espace_client.php" : "espace_client.php" ?>"><i class="fas fa-user"></i><span>Mon compte</span></a>
-            <a href="<?php echo (isset($index)) ? "./pages/reservations.php" : "reservations.php" ?>"><i class="fas fa-table"></i><span>Mes Réservations</span></a>
-            <a href="<?php echo (isset($index)) ? "./pages/favorites.php" : "favorites.php" ?>"><i class="fas fa-bookmark"></i><span>Mes Favoris <?php echo ($nbOfFavorites > 0)? "($nbOfFavorites)":""?></span></a>
+            <a href="<?php echo (isset($index)) ? "index.php" : "../index.php"; ?>"><i class="fas fa-home"></i><span><?= $lang['home']; ?></span></a>
+            <a href="<?php echo (isset($index)) ? "./pages/chambres.php" : "chambres.php"?>"><i class="fas fa-bed"></i><span><?= $lang['rooms']; ?></span></a>
+            <a href="<?php echo (isset($index)) ? "./pages/espace_client.php" : "espace_client.php" ?>"><i class="fas fa-user"></i><span><?= $lang['myAccount']; ?></span></a>
+            <a href="<?php echo (isset($index)) ? "./pages/reservations.php" : "reservations.php" ?>"><i class="fas fa-table"></i><span><?= $lang['myBookings']; ?></span></a>
+            <a href="<?php echo (isset($index)) ? "./pages/favorites.php" : "favorites.php" ?>"><i class="fas fa-bookmark"></i><span><?= $lang['myFavourites']; ?> <?php echo ($nbOfFavorites > 0)? "($nbOfFavorites)":""?></span></a>
 
             <?php if(isset($admin)){ ?>
-                <a href="<?php echo (isset($index)) ? "./pages/statistics.php" : "statistics.php"?>"><i class="fas fa-chart-bar"></i><span>Statistiques</span></a>
-                <a href="<?php echo (isset($index)) ? "./pages/administration.php" : "administration.php"?>"><i class="fas fa-users-cog"></i><span>Administration</span></a>
+                <a href="<?php echo (isset($index)) ? "./pages/statistics.php" : "statistics.php"?>"><i class="fas fa-chart-bar"></i><span><?= $lang['statistics']; ?></span></a>
+                <a href="<?php echo (isset($index)) ? "./pages/administration.php" : "administration.php"?>"><i class="fas fa-users-cog"></i><span><?= $lang['administration']; ?></span></a>
                 <a href="<?php echo (isset($index)) ? "./pages/newsletter.php" : "newsletter.php"?>"><i class="fas fa-users-cog"></i><span>Newsletter</span></a>    
             <?php } ?>
         <?php } ?>
@@ -114,17 +160,17 @@ if (isset($_SESSION['id']) and !empty($_SESSION['id'])) {
         <?php } ?>
     </div>
     <?php if (!isset($_SESSION['id'])){ ?>
-        <a href="<?php echo (isset($index)) ? "index.php" : "../index.php"; ?>"><i class="fas fa-home"></i><span>Accueil</span></a>
-        <a href="<?php echo (isset($index)) ? "./pages/chambres.php" : "chambres.php"?>"><i class="fas fa-bed"></i><span>Chambres</span></a>
+        <a href="<?php echo (isset($index)) ? "index.php" : "../index.php"; ?>"><i class="fas fa-home"></i><span><?= $lang['home']; ?></span></a>
+        <a href="<?php echo (isset($index)) ? "./pages/chambres.php" : "chambres.php"?>"><i class="fas fa-bed"></i><span><?= $lang['rooms']; ?></span></a>
     <?php }else{ ?>
-        <a href="<?php echo (isset($index)) ? "index.php" : "../index.php"; ?>"><i class="fas fa-home"></i><span>Accueil</span></a>
-        <a href="<?php echo (isset($index)) ? "./pages/chambres.php" : "chambres.php"?>"><i class="fas fa-bed"></i><span>Chambres</span></a>
-        <a href="<?php echo (isset($index)) ? "./pages/espace_client.php" : "espace_client.php" ?>"><i class="fas fa-user"></i><span>Mon compte</span></a>
-        <a href="<?php echo (isset($index)) ? "./pages/reservations.php" : "reservations.php" ?>"><i class="fas fa-table"></i><span>Mes Réservations</span></a>
-        <a href="<?php echo (isset($index)) ? "./pages/favorites.php" : "favorites.php" ?>"><i class="fas fa-bookmark"></i><span>Mes Favoris <?php echo ($nbOfFavorites > 0)? "($nbOfFavorites)":""?></span></a>
+        <a href="<?php echo (isset($index)) ? "index.php" : "../index.php"; ?>"><i class="fas fa-home"></i><span><?= $lang['home']; ?></span></a>
+        <a href="<?php echo (isset($index)) ? "./pages/chambres.php" : "chambres.php"?>"><i class="fas fa-bed"></i><span><?= $lang['rooms']; ?></span></a>
+        <a href="<?php echo (isset($index)) ? "./pages/espace_client.php" : "espace_client.php" ?>"><i class="fas fa-user"></i><span><?= $lang['myAccount']; ?></span></a>
+        <a href="<?php echo (isset($index)) ? "./pages/reservations.php" : "reservations.php" ?>"><i class="fas fa-table"></i><span><?= $lang['myBookings']; ?></span></a>
+        <a href="<?php echo (isset($index)) ? "./pages/favorites.php" : "favorites.php" ?>"><i class="fas fa-bookmark"></i><span><?= $lang['myFavourites']; ?> <?php echo ($nbOfFavorites > 0)? "($nbOfFavorites)":""?></span></a>
         <?php if(isset($admin)){ ?>
-            <a href="<?php echo (isset($index)) ? "./pages/statistics.php" : "statistics.php"?>"><i class="fas fa-chart-bar"></i><span>Statistiques</span></a>
-            <a href="<?php echo (isset($index)) ? "./pages/administration.php" : "administration.php"?>"><i class="fas fa-users-cog"></i><span>Administration</span></a>
+            <a href="<?php echo (isset($index)) ? "./pages/statistics.php" : "statistics.php"?>"><i class="fas fa-chart-bar"></i><span><?= $lang['statistics']; ?></span></a>
+            <a href="<?php echo (isset($index)) ? "./pages/administration.php" : "administration.php"?>"><i class="fas fa-users-cog"></i><span><?= $lang['administration']; ?></span></a>
             <a href="<?php echo (isset($index)) ? "./pages/newsletter.php" : "newsletter.php"?>"><i class="fas fa-users-cog"></i><span>Newsletter</span></a>
             <?php
         }

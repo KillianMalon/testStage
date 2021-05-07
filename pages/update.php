@@ -2,6 +2,12 @@
 require_once '../component/header.php';
 require_once '../functions/sql.php';
 require_once 'bdd.php';
+if(!isset($_SESSION['lang']) && empty($_SESSION['lang'])){
+    $_SESSION['lang'] = 'fr';
+}
+$url = "../languages/".$_SESSION['lang'].".php";
+require_once $url;
+//Récupération des informations d'un client en focntion de son iD (stockée en SESSION)
 if (isset($_SESSION['id'])){
     $id = $_SESSION['id'];
     $clientinfo = getClient($dbh, $id);
@@ -126,16 +132,19 @@ if (isset($_SESSION['id'])){
                 $error = "Veuillez saisir l'url d'une image correct !";
             }
         }
-        header("Location:update.php");
+        ?>
+        <meta http-equiv="refresh" content="0;URL=./espace_client.php">
+        <?php
+        
         }
-    var_dump($_POST);
+    // var_dump($_POST);
     ?>
     <style>
-        form{
+        .form1{
             border: 1px solid #c7c7c7;
             width: 40%;
             border-radius: 20px;
-            margin-top: 0%;
+            margin-top: 50px;
         }
         .client{
             display: flex;
@@ -147,7 +156,7 @@ if (isset($_SESSION['id'])){
             margin-bottom: 3%;
             margin: 5%;
         }
-        
+
         .input{
             padding: 2%;
             border-radius: 20px;
@@ -173,7 +182,7 @@ if (isset($_SESSION['id'])){
         padding: 4%;
     }
     <?php if($_SESSION['theme']=="sombre"):?>
-  
+
         .favoriteButton{
             background-color: #222;
         }
@@ -185,45 +194,45 @@ if (isset($_SESSION['id'])){
     </style>
     <div class="content">
         <div class="client">
-            <form class="form" method="post">
+            <form class="form1" method="post">
                 <div class="divForm">
-                    <label class="label">Prénom</label>
+                    <label class="label"><?= $lang['fname']; ?> </label>
                     <input class="input" name="fname" type="text" value="<?= $fname ?>">
                 </div>
                 <div class="divForm">
-                    <label class="label">Nom</label>
+                    <label class="label"><?= $lang['lname']; ?> </label>
                     <input class="input" name="lname" type="text" value="<?= $lname ?>">
                 </div>
                 <div class="divForm">
-                    <label class="label">Mail</label>
+                    <label class="label">Email</label>
                     <input class="input" name="mail" type="email" value="<?= $mail ?>">
                 </div>
                 <div class="divForm">
-                    <label class="label">Mot de passe</label>
+                    <label class="label"><?= $lang['password']; ?> </label>
                     <input class="input" name="pwd" type="password" value="">
                 </div>
                 <div class="divForm">
-                    <label class="label">Confirmer mot de passe</label>
+                    <label class="label"><?= $lang['confirmPassword']; ?> </label>
                     <input class="input" name="pwd2" type="password">
                 </div>
                 <div class="divForm">
-                    <label class="label">Adresse</label>
+                    <label class="label"><?= $lang['address']; ?> </label>
                     <input class="input" name="address" type="text" value="<?= $address ?>">
                 </div>
                 <div class="divForm">
-                    <label class="label">Code Postal</label>
+                    <label class="label"><?= $lang['postalCode']; ?> </label>
                     <input class="input" name="pc" type="text" value="<?= $pc ?>">
                 </div>
                 <div class="divForm">
-                    <label class="label">Ville</label>
+                    <label class="label"><?= $lang['town']; ?> </label>
                     <input class="input" name="town" type="text" value="<?= $town ?>">
                 </div>
                 <div class="divForm">
-                    <label class="label">Image :</label>
+                    <label class="label"><?= $lang['profilePicture']; ?>  :</label>
                     <input class="input" name="img" type="link" value="<?= $img ?>">
                 </div>
                 <div class="divForm">
-                    <label class="label">Pays</label>
+                    <label class="label"><?= $lang['country']; ?> </label>
                     <select class="select" name="country" id="">
                         <option default value="<?php echo $cid?>"><?php echo $country['nom_fr_fr'] ?></option>
                         <?php
@@ -242,7 +251,7 @@ if (isset($_SESSION['id'])){
                         </select>
                 </div>
                 <div class="divForm">
-                <label class="label">Civilité</label>
+                <label class="label"><?= $lang['civility']; ?> </label>
                     <select class="select" name="civility">
                         <option <?php if($civility === "Monsieur"){ echo "selected";}else{ " "; } ?>>Monsieur</option>
                         <option <?php if($civility === "Madame"){ echo "selected";}else{ " "; } ?>>Madame</option>
@@ -251,11 +260,11 @@ if (isset($_SESSION['id'])){
                 </div>
                 <br>
                 <div>
-                    <input class="submit" type="submit" name="formModifications"  value="Modifier">
+                    <input class="submit" type="submit" name="formModifications"  value="<?= $lang['edit']; ?> ">
                 </div>
             </form>
         </div>
         <br><br>
     </div>
-    
+
             <?php } ?>

@@ -11,10 +11,40 @@ $today = date("Y-m-d");
 <style>
     .chambre{
         border: 1px solid black;
-        width: 30%;
+        width: 20%;
+        margin-right: 3%;
+        margin-bottom: 2%;
         display: flex;
         align-items: center;
         flex-direction: column;
+        border-radius: 25px;
+        padding: 4%;    
+    }
+    .client{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        margin-top: 3%;
+        width: 100%;
+    }
+    .form{
+        margin-top: 0%;
+    }
+    .button{
+    width: 100%;
+    border-radius: 0px 0px 20px 20px;
+    padding: 6% ;
+    border: none;
+    background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
+    cursor: pointer;
+    color: white;
+    font-size: large;
+    }
+    .button:hover{
+        box-shadow: 2px 2px 12px grey;
+    }
+    .element{
+        width: 100%;
     }
 </style>
 
@@ -36,6 +66,16 @@ if (isset($_POST['depart']) and !empty($_POST['depart'])){
             $total = $adulte + $enfant;
             $exposition = $_POST['exposition'];
             $idprix = $_POST['prix'];
+            if (isset($_POST['wi-fi']) && !empty($_POST['wi-fi']) && $_POST['wi-fi'] == 1){
+                $wifi = 1;
+            } else {
+                $wifi = 0;
+            }
+            if (isset($_POST['piscine']) && !empty($_POST['piscine']) && $_POST['piscine'] == 1){
+                $piscine = 1;
+            } else {
+                $piscine = 0;
+            }
 
             //On transforme un string en date
             $datearrivee = new DateTime("$arrivee");
@@ -71,10 +111,46 @@ if (isset($_POST['depart']) and !empty($_POST['depart'])){
                     }
                 }
             }
+            $temp = array();
+            $tempcount = array();
+            $final = array();
+            $tour = 0;
+            if (isset($_POST['options']) && !empty($_POST['options'])) {
+                foreach ($tags as $tag) {
+                    $id = $tag['id'];
+                    $alls = getRoom($dbh, $id);
+                    foreach ($alls as $all) {
+                        $paras = explode("|", $all['options']);
+                        foreach ($paras as $para) {
+                            foreach ($_POST['options'] as $option) {
+                                if ($para == $option) {
+                                    array_push($temp, $all['id']);
+                                }
+                            }
+                        }
+                    }
+                }
+                $nboption = count($_POST['options']);
+                $tempcount = array_count_values($temp);
+                foreach ($tags as $all) {
+                    $i = $all['id'];
+                    if (isset($tempcount[$i])) {
+                        if ($tempcount[$i] == $nboption) {
+                            array_push($final, $i);
+                        }
+                    }
+                }
+            }else{
+                foreach ($tags as $tag){
+                    array_push($final, $tag['id']);
+                }
+            }
+
 
             //Pour chaque chambre disponible correspondant aux critères séléctionnés, on affiche :
-            foreach ($tags as $tag){
-            $id = $tag['id'];
+            foreach ($final as $tag){
+
+            $id = $tag;
             $alls = getRoom($dbh, $id);
 
             foreach ($alls as $all){
@@ -84,19 +160,24 @@ if (isset($_POST['depart']) and !empty($_POST['depart'])){
             $chcap = $all['capacite'];
             $chetage = $all['etage'];
             $chimage = $all['image'];
+            $piscine = $all['piscine'];
+            $wifi = $all['wifi'];
 
-            if (isset($_SESSION['id']) && !empty($_SESSION['id'])){
             ?>
+            <div class="chambre">
+                <?php
+                if (isset($_SESSION['id']) && !empty($_SESSION['id'])){
+                ?>
 
-            <form method="post" action="confirmReservation.php">
+                <form class="form" method="post" action="confirmReservation.php">
 
-                <?php }else{ ?>
+                    <?php }else{ ?>
 
-                <form method="post" action="./connexion.php">
+                    <form class="form" method="post" action="./connexion.php">
 
                     <?php } ?>
-                    <div class="chambre">
-                        <h3>2 dates</h3>
+                    <div class="element">
+                        <!-- <h3>2 dates</h3> -->
                         <div>
                             <label>Chambre numéro <?= $chid ?></label>
                         </div>
@@ -112,6 +193,20 @@ if (isset($_POST['depart']) and !empty($_POST['depart'])){
                         <div>
                             <label>Etage numéro <?= $chetage ?></label>
                         </div>
+                        <div>
+                            <?php
+                            if ($wifi == 1){
+                                ?> <label> Wifi </label> <?php
+                            }
+                            ?>
+                        </div>
+                        <div>
+                            <?php
+                            if ($piscine == 1){
+                                ?> <label> Piscine </label> <?php
+                            }
+                            ?>
+                        </div>
                         <div style="display: none">
                             <input name="datestart" value="<?= $arrivee ?>">
                             <input name="dateend" value="<?= $depart ?>">
@@ -121,11 +216,14 @@ if (isset($_POST['depart']) and !empty($_POST['depart'])){
                             <input name="numberChild" value="<?= $enfant ?>">
                             <input name="check" value="1">
                         </div>
-                        <div>
-                            <input  type="submit" name="confirmReserv" value="Valider votre réservation">
+                        
+                    </div>  
+                    <div>
+                            <input class="button"  type="submit" name="confirmReserv" value="Valider votre réservation">
                         </div>
-                        </div>    
-                </form>
+                        </form>  
+            </div>    
+                
                 <?php
                 }
                 }
@@ -186,7 +284,6 @@ else{
                 $chexp = $all['exposition'];
                 $chcap = $all['capacite'];
                 $chetage = $all['etage'];
-
                 if (isset($_SESSION['id']) && !empty($_SESSION['id'])){
                     ?>
 

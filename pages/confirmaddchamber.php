@@ -21,13 +21,13 @@ if (isset($_POST['description']) && !empty($_POST['description'])) {
     sendMailChamber($dbh);
 ?>
 <div class="content">
-    <meta http-equiv="refresh" content="2;URL=administration.php"><p style="background-color: forestgreen; color: white; text-align: center;"><?php echo "La chambre a bien été ajoutée";?></p>
+    <meta http-equiv="refresh" content="2;URL=administration.php"><p style="background-color: forestgreen; color: white; text-align: center;"><?php echo $lang['roomCreated'];?></p>
 </div>
 <?php
 }else{
     ?>
     <div class="content">
-        <meta http-equiv="refresh" content="2;URL=administration.php"><p style="background-color: darkred; color: white; text-align: center;"><?php echo "Une erreur est survenue.";?></p>
+        <meta http-equiv="refresh" content="2;URL=administration.php"><p style="background-color: darkred; color: white; text-align: center;"><?php echo $lang['error'];?></p>
     </div>
 <?php
 }
