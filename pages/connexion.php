@@ -11,14 +11,13 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
     $mail = htmlspecialchars($_POST['mail']);
     $password = sha1($_POST['password']);
     if(!empty($mail) AND !empty($password)){
-
         $query = getUserByMailAndPassword($dbh, $mail, $password);
         $userExist = $query->rowCount();
         if($userExist === 1 ){
             $user = $query->fetch();
+            //on vérifie si l'utilisateur à bien cliqué sur le lien dans son mail !
             if($user['statut'] === 1) {
                 $_SESSION['id'] = $user['id'];
-                
                     ?>
                     <meta http-equiv="refresh" content="0;URL=../index.php">
                         <?php                   
@@ -117,7 +116,9 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
         <a class="a" href="lostPassword.php">Mot de passe oublié ? </a>
     </div>
 
+
     <?php
+    //on affiche les messages d'erreur qu'il y a plus haut
     if(isset($error) AND !empty($error)){
         echo $error;
     }

@@ -420,6 +420,26 @@ function getPlanningOrder($dbh, $premier, $parpage){
     $query->execute(array($premier, $parpage));
     return $toto = $query->fetchAll();
 }
+function getPlanningOrder1($dbh, $premier, $parpage){
+    $query = $dbh->prepare('SELECT DISTINCT idReservation FROM planning ORDER BY idReservation ASC LIMIT ?, ?');
+    $query->execute(array($premier, $parpage));
+    return $toto = $query->fetchAll();
+}
+function getPlanningOrder2($dbh, $premier, $parpage){
+    $query = $dbh->prepare('SELECT DISTINCT idReservation FROM planning ORDER BY idReservation DESC LIMIT ?, ?');
+    $query->execute(array($premier, $parpage));
+    return $toto = $query->fetchAll();
+}
+function getPlanningOrder3($dbh, $premier, $parpage){
+    $query = $dbh->prepare('SELECT DISTINCT idReservation FROM planning ORDER BY idReservation DESC LIMIT ?, ?');
+    $query->execute(array($premier, $parpage));
+    return $toto = $query->fetchAll();
+}
+function getPlanningOrder4($dbh, $premier, $parpage){
+    $query = $dbh->prepare('SELECT DISTINCT idReservation FROM planning ORDER BY idReservation DESC LIMIT ?, ?');
+    $query->execute(array($premier, $parpage));
+    return $toto = $query->fetchAll();
+}
 // function getPlanningOrder($dbh, $premier, $parpage){
 //     $query = $dbh->prepare('SELECT * FROM planning ORDER BY idReservation DESC LIMIT ?, ?');
 //     $query->execute(array($premier, $parpage));
@@ -532,4 +552,9 @@ function reservationByReservId($dbh, $idChambre){
     $query = $dbh->prepare("SELECT * FROM planning WHERE idReservation = ?");
     $query->execute(array($idChambre));
     return $last = $query->fetchAll();
+}
+function getCriteria($dbh){
+    $query = $dbh->prepare('SELECT * FROM criteria');
+    $query->execute();
+    return $criteria = $query->fetchAll();
 }

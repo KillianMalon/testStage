@@ -5,7 +5,7 @@ require_once '../functions/sql.php';
 if(!isset($_POST['sendMail']) || empty($_POST['idReservation']) || !isset($_SESSION['id'])){
     ?>
     <meta http-equiv="refresh" content="0;URL=./reservations.php">
-<?php
+    <?php
 }
 $id = $_SESSION['id'];
 $client = getClient($dbh,$id);

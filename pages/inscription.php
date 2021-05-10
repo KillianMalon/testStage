@@ -5,8 +5,10 @@ require_once '../functions/functions.php';
 require_once 'bdd.php';
 
 if(isset($_POST['send']) AND !empty($_POST['send'])){
+    //je vérifie que tous les champs obligatoire soit envoyé et non vide
     if(!empty($_POST['firstName']) AND !empty($_POST['lastName']) AND !empty($_POST['mail']) AND !empty($_POST['mailVerify']) AND !empty($_POST['password']) AND
         !empty($_POST['passwordVerify']) AND !empty($_POST['address']) AND !empty($_POST['postalCode']) AND !empty($_POST['city'])){
+        //je fait des vérifications sur les champs comme leur longueur, leur validité (mail, lien) etc...
         $firstName = htmlspecialchars($_POST['firstName']);
         $firstNameLength = strlen(mbUcfirst(mb_strtolower($firstName)));
         if($firstNameLength <= 256){
@@ -19,6 +21,7 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
                     if($mailCount === 0){
                         $mailVerify = htmlspecialchars($_POST['mailVerify']);
                         if($mail === $mailVerify){
+                            //je hashe le mot de passe
                             $password = sha1($_POST['password']);
                             $passwordVerify = sha1($_POST['passwordVerify']);
                             if($password === $passwordVerify){
@@ -45,22 +48,27 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
                                                         if (filter_var($_POST['image'], FILTER_VALIDATE_URL)) {
                                                             $extensionOk = array('.jpg', '.png', 'webp','.gif','jpeg','.psd', '.svg');
                                                             $lastCharacters = substr($_POST['image'], -4);
+                                                            //j'appelle une fonction qui génère une clé aléatoire
                                                             $key = generateRandomString();
+                                                            //je vérifie que la clé existe pas, si elle existe je fait une boucle tant qu'elle existe
                                                             $response = getClientByKey($dbh,$key);
                                                             while($response === 1 ){
                                                                 $key = generateRandomString();
                                                                 $response = getClientByKey($dbh,$key);
                                                             }
+                                                            //je vérifie si l'extension type d'un fichier image est bien présente dans l'image
                                                             if(in_array($lastCharacters,$extensionOk)){
                                                                 $image = $_POST['image'];
+                                                                //je prépare ce qu'il faut pour l'envoie de mail
                                                                 $to       = $mail;
                                                                 $subject  = 'Validation de compte';
                                                                 $message  = '<p>Veuillez cliquer sur le lien pour valider votre compte</p><br><a href="http://localhost/testStage/hotel/pages/confirmInscription.php?key='.$key.'">Valider mon compte</a>';
                                                                 $headers  = 'From: envoiedemailtest@gmail.com' . "\r\n" .
                                                                     'MIME-Version: 1.0' . "\r\n" .
                                                                     'Content-type: text/html; charset=utf-8';
-                                                                if(mail($to, $subject, $message, $headers)) {
+                                                                if(mail($to, $subject, $message, $headers)) { //si la fontion mail s'envoie sans erreur
                                                                     $msg = "Vous allez recevoir un email de confirmation, cliqué sur le lien pour confirmer votre inscription!";
+                                                                    //j'enregistre l'utilisateur en base de donnée avec un statut qui sera invalide tant qu'il n'aura pas cliqué sur le lien de la page confirmInscription
                                                                     inscription($dbh, $firstName, $lastName, $mail, $password, $address, $postalCode, $city, $country, $civility, $image,$key);
                                                                 }else{
                                                                     $error = "Echec de l'envoie de l'email";
@@ -158,6 +166,7 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
                 <div>
                     <label for="" >Nom* :</label>
                 </div>
+                <!--Le code php permet de réinscrire dans le champ ce que l'utilisateur à rentré dans le post si il y a eu un message d'erreur ce qui lui évite de tout re-rentrer-->
                 <input type="text" name="lastName" value="<?php echo (!empty($_POST['lastName']))? $_POST['lastName'] : "" ?>">
             </div>
             <div>

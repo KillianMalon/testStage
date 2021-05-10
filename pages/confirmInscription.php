@@ -4,28 +4,32 @@ require_once '../functions/sql.php';
 require_once 'bdd.php';
 
 //Confirmation de l'inscription
-
 if(!isset($_SESSION['id'])){
+    //je vérifie que dans le get il y est bien la clé générée sur la page inscription
    if(isset($_GET['key']) AND !empty($_GET['key'])){
         $key = htmlspecialchars($_GET['key']);
         $response = getClientByKey($dbh, $key);
-        $oma = $response;
-        var_dump($oma);
+        // je vérifie que la clé est 1 fois en base de donnée
         if($response === 1){
+            //je valide le statut de l'utilisateur
             updateStatus($dbh, $key);
             $client = getClientInformationsByKey($dbh,$key);
+            //je le connecte
             $_SESSION['id'] = $client['id'];
-
             $ok =  $lang['confirmInscription'];
-            header('Refresh: 2; URL=../index.php');
-
+           ?>
+            <meta http-equiv="refresh" content="0;URL=../index.php">
+            <?php
         }
-
     }else{
-        header("Location:../index.php");
+        ?>
+       <meta http-equiv="refresh" content="0;URL=../index.php">
+<?php
     }
 }else{
-        header("Location:../index.php");
+    ?>
+    <meta http-equiv="refresh" content="0;URL=../index.php">
+<?php
     }
 ?>
 <div class="content">

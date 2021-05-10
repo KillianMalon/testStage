@@ -6,6 +6,7 @@ if(isset($_GET['key']) AND !empty($_GET['key'])){
     $key = htmlspecialchars($_GET['key']);
     $ok = getClientByKey($dbh,$key);
     $msg = "";
+    //si la clé est valide
     if($ok === 1){
         if(isset($_POST['send'])){
             if(isset($_POST['pwd']) AND !empty($_POST['pwd']) AND isset($_POST['pwdV']) AND !empty($_POST['pwdV'])){
@@ -19,7 +20,9 @@ if(isset($_GET['key']) AND !empty($_GET['key'])){
                         updatePassword($dbh,$pwd,$id);
                         $_SESSION['id'] = $id;
                         $msg = "Votre nouveau mot de passe à été enregistré";
-                        header("Refresh:2;URL=../index.php");
+                        ?>
+                            <meta http-equiv="refresh" content="0;URL=../index.php">
+                            <?php
                     }else{
                         $error = "Le mot de passe et sa confirmation ne correspondent pas !";
                     }
