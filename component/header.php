@@ -135,6 +135,7 @@ if(!empty($_POST['theme']) && $_POST['theme'] === 'black'){
         <?php if (!isset($_SESSION['id'])){ ?>
             <a href="<?php echo (isset($index)) ? "index.php" : "../index.php"; ?>"><i class="fas fa-home"></i><span><?= $lang['home']; ?></span></a>
             <a href="<?php echo (isset($index)) ? "./pages/chambres.php" : "chambres.php"?>"><i class="fas fa-bed"></i><span><?= $lang['rooms']; ?></span></a>
+            <a href="<?php echo (isset($index)) ? "./pages/contact.php" : "contact.php" ?>"><i class="fas fa-comment"></i><span><?= $lang['contact']; ?></span></a>
         <?php }else{
             $nbOfFavorites = getNumberOfFavorite($dbh, $_SESSION['id']);
             ?>
@@ -144,7 +145,8 @@ if(!empty($_POST['theme']) && $_POST['theme'] === 'black'){
             <a href="<?php echo (isset($index)) ? "./pages/espace_client.php" : "espace_client.php" ?>"><i class="fas fa-user"></i><span><?= $lang['myAccount']; ?></span></a>
             <a href="<?php echo (isset($index)) ? "./pages/reservations.php" : "reservations.php" ?>"><i class="fas fa-table"></i><span><?= $lang['myBookings']; ?></span></a>
             <a href="<?php echo (isset($index)) ? "./pages/favorites.php" : "favorites.php" ?>"><i class="fas fa-bookmark"></i><span><?= $lang['myFavourites']; ?> <?php echo ($nbOfFavorites > 0)? "($nbOfFavorites)":""?></span></a>
-
+            <a href="<?php echo (isset($index)) ? "./pages/contact.php" : "contact.php" ?>"><i class="fas fa-comment"></i><span><?= $lang['contact']; ?></span></a>
+            
             <?php if(isset($admin)){ ?>
                 <a href="<?php echo (isset($index)) ? "./pages/statistics.php" : "statistics.php"?>"><i class="fas fa-chart-bar"></i><span><?= $lang['statistics']; ?></span></a>
                 <a href="<?php echo (isset($index)) ? "./pages/administration.php" : "administration.php"?>"><i class="fas fa-users-cog"></i><span><?= $lang['administration']; ?></span></a>
@@ -167,12 +169,14 @@ if(!empty($_POST['theme']) && $_POST['theme'] === 'black'){
     <?php if (!isset($_SESSION['id'])){ ?>
         <a href="<?php echo (isset($index)) ? "index.php" : "../index.php"; ?>"><i class="fas fa-home"></i><span><?= $lang['home']; ?></span></a>
         <a href="<?php echo (isset($index)) ? "./pages/chambres.php" : "chambres.php"?>"><i class="fas fa-bed"></i><span><?= $lang['rooms']; ?></span></a>
+        <a href="<?php echo (isset($index)) ? "./pages/contact.php" : "contact.php" ?>"><i class="fas fa-comment"></i><span><?= $lang['contact']; ?></span></a>
     <?php }else{ ?>
         <a href="<?php echo (isset($index)) ? "index.php" : "../index.php"; ?>"><i class="fas fa-home"></i><span><?= $lang['home']; ?></span></a>
         <a href="<?php echo (isset($index)) ? "./pages/chambres.php" : "chambres.php"?>"><i class="fas fa-bed"></i><span><?= $lang['rooms']; ?></span></a>
         <a href="<?php echo (isset($index)) ? "./pages/espace_client.php" : "espace_client.php" ?>"><i class="fas fa-user"></i><span><?= $lang['myAccount']; ?></span></a>
         <a href="<?php echo (isset($index)) ? "./pages/reservations.php" : "reservations.php" ?>"><i class="fas fa-table"></i><span><?= $lang['myBookings']; ?></span></a>
         <a href="<?php echo (isset($index)) ? "./pages/favorites.php" : "favorites.php" ?>"><i class="fas fa-bookmark"></i><span><?= $lang['myFavourites']; ?> <?php echo ($nbOfFavorites > 0)? "($nbOfFavorites)":""?></span></a>
+        <a href="<?php echo (isset($index)) ? "./pages/contact.php" : "contact.php" ?>"><i class="fas fa-comment"></i><span><?= $lang['contact']; ?></span></a>
         <?php if(isset($admin)){ ?>
             <a href="<?php echo (isset($index)) ? "./pages/statistics.php" : "statistics.php"?>"><i class="fas fa-chart-bar"></i><span><?= $lang['statistics']; ?></span></a>
             <a href="<?php echo (isset($index)) ? "./pages/administration.php" : "administration.php"?>"><i class="fas fa-users-cog"></i><span><?= $lang['administration']; ?></span></a>

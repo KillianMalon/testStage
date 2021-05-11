@@ -72,7 +72,9 @@ if(!empty($_POST['textarea'])){
     $today2Formatted = $today2->format('Y-m-d H:i:s');
     $contenu = $_POST['textarea'];
     addCommentary($dbh, $id, $idChambre, $contenu, $today2Formatted);
-    
+    ?>
+    <meta http-equiv="refresh" content="0">
+        <?php
 }
 ?>
 <!-- Style de la page -->
@@ -456,6 +458,49 @@ $todays = date("Y-m-d");
                         <p> <?= $lang['equipment']; ?> : <?php echo ($chambres['douche']);?> douche</p>
                         <p> <?= $lang['capacity']; ?> : <?php echo ($chambres['capacite']);?></p>
                         <p> <?= $lang['exposure']; ?> : <?php echo ($chambres['exposition']);?></p>
+                        <?php
+                        //============PARTIE SUR LE TRAITEMENT ET LE CALCUL DE LA MOYENNE DES NOTES
+                            //correspond au nombre de critère
+                            $nbOfNotesPerCustomer = 5;
+                            $roomId = intval($_GET['id']);
+                            //je récupe le nb de note en fonction de la chambre
+                            $nbTotalOfNotes = getNbOfNotes($dbh, $roomId);
+                            $noteForProgressBar = array();
+                            if($nbTotalOfNotes != 0){
+                                //je récup toutes les informations de la table critère sur la chambre sur laquelle je suis
+                            $allCriteriaAndNotes = getAllCriteriaNote($dbh, $roomId);
+                            //je prépare des variable que met à 0 si elle existe pas
+                            if (!isset($trueConfort)) {
+                                $trueConfort = 0;
+                                $trueProprete = 0;
+                                $trueAccueil = 0;
+                                $trueQualitePrix = 0;
+                                $trueEmplacement = 0;
+                            }
+                            foreach ($allCriteriaAndNotes as $notes) {
+                                $confort2 = $notes['confort'];
+                                $proprete2 = $notes['proprete'];
+                                $accueil2 = $notes['accueil'];
+                                $qualitePrix2 = $notes['qualitePrix'];
+                                $emplacement2 = $notes['emplacement'];
+                             //pour chacun des critères de chaque chambre j'additionne les notes de chaque critères de la chambre (de tous les clients)
+                                $trueConfort += $confort2;
+                                $trueProprete += $proprete2;
+                                $trueAccueil += $accueil2;
+                                $trueQualitePrix += $qualitePrix2;
+                                $trueEmplacement += $emplacement2;
+                            }
+                            //je divise par le nombre total de notes de la chambre
+                            $trueConfort /= $nbTotalOfNotes;
+                            $trueProprete /= $nbTotalOfNotes;
+                            $trueAccueil /= $nbTotalOfNotes;
+                            $trueQualitePrix /= $nbTotalOfNotes;
+                            $trueEmplacement /= $nbTotalOfNotes;
+                            $noteForProgressBar =array($trueConfort, $trueProprete,$trueAccueil, $trueQualitePrix, $trueEmplacement );
+                            //je fais la moyenne globale en rassemblant toutes les moyennes des critères
+                                $totalAverage = ($trueConfort + $trueProprete + $trueAccueil + $trueQualitePrix + $trueEmplacement) / $nbOfNotesPerCustomer;
+                        }
+                        ?>
                         <!--APPEL DES OUTILS NECESSAIRES à L'AFFICHAGE DES ETOILES DE LA CHAMBRE-->
                     <script src="../js/jquery.Rating.js"></script>
                     <script>
@@ -463,9 +508,15 @@ $todays = date("Y-m-d");
                                 $('.stars').stars();
                             });
                         </script>
+                    <?php if(isset($nbTotalOfNotes) AND $nbTotalOfNotes != 0){ ?>
                     <!--C ici que les etoiles s'affichent -->
-                        <p>  Note : <span class="stars" data-rating="5" data-num-stars="5" ></span> </p>
+                        <p>  Note (<?= $nbTotalOfNotes ?>) :  <span class="stars" data-rating="<?= $totalAverage ?>" data-num-stars="5" ></span></p>
                     <!--FIN DE L'AFFICHAGE-->
+        <?php }else{
+                    ?>
+                        <p>Il n'y a pas de note pour cette chambre pour le moment</p>
+            <?php
+                    } ?>
                         <h4><?php echo ($chambres['prix']);?>€</h4>
 
                         <?php if(!empty($_POST['start']) && !empty($_POST['end'])) {
@@ -481,26 +532,9 @@ $todays = date("Y-m-d");
                     <br>
             </div>
             <div class="text">
-                <?php
-                //============================ TRAITEMENT POST POUR NOTE DE CRITERE ==============================================>
-                if(isset($_POST['criteriaScores']) and !empty($_POST['criteriaScores'])){
-                    var_dump($_POST);
-                    if(!empty($_POST['confort']) && !empty($_POST['proprete']) && !empty($_POST['accueil']) && !empty($_POST['qualite/prix']) && !empty($_POST['emplacement'])){
-                        $confort =     intval($_POST['confort']);
-                        $proprete =    intval($_POST['proprete']);
-                        $accueil =     intval($_POST['accueil']);
-                        $qualitePrix = intval($_POST['qualite/prix']);
-                        $emplacement = intval($_POST['emplacement']);
-                        $idDuClient = $_SESSION['id'];
-                        $idDeLaChambre = $_GET['id'];
-                        //insertCriteria($dbh,$idDuClient,$idDeLaChambre);
-                    }else{
-                        $error = "Veuillez donnez une note pour chaque champs";
-                    }
-                }
-                //affichage du formulaire pour les notes des différents champs
-                ?>
-                
+
+
+
                 <?php if(isset($_SESSION['id'])){
                             $user = getClient($dbh, $_SESSION['id']);
                             $isAdmin = $user['type'];
@@ -517,8 +551,6 @@ $todays = date("Y-m-d");
                                                 <input class="input" type="date" name="end" value="<?php echo $tomorrowFormatted?>" min="<?php echo $tomorrowFormatted?>">
                                             </div>
                                         </div>
-
-
                                         <div class="capacity">
                                             <div class="capacity2 line">
                                                 <label class='label' for="start"><?= $lang['numberOfAdults']; ?></label class='label'>
@@ -551,9 +583,36 @@ $todays = date("Y-m-d");
                                 </form>
                             </div>    
                 <?php } ?>  
-            </div>  
-            
+            </div>
+
         </div>
+
+        <?php
+        //============================ TRAITEMENT POST POUR NOTE DE CRITERE ==============================================>
+        if(isset($_POST['createNote']) && !empty($_POST['createNote']) || isset($_POST['changeNote']) && !empty($_POST['changeNote'])){
+            if(!empty($_POST['confort']) && !empty($_POST['proprete']) && !empty($_POST['accueil']) && !empty($_POST['qualite/prix']) && !empty($_POST['emplacement'])){
+                $confort =     intval($_POST['confort']);
+                $proprete =    intval($_POST['proprete']);
+                $accueil =     intval($_POST['accueil']);
+                $qualitePrix = intval($_POST['qualite/prix']);
+                $emplacement = intval($_POST['emplacement']);
+                $idDuClient = $_SESSION['id'];
+                $idDeLaChambre = $_GET['id'];
+                if(isset($_POST['changeNote'])){
+                    updateNotesOfCriteria($dbh,$confort, $proprete,$accueil, $qualitePrix, $emplacement, $idDuClient, $idDeLaChambre);
+                    ?>
+                    <meta http-equiv="refresh" content="0">
+                        <?php
+                    }else{
+                    insertCriteria($dbh,$confort,$proprete,$accueil,$qualitePrix,$emplacement,$idDuClient,$idDeLaChambre);
+                }
+            }else{
+                $error = "Veuillez donnez une note pour chaque champs";
+            }
+        }
+        //affichage du formulaire pour les notes des différents champs
+        ?>
+
             <?php 
                 if(!empty($_SESSION['id'])){
                     $client_id = $_SESSION['id'];
@@ -564,11 +623,9 @@ $todays = date("Y-m-d");
         <div class='form'>
             <h2 class='souligne'><?= $lang['comments']?></h2>
             <?php if(!empty($passed)){
-                
                 $search = $passed[0];
                 $idClient = $_SESSION['id'];
                 $idRoom2 = $search['chambre_id'];
-
                 $getSearch = getSearchIfClientPostCommentary($dbh,$idClient, $idRoom2);
                 if(empty($getSearch)){?>  
                  
@@ -581,13 +638,68 @@ $todays = date("Y-m-d");
             <?php }
         
             }?>
-        
-        
+
+
         </div>
         <div class="commentary">
+            <p>Notes : </p>
+            <?php
+            if($nbTotalOfNotes != 0){
+            $criteres2 = array('Confort', 'Propreté', 'Accueil','Qualité/prix','Emplacement');
+            $nbOfCriteria2 = count($criteres2);
+            for($i = 0; $i < $nbOfCriteria2;$i++){
+            ?>
+                <div class="criteria">
+                    <label for="file"><?= $criteres2[$i] ?></label>
+                    <progress id="file" max="5" value="<?= $noteForProgressBar[$i] ?>"></progress> <?= $noteForProgressBar[$i] ?>
+                </div>
+                <?php
+            }
+            }
+                ?>
+            <!-- AFFICHAGE DES CHAMPS POUR NOTER UNE CHAMBRE -->
+            <form method="post">
+                <?php
+                if(isset($_SESSION['id'])){
+                $criteres = array('confort', 'proprete', 'accueil','qualite/prix','emplacement');
+                $nbOfCriteria = count($criteres);
+                $clientId = $_SESSION['id'];
+                $roomId = intval($_GET['id']);
+                $nb = noteVerif($dbh, $clientId, $roomId);
+                if($nb != 0){
+                    $clientNotes = getNotesByClientIdAndRoomId($dbh, $clientId, $roomId);
+                }
+                 if(!empty($passed)){
+                     if($nb === 1){
+                         ?>
+                         <p>Mes Notes :</p>
+                             <?php
+                     }else{
+                         ?>
+                         <p>Noter :</p>
+                             <?php
+                     }
+                for($i = 0; $i < $nbOfCriteria; $i++){
+                    $critere = $criteres[$i];
+                    ?>
+                    <select name="<?= $criteres[$i] ?>">
+                        <option value="">Note <?= $criteres[$i] ?></option>
+                        <option value="1"<?php if(isset($clientNotes)AND !empty($clientNotes)){if($critere === "qualite/prix") {$newcritere = "qualitePrix";if ($clientNotes[0][$newcritere] === 1) {echo "selected";} else {}}else{if($clientNotes[0][$critere] === 1){ echo "selected";}}}?>>1</option>
+                        <option value="2"<?php if(isset($clientNotes)AND !empty($clientNotes)){if($critere === "qualite/prix") {$newcritere = "qualitePrix";if ($clientNotes[0][$newcritere] === 2) {echo "selected";} else {}}else{if($clientNotes[0][$critere] === 2){ echo "selected";}}}?>>2</option>
+                        <option value="3"<?php if(isset($clientNotes)AND !empty($clientNotes)){if($critere === "qualite/prix") {$newcritere = "qualitePrix";if ($clientNotes[0][$newcritere] === 3) {echo "selected";} else {}}else{if($clientNotes[0][$critere] === 3){ echo "selected";}}}?>>3</option>
+                        <option value="4"<?php if(isset($clientNotes)AND !empty($clientNotes)){if($critere === "qualite/prix") {$newcritere = "qualitePrix";if ($clientNotes[0][$newcritere] === 4) {echo "selected";} else {}}else{if($clientNotes[0][$critere] === 4){ echo "selected";}}}?>>4</option>
+                        <option value="5"<?php if(isset($clientNotes)AND !empty($clientNotes)){if($critere === "qualite/prix") {$newcritere = "qualitePrix";if ($clientNotes[0][$newcritere] === 5) {echo "selected";} else {}}else{if($clientNotes[0][$critere] === 5){ echo "selected";}}}?>>5</option>
+                    </select>
+                    <?php
+                }
+                    ?>
+                <input type="submit" value="<?php echo (isset($nb) AND $nb === 0) ?"Noter la chambre" : "Modifier la note" ?>" name="<?php echo (isset($nb)and $nb===0) ? "createNote": "changeNote" ?>">
+            </form>
+            <!-- FIN DE L'AFFICHAGE DES CHAMPS DE NOTES -->
+            <?php
+                 }
+            }
 
-            <?php 
-            
                 $idRoom = $_GET['id'];
                 $commentarys = getRoomCommentary($dbh, $idRoom);
                 if(!empty($commentarys)): ?>

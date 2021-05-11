@@ -77,6 +77,6 @@ $lang = array(
     'deleteOk' => 'à bien été supprimée!',
     'publishedOn' => 'Publié le',
     'ConfirmReservation' => 'Il vous suffit de cliquer sur le bouton pour valider la réservation',
-
+    'contact' => 'Nous contactez'
 );
 ?>

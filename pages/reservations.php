@@ -105,7 +105,7 @@ if (isset($_SESSION['id'])){
 
                                     if($future2['paye'] === 1){ ?>
                                     <form action="Facture/<?=$_SESSION['id']?>/Facture-<?= $idReservation ?>.pdf" method="post">
-                                        <input type="submit" name="download"></form>
+                                        <input type="submit" name="download" value="Télécharger"></form>
                                         <?php }else{ echo 'Payez la réservation'; }?>
                                 </td>
                                 <td>
@@ -113,7 +113,7 @@ if (isset($_SESSION['id'])){
                                         <input type="hidden" name="idReservation" value="<?= $future2['idReservation'] ?>">
                                         <input type="hidden" name="dateStart" value="<?= $future2['dateStart']; ?>">
                                         <input type="hidden" name="prix" value="<?php echo $future2['prix'] ?>">
-                                        <input type="submit" name="sendMail">
+                                        <input type="submit" name="sendMail" value="Pdf par mail">
                                     </form>
                                 </td>
                                 <td>
