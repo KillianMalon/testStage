@@ -10,7 +10,7 @@ if(isset($_GET['page']) && !empty($_GET['page'])){
     $currentPage = 1;
 }
 
-//On compte le nombre total de client (et on le convertit en entier)
+//On compte le nombre total de réservations (et on le convertit en entier)
 $allclients = countPlanning($dbh);
 $count = (int) $allclients['0'];
 
@@ -27,9 +27,9 @@ $pages = ceil($count/$parpage);
 $list = get_list_page($currentPage, $pages);
 
 //On récupère les informations des  "20" premiers clients à partir du premier client de la page
-var_dump($_GET);
 if(empty($_GET['sort'])){
     $premiere = getPlanningOrder($dbh, $premier, $parpage);
+    // var_dump($premiere);
 }elseif(isset($_GET['sort'])){
     $sort = $_GET['sort'];
     if($sort==1){
@@ -37,9 +37,92 @@ if(empty($_GET['sort'])){
     }elseif($sort==2){
         $premiere = getPlanningOrder2($dbh, $premier, $parpage);
     }elseif($sort==3){
-        $premiere = getPlanningOrder3($dbh, $premier, $parpage);
+        $premiere = getPlanningOrder3($dbh);
+        // var_dump($premiere);
+        
+        foreach($premiere as $premieres){
+            $idReservation = $premieres['idReservation'];
+            $resultat = dateStartReservationByReservId($dbh, $idReservation);
+            // var_dump($resultat);
+            $dateStart = $resultat[0]['MAX(jour)'];
+            $array[$idReservation] = $dateStart;
+
+        }
+        uasort($array, "orderByDate2");
+        $tests = array_keys($array);
+        
+        $compteur2=0;
+        foreach($tests as $test){
+            $prem[] = array('idReservation' => $test);
+            $compteur2++;
+        } 
+        // var_dump($prem);
+
+
+
     }elseif($sort==4){
-        $premiere = getPlanningOrder4($dbh, $premier, $parpage);
+        $premiere = getPlanningOrder4($dbh);
+        // var_dump($premiere);
+        
+        foreach($premiere as $premieres){
+            $idReservation = $premieres['idReservation'];
+            $resultat = dateStartReservationByReservId($dbh, $idReservation);
+            // var_dump($resultat);
+            $dateStart = $resultat[0]['MAX(jour)'];
+            $array[$idReservation] = $dateStart;
+
+        }
+        uasort($array, "orderByDate");
+        $tests = array_keys($array);
+        
+        $compteur2=0;
+        foreach($tests as $test){
+            $prem[] = array('idReservation' => $test);
+            $compteur2++;
+        } 
+        // var_dump($prem);
+    }elseif($sort==5){
+        $premiere = getPlanningOrder3($dbh);
+        // var_dump($premiere);
+        
+        foreach($premiere as $premieres){
+            $idReservation = $premieres['idReservation'];
+            $resultat = dateStartReservationByReservId2($dbh, $idReservation);
+            // var_dump($resultat);
+            $dateStart = $resultat[0]['MIN(jour)'];
+            $array[$idReservation] = $dateStart;
+
+        }
+        uasort($array, "orderByDate2");
+        $tests = array_keys($array);
+        
+        $compteur2=0;
+        foreach($tests as $test){
+            $prem[] = array('idReservation' => $test);
+            $compteur2++;
+        } 
+        // var_dump($prem);
+    }elseif($sort==6){
+        $premiere = getPlanningOrder4($dbh);
+        // var_dump($premiere);
+        
+        foreach($premiere as $premieres){
+            $idReservation = $premieres['idReservation'];
+            $resultat = dateStartReservationByReservId2($dbh, $idReservation);
+            // var_dump($resultat);
+            $dateStart = $resultat[0]['MIN(jour)'];
+            $array[$idReservation] = $dateStart;
+
+        }
+        uasort($array, "orderByDate");
+        $tests = array_keys($array);
+        
+        $compteur2=0;
+        foreach($tests as $test){
+            $prem[] = array('idReservation' => $test);
+            $compteur2++;
+        } 
+        // var_dump($prem);
     }else{
         $premiere = getPlanningOrder($dbh, $premier, $parpage);
     }
@@ -47,10 +130,12 @@ if(empty($_GET['sort'])){
 
 
 // var_dump($premiere);
+if(!empty($prem)){
+    $premiere = $prem;
+}
 foreach($premiere as $premieres){
     $idReservation = $premieres['idReservation'];
     $resultat = reservationByReservId($dbh, $idReservation);
-    // var_dump($resultat);
             $clientId = $resultat[0]['client_id'];            
             $dateStart = $resultat[0]['jour'];
             $idChambre = $resultat[0]['chambre_id'];
@@ -79,6 +164,7 @@ foreach($premiere as $premieres){
                 
                 $compteur ++;
             }
+            
 // ?>
 <!-- Feuilles de style de la page -->
 <style>
@@ -221,8 +307,11 @@ foreach($premiere as $premieres){
         <div class="dropdown-content">
             <a href="administration-reservations.php?sort=1">ID croissant</a>
             <a href="administration-reservations.php?sort=2">ID décroissant</a>
-            <a href="administration-reservations.php?sort=3">Date d'arrivée croissant</a>
-            <a href="administration-reservations.php?sort=4">Date d'arrivée décroissante</a>
+            <a href="administration-reservations.php?sort=3">Date de départ croissante</a>
+            <a href="administration-reservations.php?sort=4">Date de départ décroissant</a>
+            <a href="administration-reservations.php?sort=5">Date d'arrivée croissante</a>
+            <a href="administration-reservations.php?sort=6">Date d'arrivée décroissante</a>
+            
         </div>
     </div>   
     </div>
@@ -272,6 +361,7 @@ foreach($premiere as $premieres){
 
             <!-- Affichage de la pagination -->
             <div class="pagination">
+            
                 <?php
                 foreach($list AS $link) {
                     if ($link == '...')

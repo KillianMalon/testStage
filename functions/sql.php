@@ -430,16 +430,17 @@ function getPlanningOrder2($dbh, $premier, $parpage){
     $query->execute(array($premier, $parpage));
     return $toto = $query->fetchAll();
 }
-function getPlanningOrder3($dbh, $premier, $parpage){
-    $query = $dbh->prepare('SELECT DISTINCT idReservation FROM planning ORDER BY idReservation DESC LIMIT ?, ?');
-    $query->execute(array($premier, $parpage));
+function getPlanningOrder3($dbh){
+    $query = $dbh->prepare('SELECT DISTINCT idReservation FROM planning ORDER BY idReservation DESC ');
+    $query->execute();
     return $toto = $query->fetchAll();
 }
-function getPlanningOrder4($dbh, $premier, $parpage){
-    $query = $dbh->prepare('SELECT DISTINCT idReservation FROM planning ORDER BY idReservation DESC LIMIT ?, ?');
-    $query->execute(array($premier, $parpage));
+function getPlanningOrder4($dbh){
+    $query = $dbh->prepare('SELECT DISTINCT idReservation FROM planning ORDER BY idReservation DESC ');
+    $query->execute();
     return $toto = $query->fetchAll();
 }
+
 // function getPlanningOrder($dbh, $premier, $parpage){
 //     $query = $dbh->prepare('SELECT * FROM planning ORDER BY idReservation DESC LIMIT ?, ?');
 //     $query->execute(array($premier, $parpage));
@@ -557,4 +558,61 @@ function getOptions($dbh){
     $query = $dbh->prepare('SELECT * FROM options');
     $query->execute();
     return $all = $query->fetchAll();
+}
+function orderByDate($time1, $time2)
+{
+    if (strtotime($time1) < strtotime($time2))
+        return 1;
+    else if (strtotime($time1) > strtotime($time2)) 
+        return -1;
+    else
+        return 0;
+}
+function orderByDate2($time1, $time2)
+{
+    if (strtotime($time2) < strtotime($time1))
+        return 1;
+    else if (strtotime($time2) > strtotime($time1)) 
+        return -1;
+    else
+        return 0;
+}
+
+function dateStartReservationByReservId($dbh, $idReservation){
+    $query = $dbh->prepare("SELECT MAX(jour) FROM planning WHERE idReservation = ?");
+    $query->execute(array($idReservation));
+    return $last = $query->fetchAll();
+}
+function dateStartReservationByReservId2($dbh, $idReservation){
+    $query = $dbh->prepare("SELECT MIN(jour) FROM planning WHERE idReservation = ?");
+    $query->execute(array($idReservation));
+    return $last = $query->fetchAll();
+}
+function insertCriteria($dbh,$confort,$proprete,$accueil,$qualitePrix,$emplacement,$idDuClient,$idDeLaChambre){
+    $sql = $dbh->prepare('INSERT INTO criterenote(confort, proprete, accueil, qualitePrix, emplacement, clientId, chambreId) VALUES (?, ?, ?, ?, ?, ?, ?)');
+    $sql->execute(array($confort, $proprete,$accueil, $qualitePrix, $emplacement, $idDuClient, $idDeLaChambre));
+}
+function getAllCriteriaNote($dbh,$id){
+    $query = $dbh->prepare('SELECT * FROM criterenote WHERE chambreId = ?');
+    $query->execute(array($id));
+    return $allNotes = $query->fetchAll();
+}
+function getNbOfNotes($dbh,$id){
+    $query = $dbh->prepare('SELECT * FROM criterenote WHERE chambreId = ?');
+    $query->execute(array($id));
+    return $allNotes = $query->rowCount();
+}
+function updateNotesOfCriteria($dbh,$confort, $proprete,$accueil, $qualitePrix, $emplacement,$id,  $roomId){
+    $sql = $dbh->prepare('UPDATE criterenote SET confort = ?, proprete = ?, accueil = ?, qualitePrix = ?, emplacement = ? WHERE clientId =? AND chambreId = ? ');
+    $sql -> execute(array($confort, $proprete, $accueil, $qualitePrix, $emplacement, $id, $roomId));
+}
+function getNotesByClientIdAndRoomId($dbh, $clientId, $roomId){
+    $query = $dbh->prepare('SELECT * FROM criterenote WHERE clientId = ? AND chambreId = ?');
+    $query ->execute(array($clientId, $roomId));
+    return $clientNotes = $query->fetchAll();
+}
+function noteVerif($dbh, $id, $roomId){
+    $query = $dbh->prepare('SELECT * FROM criterenote WHERE clientId = ? AND chambreId = ?');
+    $query ->execute(array($id, $roomId));
+    return $nb = $query->rowCount();
 }

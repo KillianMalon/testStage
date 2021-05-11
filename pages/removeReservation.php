@@ -7,8 +7,9 @@ if (isset($_GET['id'])){
     $id = $_GET['id'];
 
     removeReservation($dbh, $id);
-
-    header('Refresh: 2; URL=./administration.php');
+    ?>
+    <meta http-equiv="refresh" content="0;URL=./administration.php">
+    <?php
 }
 ?>
 <div class="content">
