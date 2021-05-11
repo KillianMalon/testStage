@@ -553,8 +553,8 @@ function reservationByReservId($dbh, $idChambre){
     $query->execute(array($idChambre));
     return $last = $query->fetchAll();
 }
-function getCriteria($dbh){
-    $query = $dbh->prepare('SELECT * FROM criteria');
+function getOptions($dbh){
+    $query = $dbh->prepare('SELECT * FROM options');
     $query->execute();
-    return $criteria = $query->fetchAll();
+    return $all = $query->fetchAll();
 }

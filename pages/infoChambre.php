@@ -500,26 +500,7 @@ $todays = date("Y-m-d");
                 }
                 //affichage du formulaire pour les notes des différents champs
                 ?>
-                <form action="" method="post">
-                    <?php
-                    $criteria = getCriteria($dbh);
-                    foreach ($criteria as $criterion){
-                        $criterionName = $criterion['critere'];
-                        ?>
-                        <select name="<?= $criterionName ?>">
-                            <option value="">Note <?= $criterionName ?></option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
-                        <br>
-                        <?php
-                    }
-                    ?>
-                    <input type="submit" name="criteriaScores" value="Poster mes Notes">
-                </form>
+                
                 <?php if(isset($_SESSION['id'])){
                             $user = getClient($dbh, $_SESSION['id']);
                             $isAdmin = $user['type'];
