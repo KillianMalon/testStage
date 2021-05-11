@@ -130,6 +130,8 @@ if (isset($_POST['depart']) and !empty($_POST['depart'])){
                         }
                     }
                 }
+
+
                 $nboption = count($_POST['options']);
                 $tempcount = array_count_values($temp);
                 foreach ($tags as $all) {
@@ -176,7 +178,7 @@ if (isset($_POST['depart']) and !empty($_POST['depart'])){
                     <form class="form" method="post" action="./connexion.php">
 
                     <?php } ?>
-                    <div class="element">
+                    
                         <!-- <h3>2 dates</h3> -->
                         <div>
                             <label>Chambre numéro <?= $chid ?></label>
@@ -216,12 +218,10 @@ if (isset($_POST['depart']) and !empty($_POST['depart'])){
                             <input name="numberChild" value="<?= $enfant ?>">
                             <input name="check" value="1">
                         </div>
-                        
-                    </div>  
-                    <div>
-                            <input class="button"  type="submit" name="confirmReserv" value="Valider votre réservation">
+                        <div>
+                            <input  type="submit" name="confirmReserv" value="Valider votre réservation">
                         </div>
-                        </form>  
+                        </form>
             </div>    
                 
                 <?php

@@ -303,17 +303,20 @@ if(!empty($_POST['textarea'])){
   
 </style>
 
-<!-- PARTIE POUR LA MISE EN FAVORIS-->
+<!--============= PARTIE POUR LA MISE EN FAVORIS =======================================-->
 
 <?php
             $chambreId = $_GET['id'];
+            // on vérifie que l'utilisateur est connecté
             if(!empty($_SESSION['id'])){
                 $id = $_SESSION['id'];
+                //puis si l'utilisateur à bien cliqué sur le bouton de favoris
                     if(isset($_POST['addFavorite'])){
                         addFavorite($dbh, $id,$chambreId);
                         ?>               <meta http-equiv="refresh" content="0">
                     <?php 
                     }
+                    //vérifie si l'utilisateur à bien cliqué sur le bouton remove qui apprait comme étant le même que l'ajout
                     if(isset($_POST['removeFavorite'])){
                         $favoriteInformation = getFavorite($dbh,$id,$chambreId);
                         $favoriteId = $favoriteInformation['id'];
@@ -325,7 +328,7 @@ if(!empty($_POST['textarea'])){
                 ?>
                 
             <?php } ?>      
-<!-- FIN DE LA PARTIE MISE EN FAVORIS--> 
+<!--======================= FIN DE LA PARTIE MISE EN FAVORIS ========================================-->
 
 <?php
 //Récupération des informations d'une chaambre s'il y a un GET avec un id de chambre
@@ -414,19 +417,25 @@ $todays = date("Y-m-d");
     <div class="content">
         <br><br>
         <!-- Affichage de ces informations -->   
-            
+
+
         <div class="container">
+            <!--==================== AFFICHAGE DU BOUTON DE FAVORIS ================================-->
             <div class="favoris">
                 <h2 > <?= $lang['room']; ?>  <?php echo $numeroChambre;?></h2>
                 <form action="" class="formFavoris" method="post">
                     <?php
+                    //on vérifie que l'utilisateur est connecté
                     if(!empty($_SESSION['id'])){
+                        //on vérifie qu'il a mis en favoris cette chambre
                         $result = countFavorite($dbh,$id,$chambreId);
                         if($result === 1){
+                            //il s'agit du bouton qui apparait quand la chambre est en favoris (qui permet de le supprimer)
                             ?>
                             <button type="submit" name="removeFavorite" class="favoriteButton" ><i class="fas fa-bookmark" id="removeFavorite"></i></button>
                         <?php
                         }else if($result === 0){
+                            //le bouton qui permet d'ajouter un favoris
                             ?>
                             <button type="submit" name="addFavorite"class="favoriteButton" ><i class="fas fa-bookmark" id="addFavorite"></i></button>
                         <?php
@@ -434,7 +443,9 @@ $todays = date("Y-m-d");
                     }    
                     ?>
                 </form>
-            </div>    
+            </div>
+            <!--==================== FIN DE L'AFFICHAGE DU BOUTON FAVORIS ================================-->
+
             <div class="picture">
                 <img class="image" src="<?php echo($chambres['image'])?>" class="card-img-top" style="height: 100%;" alt="...">
                 <div class="texte">
@@ -445,6 +456,16 @@ $todays = date("Y-m-d");
                         <p> <?= $lang['equipment']; ?> : <?php echo ($chambres['douche']);?> douche</p>
                         <p> <?= $lang['capacity']; ?> : <?php echo ($chambres['capacite']);?></p>
                         <p> <?= $lang['exposure']; ?> : <?php echo ($chambres['exposition']);?></p>
+                        <!--APPEL DES OUTILS NECESSAIRES à L'AFFICHAGE DES ETOILES DE LA CHAMBRE-->
+                    <script src="../js/jquery.Rating.js"></script>
+                    <script>
+                            $(function(){
+                                $('.stars').stars();
+                            });
+                        </script>
+                    <!--C ici que les etoiles s'affichent -->
+                        <p>  Note : <span class="stars" data-rating="5" data-num-stars="5" ></span> </p>
+                    <!--FIN DE L'AFFICHAGE-->
                         <h4><?php echo ($chambres['prix']);?>€</h4>
 
                         <?php if(!empty($_POST['start']) && !empty($_POST['end'])) {
@@ -460,8 +481,26 @@ $todays = date("Y-m-d");
                     <br>
             </div>
             <div class="text">
-                    
-
+                <?php
+                //============================ TRAITEMENT POST POUR NOTE DE CRITERE ==============================================>
+                if(isset($_POST['criteriaScores']) and !empty($_POST['criteriaScores'])){
+                    var_dump($_POST);
+                    if(!empty($_POST['confort']) && !empty($_POST['proprete']) && !empty($_POST['accueil']) && !empty($_POST['qualite/prix']) && !empty($_POST['emplacement'])){
+                        $confort =     intval($_POST['confort']);
+                        $proprete =    intval($_POST['proprete']);
+                        $accueil =     intval($_POST['accueil']);
+                        $qualitePrix = intval($_POST['qualite/prix']);
+                        $emplacement = intval($_POST['emplacement']);
+                        $idDuClient = $_SESSION['id'];
+                        $idDeLaChambre = $_GET['id'];
+                        //insertCriteria($dbh,$idDuClient,$idDeLaChambre);
+                    }else{
+                        $error = "Veuillez donnez une note pour chaque champs";
+                    }
+                }
+                //affichage du formulaire pour les notes des différents champs
+                ?>
+                
                 <?php if(isset($_SESSION['id'])){
                             $user = getClient($dbh, $_SESSION['id']);
                             $isAdmin = $user['type'];

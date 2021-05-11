@@ -27,7 +27,25 @@ $pages = ceil($count/$parpage);
 $list = get_list_page($currentPage, $pages);
 
 //On récupère les informations des  "20" premiers clients à partir du premier client de la page
-$premiere = getPlanningOrder($dbh, $premier, $parpage);
+var_dump($_GET);
+if(empty($_GET['sort'])){
+    $premiere = getPlanningOrder($dbh, $premier, $parpage);
+}elseif(isset($_GET['sort'])){
+    $sort = $_GET['sort'];
+    if($sort==1){
+        $premiere = getPlanningOrder1($dbh, $premier, $parpage);
+    }elseif($sort==2){
+        $premiere = getPlanningOrder2($dbh, $premier, $parpage);
+    }elseif($sort==3){
+        $premiere = getPlanningOrder3($dbh, $premier, $parpage);
+    }elseif($sort==4){
+        $premiere = getPlanningOrder4($dbh, $premier, $parpage);
+    }else{
+        $premiere = getPlanningOrder($dbh, $premier, $parpage);
+    }
+}
+
+
 // var_dump($premiere);
 foreach($premiere as $premieres){
     $idReservation = $premieres['idReservation'];
@@ -44,13 +62,12 @@ foreach($premiere as $premieres){
 
             $arrayIds[] = array('idChambre'=> $idChambre , 'idReservation'=> $premieres['idReservation'], "dateDeDepart" => $dateStart, 'nombreDeJours' => $count,  'payed'=>$payed, 'prix'=>$totalPrice, 'client_id'=> $clientId);
                      
-}
-// var_dump($arrayIds);
+}   
             $todays = date("Y-m-d");
             $today = New DateTime("$todays");   
             $compteur = 0;
             foreach ($arrayIds as $arrayId){
-                // var_dump($arrayId);
+
                 $jour = $arrayId['dateDeDepart'];
                 $reservationDateStart = new DateTime("$jour");
                 $reservationDateStartFormatted = $reservationDateStart->format('Y-m-d');
@@ -58,11 +75,10 @@ foreach($premiere as $premieres){
                 $reservationDateEnd-> add(new DateInterval("P$arrayId[nombreDeJours]D"));
                 $reservationDateEndFormatted = $reservationDateEnd->format('Y-m-d');
                 
-                    $resultat[$compteur] = array('chambre_id'=>$arrayId['idChambre'], 'idReservation'=>$arrayId['idReservation'],  'dateStart'=>$reservationDateStartFormatted, 'dateEnd'=>$reservationDateEndFormatted, 'prix'=>$arrayId['prix'], 'paye'=>$arrayId['payed'],'nombreDeJours'=>$arrayId['nombreDeJours'], 'client_id'=>$arrayId['client_id']);
+                    $resultats[$compteur] = array('chambre_id'=>$arrayId['idChambre'], 'idReservation'=>$arrayId['idReservation'],  'dateStart'=>$reservationDateStartFormatted, 'dateEnd'=>$reservationDateEndFormatted, 'prix'=>$arrayId['prix'], 'paye'=>$arrayId['payed'],'nombreDeJours'=>$arrayId['nombreDeJours'], 'client_id'=>$arrayId['client_id']);
                 
                 $compteur ++;
             }
-            // var_dump($resultat);
 // ?>
 <!-- Feuilles de style de la page -->
 <style>
@@ -146,9 +162,70 @@ foreach($premiere as $premieres){
         color: #19B3D3;
         background-color: #ffffff;
     }
+    .dropbtn {
+        background-color: #19B3D3;
+        color: white;
+        padding: 16px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        border-radius: 15px;
+    }
+
+    /* The container <div> - needed to position the dropdown content */
+    .dropdown {
+        position: relative;
+        display: inline-block;
+        margin-left: 2%;
+    }
+
+    /* Dropdown Content (Hidden by Default) */
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: none;
+        backdrop-filter: blur(10px);
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+        border-radius: 20px;
+    }
+
+    /* Links inside the dropdown */
+    .dropdown-content a {
+        color: white;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        border-radius: 20px;
+    }
+
+    /* Change color of dropdown links on hover */
+    .dropdown-content a:hover {background-color: #19B3D3}
+
+    /* Show the dropdown menu on hover */
+    .dropdown:hover .dropdown-content {
+        display: block; 
+    }
+
+    /* Change the background color of the dropdown button when the dropdown content is shown */
+    .dropdown:hover .dropbtn {
+        background-color: #3e8e41;
+    }  
 </style>
 <!-- Affichage des clients -->
 <div class="content">
+    <div>
+    <div class="dropdown">
+        <button class="dropbtn">Trier</button>
+        <div class="dropdown-content">
+            <a href="administration-reservations.php?sort=1">ID croissant</a>
+            <a href="administration-reservations.php?sort=2">ID décroissant</a>
+            <a href="administration-reservations.php?sort=3">Date d'arrivée croissant</a>
+            <a href="administration-reservations.php?sort=4">Date d'arrivée décroissante</a>
+        </div>
+    </div>   
+    </div>
     <div class="globalAdmin">
         <div class="adminAffichage">
         <h2><a href="./administration.php" class="viewAll"><i class="fas fa-arrow-left"></i> <?= $lang['back']?></a> <?= $lang['bookingsAdministration']?> <i class="fas fa-table"></i></h2>
@@ -166,7 +243,7 @@ foreach($premiere as $premieres){
                 </thead>
                 <tbody>
                 <?php
-                foreach ($resultat as $res){
+                foreach ($resultats as $res){
                     $id = $res['idReservation'];
                     $chid = $res['chambre_id'];
                     $dateStart = $res['dateStart'];
@@ -202,8 +279,10 @@ foreach($premiere as $premieres){
                     else {
                         if ($link == $currentPage) {
                             echo '<span>' . $link . '</span>';
-                        } else {
+                        }elseif (($link != $currentPage)&& empty($_GET['sort'])) {
                             echo '<a href="?page=' . $link . '">' . $link . '</a>';
+                        }elseif (($link != $currentPage)&& !empty($_GET['sort'])){
+                            echo '<a href="?page=' . $link .'&sort='.$sort. '">' . $link . '</a>';
                         }
                     }
                 }

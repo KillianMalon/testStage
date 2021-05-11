@@ -63,7 +63,6 @@ $lang = array(
     'roomCreated' => 'La chambre à bien été enregistrée',
     'error' => 'Une erreur est survenue',
     'confirmInscription' => 'Votre inscription à été enregistré, bienvenue sur notre site!',
-    'confirmReservation' => 'Confirmez votre réservation en appuyant sur le bouton',
     'ValidateYourBooking' => 'Valider votre réservation',
     'yourMail' => 'Votre mail',
     'yourMessage' => 'Votre message',
@@ -77,6 +76,7 @@ $lang = array(
     'reservationNumber' => 'La réservation numéro',
     'deleteOk' => 'à bien été supprimée!',
     'publishedOn' => 'Publié le',
+    'ConfirmReservation' => 'Il vous suffit de cliquer sur le bouton pour valider la réservation',
 
 );
 ?>

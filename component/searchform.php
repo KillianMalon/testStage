@@ -186,20 +186,20 @@ input, select{
                         ?>
                     </select>
                     
-                       
                 </div>
-                       
-
+                  
             </div>  
-            <div class="option">
-                <div>
-                    <label>Wi-Fi</label>
-                    <input type="checkbox" name="options[]" value="wifi">
-                </div>  
-                <div>  
-                    <label>Piscine</label>
-                    <input type="checkbox" name="options[]" value="piscine">
-                </div>        
+            <div class="option">    
+                    <?php
+                    $options = getOptions($dbh);
+                    foreach ($options as $option){?>
+                    <div>
+                        <label><?= $option['option'] ?></label>
+                        <input type="checkbox" name="options[]" value="<?= $option['id'] ?>">
+                    </div>
+                    <?php
+                    }
+                    ?>
             </div>   
             <button type="submit">Rechercher</button>
         </form>
