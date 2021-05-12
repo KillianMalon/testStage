@@ -1,4 +1,5 @@
 <?php
+require_once '../component/session.php';
 require_once '../component/header.php';
 require_once 'bdd.php';
 require_once '../functions/sql.php';
@@ -9,15 +10,19 @@ if(isset($_GET['key']) AND !empty($_GET['key'])){
     //si la clé est valide
     if($ok === 1){
         if(isset($_POST['send'])){
+            //on vérifie si les champs ne sont pas video
             if(isset($_POST['pwd']) AND !empty($_POST['pwd']) AND isset($_POST['pwdV']) AND !empty($_POST['pwdV'])){
                 $passwordLength = strlen($_POST['pwd']);
+                //on vérifie la longueur du mot de passe
                 if($passwordLength >= 7 && $passwordLength <= 30){
                     $pwd = sha1($_POST['pwd']);
                     $pwdV = sha1($_POST['pwdV']);
+                    //on vérifie si le mot de passe correspond à sa confirmation
                     if($pwd === $pwdV){
                         $infos = getClientInformationsByKey($dbh, $key);
                         $id = $infos['id'];
                         updatePassword($dbh,$pwd,$id);
+                        //on connecte automatiquement le client
                         $_SESSION['id'] = $id;
                         $msg = "Votre nouveau mot de passe à été enregistré";
                         ?>

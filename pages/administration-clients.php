@@ -1,4 +1,5 @@
 <?php
+require_once '../component/session.php';
 require_once '../component/header.php';
 require_once '../functions/sql.php';
 require_once 'bdd.php';
@@ -27,7 +28,7 @@ $pages = ceil($count/$parpage);
 $list = get_list_page($currentPage, $pages);
 
 //On récupère les informations des  "20" premiers clients à partir du premier client de la page
-$premiere = getClientOrder($dbh, $premier, $parpage);
+$premiere = getAllClients($dbh);
 
 ?>
 <!-- Feuilles de style de la page -->
@@ -152,7 +153,11 @@ if(isset($_GET['search']) AND !empty($_GET['search'])){
                 <?php
                 if ((isset($_GET['search']) and !empty($_GET['search']) and isset($search) and !empty($search) and $none === 1)
                 || !(isset($_GET['search']) and !empty($_GET['search']))){
+
+                }
+                $countt = 0;
                 foreach ($premiere as $client){
+                if ($premier <= $countt && $countt < ($currentPage*$parpage)){
                     $id = $client['id'];
                     $nom = $client['nom'];
                     $prenom = $client['prenom'];
@@ -166,7 +171,8 @@ if(isset($_GET['search']) AND !empty($_GET['search'])){
                     <td> <?php echo isset($type)? $type : " " ?> </td>
                     <td> <a href="modifClient.php?client=<?php echo $id ?>"><?= $lang['edit']?></a> </td>
                 </tr>
-                <?php } ?>
+                <?php }$countt++;
+                } ?>
 
                 </tbody>
 
@@ -181,30 +187,30 @@ if ((isset($clientCount) && $clientCount > $parpage) ||
             <div class="pagination">
                 <?php
                 foreach($list AS $link) {
-                    if ($link == '...')
+                    if ($link == '...') {
                         echo $link;
-                    else {
+                    }else {
                         if ($link == $currentPage) {
                             echo '<span>' . $link . '</span>';
-                        } else {
+                        }elseif (($link != $currentPage)&& empty($_GET['search'])) {
                             echo '<a href="?page=' . $link . '">' . $link . '</a>';
+                        }elseif (($link != $currentPage)&& !empty($_GET['search'])){
+                            echo '<a href="?page=' . $link .'&search='.$search. '">' . $link . '</a>';
                         }
                     }
                 }
                 ?></div>
-                <?php
-                }
-?>
         </div>
         </div>
-
     </div>
 
     <?php
     }else{
     ?>
         <tr>
-            <th><?= $message ?></th>
+            <th><?php if (isset($message)){
+                $message; }?></th>
+
         </tr>
     <?php
     }

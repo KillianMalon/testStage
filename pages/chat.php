@@ -1,7 +1,9 @@
 <?php
+require_once '../component/session.php';
 require_once '../component/header.php';
+require_once '../functions/functions.php';
 require_once '../functions/sql.php';
-require_once 'bdd.php';
+require_once  'bdd.php';
 
 if (isset($_SESSION['id']) && !empty($_SESSION['id'])){
 

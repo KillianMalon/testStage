@@ -1,4 +1,5 @@
 <?php
+require_once '../component/session.php';
 require_once '../component/header.php';
 require_once '../functions/sql.php';
 require_once '../functions/functions.php';
@@ -36,8 +37,6 @@ if (isset($_SESSION['id'])){
         }
 
 
-        
-
         // foreach ($arrayIds as $arrayId){ var_dump($arrayId);
 
                 
@@ -51,8 +50,6 @@ if (isset($_SESSION['id'])){
                 $reservationDateEnd = $reservationDateStart;
                 $reservationDateEnd-> add(new DateInterval("P$arrayId[nombreDeJours]D"));
                 $reservationDateEndFormatted = $reservationDateEnd->format('Y-m-d');
-                
-                
                 if ($reservationDateEnd < $today){
                     $passed[$compteur] = array('chambre_id'=>$arrayId['idChambre'], 'idReservation'=>$arrayId['idReservation'],  'dateStart'=>$reservationDateStartFormatted, 'dateEnd'=>$reservationDateEndFormatted,'prix'=>$arrayId['prix'], 'paye'=>$arrayId['payed'],'nombreDeJours'=>$arrayId['nombreDeJours']);
                 }elseif ($reservationDateStart >= $today){
@@ -61,7 +58,7 @@ if (isset($_SESSION['id'])){
                 $compteur ++;
             }
             if (!empty($future)):?>
-                <h2 class="futur">Réservations en cours/à venir</h2>
+                <h2 class="futur">Réservations en cours/à venir <a href="pdfViewer.php">Voir la galerie de vos PDF</a></h2>
                 <br>
                 <table>
                     <thead>
@@ -109,7 +106,9 @@ if (isset($_SESSION['id'])){
                                         <?php }else{ echo 'Payez la réservation'; }?>
                                 </td>
                                 <td>
+                                    <!--Le from pointe vers sendPdf.php-->
                                     <form action="sendPdf.php" method="post">
+                                        <!--Je passe de manière caché pour l'utilisateur les données qui me seront nécessaires pour le traitement  -->
                                         <input type="hidden" name="idReservation" value="<?= $future2['idReservation'] ?>">
                                         <input type="hidden" name="dateStart" value="<?= $future2['dateStart']; ?>">
                                         <input type="hidden" name="prix" value="<?php echo $future2['prix'] ?>">
@@ -153,13 +152,11 @@ if (isset($_SESSION['id'])){
                     </tr>
                     </thead>
                     <tbody>
-                    <?php foreach ($passed as $passed2): ?>
+                    <?php foreach($passed as $passed2): ?>
                         <tr>
                             <td style="font-weight: bold;" class="id"><?php echo($passed2['chambre_id'])?></td>
                             <td class="jour"><?php echo($passed2['dateStart'])?></td>
                             <td class="jour"><?php echo($passed2['dateEnd'])?></td>
-                                
-                            
                             <td class="paye">                           
                                     <?php echo ($passed2['paye']? '✅' : '🔴');?>      
                             </td>
@@ -208,6 +205,11 @@ if (isset($_SESSION['id'])){
         text-decoration: underline;
         font-style: italic;
         margin-left: 10%;
+    }
+    .futur a{
+        color: blue;
+        font-size: 15px;
+        text-decoration: none;
     }
     .form{
         margin : 0px

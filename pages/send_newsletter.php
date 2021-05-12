@@ -1,8 +1,9 @@
 <?php
+require_once '../component/session.php';
 require_once '../component/header.php';
 require_once '../functions/sql.php';
 require_once 'bdd.php';
-
+//on récupère tout ceux qui ont accepté la newsletter
 $allmails = getMailsNewsletter($dbh);
 
 if (isset($_POST['contenu']) && !empty($_POST['contenu'])){

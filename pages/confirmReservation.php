@@ -1,6 +1,5 @@
 <?php
-
-require_once '../component/header.php';
+require_once '../component/session.php';
 require '../functions/functions.php';
 require_once '../functions/sql.php';
 require_once  'bdd.php';
@@ -41,8 +40,9 @@ if (!empty($_SESSION['start']) && !empty($_SESSION['end']) &&  !empty($_SESSION[
         $dateEndFormatted = $endDateTime->format('Y-m-d H:i:s');
         addReservation($dbh, $chambreId, $dateStartFormatted, $id, $idReserv);
         $startDateTime->add(new DateInterval('P1D'));
+        header('Location:./reservations.php');
         ?>
-        <meta http-equiv="refresh" content="0;URL=./reservations.php">
+        <!-- <meta http-equiv="refresh" content="0;URL=./reservations.php"> -->
         <?php
     }
     
@@ -74,8 +74,9 @@ if (!empty($_SESSION['start']) && !empty($_SESSION['end']) &&  !empty($_SESSION[
     unset($_SESSION['numberChild']);
     header('Location:../index.php');
 }
-
+require_once '../component/header.php';
 ?>
+
 
 
 <!-- Affichage de la demande de confirmation de réservation -->

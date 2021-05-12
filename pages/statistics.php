@@ -1,4 +1,5 @@
 <?php
+require_once '../component/session.php';
 require_once '../component/header.php';
 require_once '../functions/sql.php';
 require_once 'bdd.php';
@@ -17,20 +18,25 @@ require_once 'bdd.php';
 <div class="content">
 
     <?php
+    //on récupère toutes les vues pour chacune des chambres
 $alls = getAllViews($dbh);
 
 $total = 0;
 $nb = 0;
 
 foreach ($alls as $all){
+    //on récupère le nombre de vues totales toutes chambres confondu
     $total = $total + $all['vues'];
 }
 ?>
     <div class="miseEnPage">
     <?php
 foreach ($alls as $all){
+    //on calcule le poid de chaque chambre sur le nombre de vue total
     $prcnt = $all['vues'] * 100 / $total;
+    //arrondit pour un
     $prcnt = round($prcnt);
+    //on crée un itérateur fictif
     $nb = $nb+1;
     ?>
         <p>

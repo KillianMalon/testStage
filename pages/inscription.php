@@ -1,4 +1,5 @@
 <?php
+require_once '../component/session.php';
 require_once '../component/header.php';
 require_once '../functions/sql.php';
 require_once '../functions/functions.php';
@@ -16,12 +17,13 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
             $lastNameLength = strlen(mbUcfirst(mb_strtolower($lastName)));
             if($lastNameLength <= 256){
                 $mail = htmlspecialchars($_POST['mail']);
+                //on vérifie s'il s'agit d'un email valide (dans la forme mais il peut ne pas exister)
                 if (filter_var($mail, FILTER_VALIDATE_EMAIL)) {
                     $mailCount = mailCheck($dbh, $mail);
                     if($mailCount === 0){
                         $mailVerify = htmlspecialchars($_POST['mailVerify']);
                         if($mail === $mailVerify){
-                            //je hashe le mot de passe
+                            //je hache le mot de passe
                             $password = sha1($_POST['password']);
                             $passwordVerify = sha1($_POST['passwordVerify']);
                             if($password === $passwordVerify){
@@ -45,6 +47,7 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
                                                         }else {
                                                             $_POST['image'] = "https://i.ibb.co/47nY0vM/default-avatar.jpg";
                                                         }
+                                                        //je vérifie si l'url est valide
                                                         if (filter_var($_POST['image'], FILTER_VALIDATE_URL)) {
                                                             $extensionOk = array('.jpg', '.png', 'webp','.gif','jpeg','.psd', '.svg');
                                                             $lastCharacters = substr($_POST['image'], -4);

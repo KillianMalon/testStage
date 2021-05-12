@@ -1,4 +1,6 @@
 <?php
+
+require_once '../component/session.php';
 require_once '../component/header.php';
 require_once '../functions/sql.php';
 require_once 'bdd.php';
@@ -64,6 +66,68 @@ require_once 'bdd.php';
     .capacity{
         color: lightslategrey ;
     }
+    .dropbtn {
+        background-color: #19B3D3;
+        color: white;
+        padding: 16px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        border-radius: 15px;
+    }
+
+    /* The container <div> - needed to position the dropdown content */
+    .dropdown {
+        position: relative;
+        display: inline-block;
+        margin-left: 2%;
+    }
+
+    /* Dropdown Content (Hidden by Default) */
+    <?php if(empty($_SESSION['theme'])):?>
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: black;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 20px;
+        }
+    <?php else: ?>
+    .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: none;
+            backdrop-filter: blur(10px);
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 20px;
+    }   
+        
+    <?php endif; ?>    
+    /* Links inside the dropdown */
+    .dropdown-content a {
+        color: white;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        border-radius: 20px;
+    }
+
+    /* Change color of dropdown links on hover */
+    .dropdown-content a:hover {background-color: #19B3D3}
+
+    /* Show the dropdown menu on hover */
+    .dropdown:hover .dropdown-content {
+        display: block; 
+    }
+
+    /* Change the background color of the dropdown button when the dropdown content is shown */
+    .dropdown:hover .dropbtn {
+        background-color: #3e8e41;
+    }
     @media screen and (max-width:600px){
         .description{
             display: none;
@@ -80,7 +144,7 @@ require_once 'bdd.php';
     }
 </style>
 <?php ?>
-<div class="content">
+<main class="content">
 
         <br><br>
         <?php
@@ -91,47 +155,59 @@ require_once 'bdd.php';
             $chambres = getAllRoom($dbh);
 
         }elseif(!empty($_GET['sort']) && empty($_POST['search'])){
-            if ($_GET['sort'] == "nomAZ") {
-                $statement = $dbh->prepare('SELECT chambres.*,tarifs.prix, libelle FROM chambres,tarifs WHERE chambres.tarif_id = tarifs.id ORDER BY id ASC ');
-            }else if ($_GET['sort'] == "nomZA"){
-                $statement = $dbh->prepare('SELECT chambres.*,tarifs.prix, libelle FROM chambres,tarifs WHERE chambres.tarif_id = tarifs.id ORDER BY id DESC ');
-            }else if ($_GET['sort'] =="prixCroissant"){
-                $statement = $dbh->prepare('SELECT chambres.*,tarifs.prix, libelle FROM chambres,tarifs WHERE chambres.tarif_id = tarifs.id ORDER BY tarif_id ASC');
-            }else if ($_GET['sort'] =="prixDecroissant"){
-                $statement = $dbh->prepare('SELECT chambres.*,tarifs.prix, libelle FROM chambres,tarifs WHERE chambres.tarif_id = tarifs.id ORDER BY tarif_id DESC ');
+            if ($_GET['sort'] == 1) {
+                $chambres = getAllRoom($dbh);
+            }else if ($_GET['sort'] == 2){
+                $chambres = getAllRoom2($dbh);
+            }else if ($_GET['sort'] == 3){
+                $chambres = getAllRoom3($dbh);
+            }else if ($_GET['sort'] == 4){
+                $chambres = getAllRoom4($dbh);
             }
             if (!empty($statement)) {
                 $statement->execute(); // execute le SQL dans la base de données (MySQL / MariaDB)
                 $chambres = $statement->fetchAll(PDO::FETCH_ASSOC);
             }
-        }elseif (!empty($_POST['search'])){
-            $search = $_POST['search'];
-            $statement = $dbh->prepare("SELECT chambres.*,tarifs.prix, libelle FROM chambres,tarifs WHERE chambres.tarif_id = tarifs.id AND chambres.id = '$search' ORDER BY tarifs.prix ASC ");
-            $statement->execute();
-            $chambres = $statement->fetchAll(PDO::FETCH_ASSOC);
-            if (empty($chambres)) {
-                $statement = $dbh->prepare('SELECT chambres.*,tarifs.prix, libelle FROM chambres,tarifs WHERE chambres.tarif_id = tarifs.id AND prix LIKE "%' . $search . '%" ORDER BY tarifs.prix ASC ');
-                $statement->execute();
-                $chambres = $statement->fetchAll(PDO::FETCH_ASSOC);
-                if (empty($chambres)) {
-                    $statement = $dbh->prepare('SELECT chambres.*,tarifs.prix, libelle FROM chambres,tarifs WHERE chambres.tarif_id = tarifs.id AND exposition LIKE "%' . $search . '%" ORDER BY tarifs.prix ASC ');
-                    $statement->execute();
-                    $chambres = $statement->fetchAll(PDO::FETCH_ASSOC);
-                    if (empty($chambres)) {
-                        $statement = $dbh->prepare('SELECT chambres.*,tarifs.prix, libelle FROM chambres,tarifs WHERE chambres.tarif_id = tarifs.id AND libelle LIKE "%' . $search . '%" ORDER BY tarifs.prix ASC ');
-                        $statement->execute();
-                        $chambres = $statement->fetchAll(PDO::FETCH_ASSOC);
-                        if (empty($chambres)) {
-                            $statement = $dbh->prepare('SELECT chambres.*,tarifs.prix, libelle FROM chambres,tarifs WHERE chambres.tarif_id = tarifs.id AND description LIKE "%' . $search . '%" ORDER BY tarifs.prix ASC ');
-                            $statement->execute();
-                            $chambres = $statement->fetchAll(PDO::FETCH_ASSOC);
-                        }
-                    }
-                }
-            }
         }
+        // }elseif (!empty($_POST['search'])){
+        //     $search = $_POST['search'];
+        //     $statement = $dbh->prepare("SELECT chambres.*,tarifs.prix, libelle FROM chambres,tarifs WHERE chambres.tarif_id = tarifs.id AND chambres.id = '$search' ORDER BY tarifs.prix ASC ");
+        //     $statement->execute();
+        //     $chambres = $statement->fetchAll(PDO::FETCH_ASSOC);
+        //     if (empty($chambres)) {
+        //         $statement = $dbh->prepare('SELECT chambres.*,tarifs.prix, libelle FROM chambres,tarifs WHERE chambres.tarif_id = tarifs.id AND prix LIKE "%' . $search . '%" ORDER BY tarifs.prix ASC ');
+        //         $statement->execute();
+        //         $chambres = $statement->fetchAll(PDO::FETCH_ASSOC);
+        //         if (empty($chambres)) {
+        //             $statement = $dbh->prepare('SELECT chambres.*,tarifs.prix, libelle FROM chambres,tarifs WHERE chambres.tarif_id = tarifs.id AND exposition LIKE "%' . $search . '%" ORDER BY tarifs.prix ASC ');
+        //             $statement->execute();
+        //             $chambres = $statement->fetchAll(PDO::FETCH_ASSOC);
+        //             if (empty($chambres)) {
+        //                 $statement = $dbh->prepare('SELECT chambres.*,tarifs.prix, libelle FROM chambres,tarifs WHERE chambres.tarif_id = tarifs.id AND libelle LIKE "%' . $search . '%" ORDER BY tarifs.prix ASC ');
+        //                 $statement->execute();
+        //                 $chambres = $statement->fetchAll(PDO::FETCH_ASSOC);
+        //                 if (empty($chambres)) {
+        //                     $statement = $dbh->prepare('SELECT chambres.*,tarifs.prix, libelle FROM chambres,tarifs WHERE chambres.tarif_id = tarifs.id AND description LIKE "%' . $search . '%" ORDER BY tarifs.prix ASC ');
+        //                     $statement->execute();
+        //                     $chambres = $statement->fetchAll(PDO::FETCH_ASSOC);
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
         ?>
-
+    <div>
+    <div class="dropdown">
+        <button class="dropbtn">Trier</button>
+        <div class="dropdown-content"> 
+            <a href="chambres.php?sort=1">A-Z</a>
+            <a href="chambres.php?sort=2">Z-A</a>
+            <a href="chambres.php?sort=3">Prix croissant</a>
+            <a href="chambres.php?sort=4">Prix décroissant</a>
+            
+        </div>
+    </div>   
+    </div>
 <?php //Affichage des informations récupérées pour chaque chambre
     if (!empty($chambres)):
         if(isset($_SESSION['id'])){
@@ -160,7 +236,9 @@ require_once 'bdd.php';
     <?php endif; ?>
     <br><br>
 </div>
-  
+<?php
+require_once '../component/footer.php';  
+
 
 
 

@@ -1,11 +1,11 @@
 <?php
-//require_once '../component/header.php';
+require_once '../component/session.php';
+require_once '../component/header.php';
 require_once '../functions/sql.php';
 require_once '../functions/functions.php';
 require_once 'bdd.php';
-
+// CONFIRMATION D'AJOUT D'UNE CHAMBREQ
 if (isset($_POST['description']) && !empty($_POST['description'])) {
-
     $count = countChambers($dbh);
     $id = $count['0'];
     $id = (int) $id + 1;
@@ -16,7 +16,6 @@ if (isset($_POST['description']) && !empty($_POST['description'])) {
     $prix = $_POST['prix'];
     $description = $_POST['description'];
     $img = $_POST['image'];
-
     addChamber($dbh, $id, $capacite, $exposition, $douche, $etage, $prix, $description, $img);
     sendMailChamber($dbh);
 ?>

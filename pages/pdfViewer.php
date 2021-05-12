@@ -1,12 +1,14 @@
 <?php
+require_once '../component/session.php';
+
 require_once '../component/header.php';
 require_once 'bdd.php';
 $id = $_SESSION['id'];
 //le dossier sur lequel j'ai envie de travailler
 $dir = "Facture";
 //je stocke dans folder tous les enfants de "Facture" (dans mon cas les id des clients qui sont des noms de dossiers)
-
 $trueDir = "Facture/".$id;
+//scandir liste le contenu d'un dossier et array_slice permet de retirer les "." et ".." qui permettent à scandir de tout récup
 $files = array_slice(scandir($trueDir), 2);
 ?>
 <style>
@@ -30,7 +32,7 @@ $files = array_slice(scandir($trueDir), 2);
         margin-top: -2px;
         display: none;
         position: fixed;
-        width: 82%;
+        width: 83%;
         background: rgba(0,0,0,0.7);
     }
     .popup:target{
@@ -47,16 +49,19 @@ $files = array_slice(scandir($trueDir), 2);
 
 <?php
 foreach ($files as $file){
-//    preg_match_all('!\d+!', $file, $matches);
+    //je récupère que les nombres dans la chaine de caractères $file
     $out = preg_replace('~\D~', '', $file);
     ?>
         <div class="div">
-        <p style="text-align: center"><a href="#<?= $out ?>"  ><?= $file ?></a></p>
-        <embed style="margin-top: 1%" src="<?= $trueDir."/".$file ?>" width="400" height="300" type="">
+            <!--"a" qui target la popup et qui permet donc de l'afficher-->
+            <p style="text-align: center"><a href="#<?= $out ?>"  ><?= $file ?></a></p>
+            <embed style="margin-top: 1%" src="<?= $trueDir."/".$file ?>" width="400" height="300" type="">
         </div>
+    <!--POPUP qui s'affiche au click du "a" au dessus -->
     <div class="popup" id="<?= $out ?>">
         <a href="" style="color: white; text-decoration: none;">X</a>
         <br>
+        <!--Fabrication manuelle du chemin pour accèder au pdf-->
         <?php $bigPdf = $trueDir."/"."Facture-$out"; ?>
         <embed src="<?= $bigPdf ?>" type="">
     </div>

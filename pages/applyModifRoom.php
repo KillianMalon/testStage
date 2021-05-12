@@ -1,7 +1,8 @@
 <?php
+require_once '../component/session.php';
 require_once '../component/header.php';
 require_once '../functions/sql.php';
-require_once 'bdd.php';
+require_once  'bdd.php';
 
 //Stockage des informations du POST
 $id = $_POST['id'];

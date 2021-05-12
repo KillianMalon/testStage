@@ -1,13 +1,13 @@
 <?php
+require_once '../component/session.php';
 require_once '../component/header.php';
+require_once '../functions/functions.php';
 require_once '../functions/sql.php';
-require_once 'bdd.php';
+require_once  'bdd.php';
 
 //Récupération de l'iD de la chambre en GET
 if(!isset($_GET['room']) || empty($_GET['room'])){
-    ?>
-    <meta http-equiv="refresh" content="0;URL=../index.php">
-        <?php
+    header('Location:../index.php');
     exit();
 }
 echo '<div class="content">';

@@ -1,14 +1,16 @@
 <?php
+require_once '../component/session.php';
 require_once '../component/header.php';
 require_once '../functions/sql.php';
 require_once 'bdd.php';
 
 
 if (isset($_GET['reservation'])){
-echo "<div class='content'> <div></div>";
+echo "<div class='content'>";
     $id = $_GET['reservation'];
-
+    //on récupère toutes les lignes qui correspondent à l'id de réservation
     $list = getReservationbyrid($dbh, $id);
+    //on compte le nombre de ligne ou il y a l'id de réservation
     $count = countReservationbyid($dbh, $id);
 ?>
     <div class="adminAffichage">
