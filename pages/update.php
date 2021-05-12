@@ -1,12 +1,7 @@
 <?php
-require_once '../component/header.php';
+require_once '../component/session.php';
 require_once '../functions/sql.php';
 require_once 'bdd.php';
-if(!isset($_SESSION['lang']) && empty($_SESSION['lang'])){
-    $_SESSION['lang'] = 'fr';
-}
-$url = "../languages/".$_SESSION['lang'].".php";
-require_once $url;
 //Récupération des informations d'un client en focntion de son iD (stockée en SESSION)
 if (isset($_SESSION['id'])){
     $id = $_SESSION['id'];
@@ -24,6 +19,7 @@ if (isset($_SESSION['id'])){
     $country = getCountrybyid($dbh, $cid);
     //on entre que si y a un clique sur le bouton du formulaire
     if(isset($_POST['formModifications'])) {
+        //========================= CONDITION QUI PERMET DE MODIFIER QUE CE QUI EST MODIFIER PAR L'UTILISATEUR
         //on vérifie que la variable n'est pas vide, qu'elle existe puis on vérifie qu'elle est différente de celle de base, si elle ne l'est pas
         //on ne rentre pas dans la condition
         if (isset($_POST['fname']) and !empty($_POST['fname']) and $_POST['fname'] != $fname) {
@@ -132,12 +128,10 @@ if (isset($_SESSION['id'])){
                 $error = "Veuillez saisir l'url d'une image correct !";
             }
         }
-        ?>
-        <meta http-equiv="refresh" content="0;URL=./espace_client.php">
-        <?php
+        header('Location:./espace_client.php');
         
         }
-    // var_dump($_POST);
+        require_once '../component/header.php';
     ?>
     <style>
         .form1{
@@ -234,12 +228,15 @@ if (isset($_SESSION['id'])){
                 <div class="divForm">
                     <label class="label"><?= $lang['country']; ?> </label>
                     <select class="select" name="country" id="">
+                        <!--On affiche le pays du client comme étant la selection par défaut-->
                         <option default value="<?php echo $cid?>"><?php echo $country['nom_fr_fr'] ?></option>
                         <?php
+                        // récupération de tous les pays
                         $allCountry = getCountry($dbh);
-                        foreach($allCountry as $country){
+                        foreach($allCountry as $country) {
                             $countryId = $country['id'];
                             $countryName = $country['nom_fr_fr'];
+                            //on vérifie que le pays de l'utilisateur est différent du pays sur lequel on cycle (depuis la table ou il y a tous les payus)
                             if($countryId != $cid){
                                 ?>
                                 <option value="<?php echo $countryId?>"><?php echo $countryName; ?></option>

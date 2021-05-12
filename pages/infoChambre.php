@@ -1,5 +1,5 @@
 <?php
-require_once '../component/header.php';
+require_once '../component/session.php';
 require_once '../functions/functions.php';
 require_once '../functions/sql.php';
 require_once  'bdd.php';
@@ -16,8 +16,6 @@ if(!empty($_POST['start']) && !empty($_POST['end']) && !empty($_POST['idChambre'
 
     $numberAdult = intval($_POST['numberAdult']);
     $numberChild = checkCapacityChild($_POST['numberChild']);
-
-
 
     if ($trueStartDate == 1 && $trueEndDate == 1 && !empty($numberAdult) && !empty($numberChild)){
         if (!empty($_GET['id'])) {
@@ -54,9 +52,7 @@ if(!empty($_POST['start']) && !empty($_POST['end']) && !empty($_POST['idChambre'
                         $_SESSION['numberAdult'] = $numberAdult;
                         $_SESSION['numberChild'] = $numberChild;
                         if (!empty($_SESSION['start']) && !empty($_SESSION['end']) &&  !empty($_SESSION['chambreId'])  &&  !empty($_SESSION['numberAdult']) && isset($_SESSION['numberChild'])) {
-                        ?>
-                            <meta http-equiv="refresh" content="0;URL=./confirmReservation.php">
-                                <?php
+                        header('Location:./chambre.php');
                         }
                     }
                 }
@@ -76,6 +72,8 @@ if(!empty($_POST['textarea'])){
     <meta http-equiv="refresh" content="0">
         <?php
 }
+require_once '../component/header.php';
+
 ?>
 <!-- Style de la page -->
 <style>
@@ -496,6 +494,7 @@ $todays = date("Y-m-d");
                             $trueAccueil /= $nbTotalOfNotes;
                             $trueQualitePrix /= $nbTotalOfNotes;
                             $trueEmplacement /= $nbTotalOfNotes;
+                            //je prépare dans un tableau toutes les notes "finale" pour les utilisé pour la barre indicative pour chaque critères
                             $noteForProgressBar =array($trueConfort, $trueProprete,$trueAccueil, $trueQualitePrix, $trueEmplacement );
                             //je fais la moyenne globale en rassemblant toutes les moyennes des critères
                                 $totalAverage = ($trueConfort + $trueProprete + $trueAccueil + $trueQualitePrix + $trueEmplacement) / $nbOfNotesPerCustomer;
@@ -508,6 +507,7 @@ $todays = date("Y-m-d");
                                 $('.stars').stars();
                             });
                         </script>
+                    <!-- je vérifie qu'il y a au moins une note pour que s'affiche les étoiles-->
                     <?php if(isset($nbTotalOfNotes) AND $nbTotalOfNotes != 0){ ?>
                     <!--C ici que les etoiles s'affichent -->
                         <p>  Note (<?= $nbTotalOfNotes ?>) :  <span class="stars" data-rating="<?= $totalAverage ?>" data-num-stars="5" ></span></p>
@@ -589,7 +589,9 @@ $todays = date("Y-m-d");
 
         <?php
         //============================ TRAITEMENT POST POUR NOTE DE CRITERE ==============================================>
+        //je vérifie laquelle des fonctions je veux appeler (ajout ou modification de note)
         if(isset($_POST['createNote']) && !empty($_POST['createNote']) || isset($_POST['changeNote']) && !empty($_POST['changeNote'])){
+            //je vérifie que tous les champs sont bien rempli
             if(!empty($_POST['confort']) && !empty($_POST['proprete']) && !empty($_POST['accueil']) && !empty($_POST['qualite/prix']) && !empty($_POST['emplacement'])){
                 $confort =     intval($_POST['confort']);
                 $proprete =    intval($_POST['proprete']);
@@ -598,6 +600,7 @@ $todays = date("Y-m-d");
                 $emplacement = intval($_POST['emplacement']);
                 $idDuClient = $_SESSION['id'];
                 $idDeLaChambre = $_GET['id'];
+                //je veux savoir lequel des 2 de la première condition est celui qui m'interresse
                 if(isset($_POST['changeNote'])){
                     updateNotesOfCriteria($dbh,$confort, $proprete,$accueil, $qualitePrix, $emplacement, $idDuClient, $idDeLaChambre);
                     ?>
@@ -642,15 +645,21 @@ $todays = date("Y-m-d");
 
         </div>
         <div class="commentary">
-            <p>Notes : </p>
+
             <?php
+            // je vérifie qu'il y a au moins 1 note
             if($nbTotalOfNotes != 0){
-            $criteres2 = array('Confort', 'Propreté', 'Accueil','Qualité/prix','Emplacement');
-            $nbOfCriteria2 = count($criteres2);
-            for($i = 0; $i < $nbOfCriteria2;$i++){
+            ?>
+                <p>Notes : </p>
+            <?php
+                $criteres2 = array('Confort', 'Propreté', 'Accueil','Qualité/prix','Emplacement');
+                $nbOfCriteria2 = count($criteres2);
+                for($i = 0; $i < $nbOfCriteria2;$i++){
             ?>
                 <div class="criteria">
+                    <!--J'affiche le nom de chaque critère-->
                     <label for="file"><?= $criteres2[$i] ?></label>
+                    <!--j'affiche la barre de progresse, la value c la note moyenne (à tous les utilisateurs) que l'on a calculé plus haut-->
                     <progress id="file" max="5" value="<?= $noteForProgressBar[$i] ?>"></progress> <?= $noteForProgressBar[$i] ?>
                 </div>
                 <?php
@@ -665,6 +674,7 @@ $todays = date("Y-m-d");
                 $nbOfCriteria = count($criteres);
                 $clientId = $_SESSION['id'];
                 $roomId = intval($_GET['id']);
+                //je vérifie qu'il y a au moins une note pour le client dans cette chambre
                 $nb = noteVerif($dbh, $clientId, $roomId);
                 if($nb != 0){
                     $clientNotes = getNotesByClientIdAndRoomId($dbh, $clientId, $roomId);

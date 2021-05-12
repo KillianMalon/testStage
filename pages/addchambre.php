@@ -1,4 +1,5 @@
 <?php
+require_once '../component/session.php';
 require_once '../component/header.php';
 require_once '../functions/sql.php';
 require_once 'bdd.php';
@@ -27,10 +28,13 @@ require_once 'bdd.php';
             <label><?= $lang['floor'] ?> :</label>
             <select required name="etage">
                 <option default value="1">1</option>
+                <!--On récupère la liste des étages qui existe-->
                 <?php $stages = ListEtage($dbh);
                 $etage = 1;
+                //on cycle sur tous les étages
                 foreach ($stages as $stage){
                     $etages = $stage['etage'];
+                    //on vérifie que l'étage est différent de celui par défaut
                     if ($etages != $etage){?>
                         <option value="<?= $etages ?>"><?= $etages ?></option>
                     <?php }
@@ -42,6 +46,7 @@ require_once 'bdd.php';
             <label><?= $lang['price'] ?> :</label>
             <select required name="prix">
                 <?php
+                //on récupère tous les prix
                 $prices = getPrices($dbh);
                 foreach ($prices as $price){
                     $prixd = $price['prix'];

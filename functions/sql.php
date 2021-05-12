@@ -124,6 +124,21 @@ function getAllRoom($dbh){
     $query->execute();
     return $query ->fetchAll( PDO::FETCH_ASSOC );
 }
+function getAllRoom2($dbh){
+    $query = $dbh->prepare( 'SELECT chambres.*,tarifs.prix FROM chambres,tarifs WHERE chambres.tarif_id = tarifs.id ORDER BY id DESC ');
+    $query->execute();
+    return $query ->fetchAll( PDO::FETCH_ASSOC );
+}
+function getAllRoom3($dbh){
+    $query = $dbh->prepare( 'SELECT chambres.*,tarifs.prix FROM chambres,tarifs WHERE chambres.tarif_id = tarifs.id ORDER BY tarifs.prix ASC ');
+    $query->execute();
+    return $query ->fetchAll( PDO::FETCH_ASSOC );
+}
+function getAllRoom4($dbh){
+    $query = $dbh->prepare( 'SELECT chambres.*,tarifs.prix FROM chambres,tarifs WHERE chambres.tarif_id = tarifs.id ORDER BY tarifs.prix DESC  ');
+    $query->execute();
+    return $query ->fetchAll( PDO::FETCH_ASSOC );
+}
 
 //Fonction pour obtenir la valeur d'un prix en fonction de son id
 function getPricebyid($dbh, $tid)
@@ -441,11 +456,16 @@ function getPlanningOrder4($dbh){
     return $toto = $query->fetchAll();
 }
 
-// function getPlanningOrder($dbh, $premier, $parpage){
-//     $query = $dbh->prepare('SELECT * FROM planning ORDER BY idReservation DESC LIMIT ?, ?');
-//     $query->execute(array($premier, $parpage));
-//     return $toto = $query->fetchAll();
-// }
+function getPlanningOrder5($dbh, $premier, $parpage){
+    $query = $dbh->prepare('SELECT * FROM planning ORDER BY chambre_id ASC LIMIT ?, ?');
+    $query->execute(array($premier, $parpage));
+    return $toto = $query->fetchAll();
+}
+function getPlanningOrder6($dbh, $premier, $parpage){
+    $query = $dbh->prepare('SELECT * FROM planning ORDER BY chambre_id DESC LIMIT ?, ?');
+    $query->execute(array($premier, $parpage));
+    return $toto = $query->fetchAll();
+}
 
 function getAllMessages($dbh){
     $query = $dbh->prepare('SELECT * FROM messages');
@@ -615,4 +635,14 @@ function noteVerif($dbh, $id, $roomId){
     $query = $dbh->prepare('SELECT * FROM criterenote WHERE clientId = ? AND chambreId = ?');
     $query ->execute(array($id, $roomId));
     return $nb = $query->rowCount();
+}
+function addReservationDel($dbh, $chambreId, $dateStart, $id, $idReservation){
+    $query = $dbh->prepare( "INSERT INTO deleted_planning (chambre_id, jour, paye, client_id, idReservation) VALUES(?, ?, '0', ?, ?)" );
+    $query->execute(array($chambreId,$dateStart, $id, $idReservation));
+    return $query->fetchAll();
+}
+function getOptionsbyid($dbh, $id){
+    $query = $dbh->prepare('SELECT * FROM options WHERE id = ?');
+    $query->execute(array($id));
+    return $all = $query->fetchAll();
 }

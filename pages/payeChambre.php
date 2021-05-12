@@ -1,9 +1,10 @@
 <?php
-require_once '../component/header.php';
+require_once '../component/session.php';
+
 require_once '../functions/sql.php';
 require_once '../functions/functions.php';
 require_once 'bdd.php';
-
+//on met les valeurs de post de la page réservations dans des variables pour s'en servir dans le formulaire plus bas
 if(isset($_POST['dateStart'])) {
     $dateStart = $_POST['dateStart'];
     $dateEnd = $_POST['dateEnd'];
@@ -13,9 +14,10 @@ if(isset($_POST['dateStart'])) {
     $nombreDeJours2 = $_POST['nombreDeJours'];
     $prix = $_POST['prix'];
 }
+//on vérifie s'il y a on récupère bien un id de la page réservation
 if (!empty($_POST['idReservation'])) {
     $reservationId = $_POST['idReservation'];
-
+//on vérifie qu'on récupère bien l'id sur cette page
 }elseif (!empty($_POST['reservationId'])){
     $idReservation= $_POST['reservationId'];
     $dateStart = $_POST['dateStart'];
@@ -30,14 +32,13 @@ if (!empty($_POST['idReservation'])) {
     payedReservation($dbh, $idReservation);
     $auro = 1;
     generatePdf($dbh, $idReservation, $lname, $fname,$dateStart , $dateEnd, $chambreId, $nombreDeJours2, $prix,$auto, $clientId);
-    ?>
-    <meta http-equiv="refresh" content="0;URL=./reservations.php">
-<?php
+    header('Location:./reservations.php');
 }else{
     ?>
     <meta http-equiv="refresh" content="0;URL=./reservations.php">
     <?php
 }
+require_once '../component/header.php';
 ?>
 <div class='content'>
     <form method="post" action="">

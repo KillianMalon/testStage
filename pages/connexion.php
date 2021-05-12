@@ -2,7 +2,8 @@
 if(isset($_SESSION['id'])){
     header("Location:../index.php");
 }
-require_once '../component/header.php';
+require_once '../component/session.php';
+
 require_once '../functions/sql.php';
 require_once 'bdd.php';
 
@@ -10,17 +11,17 @@ require_once 'bdd.php';
 if(isset($_POST['send']) AND !empty($_POST['send'])){
     $mail = htmlspecialchars($_POST['mail']);
     $password = sha1($_POST['password']);
+    //vérificaiton champs remplis
     if(!empty($mail) AND !empty($password)){
         $query = getUserByMailAndPassword($dbh, $mail, $password);
         $userExist = $query->rowCount();
+        //on vérifie si l'utilisateur existe
         if($userExist === 1 ){
             $user = $query->fetch();
             //on vérifie si l'utilisateur à bien cliqué sur le lien dans son mail !
             if($user['statut'] === 1) {
                 $_SESSION['id'] = $user['id'];
-                    ?>
-                    <meta http-equiv="refresh" content="0;URL=../index.php">
-                        <?php                   
+                    header('Location:../index.php');                  
                 exit();
             }else{
                 $error = "Veuillez confirmer votre compte en cliquant sur le lien que vous avez reçu par mail";
@@ -32,6 +33,7 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
         $error = "Tous les champs doivent être rempli";
     }
 }
+require_once '../component/header.php';
 ?>
 <style>
     .form{

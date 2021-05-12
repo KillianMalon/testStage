@@ -16,7 +16,7 @@ if(isset($_GET['page']) && !empty($_GET['page'])){
 $allclients = countPlanning($dbh);
 $count = (int) $allclients['0'];
 
-//On détermine le nombre de réservations que l'on veut voir par page
+//On détermine le nombre de client que l'on veut voir par page
 $parpage = 10;
 
 //On détermine le numéro du premier article de la page (si page 1, premier 1 ; si page 2, premier 11 ; etc...)
@@ -28,9 +28,10 @@ $pages = ceil($count/$parpage);
 //On crée un tableau qui sert à afficher, au niveau de la pagination, la 1e page, la dernière, la page actuelle et une page avant et après. Le reste est remplacé par "..."
 $list = get_list_page($currentPage, $pages);
 
-//On récupère les informations des  "20" premiers réservations à partir de la première réservation de la page
+//On récupère les informations des  "20" premiers clients à partir du premier client de la page
 if(empty($_GET['sort'])){
     $premiere = getPlanningOrder($dbh, $premier, $parpage);
+    // var_dump($premiere);
 }elseif(isset($_GET['sort'])){
     $sort = $_GET['sort'];
     if($sort==1){
@@ -39,35 +40,36 @@ if(empty($_GET['sort'])){
         $premiere = getPlanningOrder2($dbh, $premier, $parpage);
     }elseif($sort==3){
         $premiere = getPlanningOrder3($dbh);
+        // var_dump($premiere);
         
         foreach($premiere as $premieres){
             $idReservation = $premieres['idReservation'];
-            //Grâce à lid de chaque réservation on va chercher ici la plus grande date, soit la date de départ grâce à MAX en sql
             $resultat = dateStartReservationByReservId($dbh, $idReservation);
+            // var_dump($resultat);
             $dateStart = $resultat[0]['MAX(jour)'];
-            //On construit un tableau avec ses dates et avec comme index l'id de la réservation
             $array[$idReservation] = $dateStart;
 
         }
-        //je trie mon tableau par date grâce à uasort qui permet de trier sans reindexer le tableau et donc de conserver les idReservation couplé à OrderByDate
         uasort($array, "orderByDate2");
-        //je récupére les clés du tableau qui sont les idRéservation
         $tests = array_keys($array);
+        
         $compteur2=0;
-        //Avec le tableau trier je récupére uniquement les id de Réseravtion qui seront dans l'ordre où je veux les afficher
         foreach($tests as $test){
             $prem[] = array('idReservation' => $test);
             $compteur2++;
         } 
+        // var_dump($prem);
 
 
 
     }elseif($sort==4){
         $premiere = getPlanningOrder4($dbh);
+        // var_dump($premiere);
         
         foreach($premiere as $premieres){
             $idReservation = $premieres['idReservation'];
             $resultat = dateStartReservationByReservId($dbh, $idReservation);
+            // var_dump($resultat);
             $dateStart = $resultat[0]['MAX(jour)'];
             $array[$idReservation] = $dateStart;
 
@@ -80,12 +82,15 @@ if(empty($_GET['sort'])){
             $prem[] = array('idReservation' => $test);
             $compteur2++;
         } 
+        // var_dump($prem);
     }elseif($sort==5){
-        $premiere = getPlanningOrder3($dbh);
+        $premiere = getPlanningOrder3($dbh, $premier, $parpage);
+        // var_dump($premiere);
         
         foreach($premiere as $premieres){
             $idReservation = $premieres['idReservation'];
             $resultat = dateStartReservationByReservId2($dbh, $idReservation);
+            // var_dump($resultat);
             $dateStart = $resultat[0]['MIN(jour)'];
             $array[$idReservation] = $dateStart;
 
@@ -98,12 +103,15 @@ if(empty($_GET['sort'])){
             $prem[] = array('idReservation' => $test);
             $compteur2++;
         } 
+        // var_dump($prem);
     }elseif($sort==6){
         $premiere = getPlanningOrder4($dbh);
+        // var_dump($premiere);
         
         foreach($premiere as $premieres){
             $idReservation = $premieres['idReservation'];
             $resultat = dateStartReservationByReservId2($dbh, $idReservation);
+            // var_dump($resultat);
             $dateStart = $resultat[0]['MIN(jour)'];
             $array[$idReservation] = $dateStart;
 
@@ -116,10 +124,7 @@ if(empty($_GET['sort'])){
             $prem[] = array('idReservation' => $test);
             $compteur2++;
         } 
-    }elseif($sort==7){       
-        $premiere = getPlanningOrder5($dbh, $premier, $parpage);
-    }elseif($sort==8){       
-        $premiere = getPlanningOrder6($dbh, $premier, $parpage);
+        // var_dump($prem);
     }else{
         $premiere = getPlanningOrder($dbh, $premier, $parpage);
     }
@@ -128,37 +133,39 @@ if(empty($_GET['sort'])){
 
 // var_dump($premiere);
 if(!empty($prem)){
-    //$prem est le tableau obtenu suite au trie avec les dates je le met donc dans $premiere car celui-ci est utilisée pour le reste du traitement
     $premiere = $prem;
 }
+foreach($premiere as $premieres){
+    $idReservation = $premieres['idReservation'];
+    $resultat = reservationByReservId($dbh, $idReservation);
+            $clientId = $resultat[0]['client_id'];            
+            $dateStart = $resultat[0]['jour'];
+            $idChambre = $resultat[0]['chambre_id'];
+            $payed = $resultat[0]['paye'];
+            $priceperDay = getPriceRoom($dbh, $idChambre);
+            $price = $priceperDay['prix'];
+            $count = count($resultat);
+            $totalPrice = $price * $count;
 
-
-
+            $arrayIds[] = array('idChambre'=> $idChambre , 'idReservation'=> $premieres['idReservation'], "dateDeDepart" => $dateStart, 'nombreDeJours' => $count,  'payed'=>$payed, 'prix'=>$totalPrice, 'client_id'=> $clientId);
+                     
+}   
             $todays = date("Y-m-d");
             $today = New DateTime("$todays");   
             $compteur = 0;
-foreach($premiere as $premieres){
-    $idReservation = $premieres['idReservation'];
-    //Grâce aux idReservation je récupére toutes les infos liées à la chmabre
-    $resultat = reservationByReservId($dbh, $idReservation);
-    $clientId = $resultat[0]['client_id'];            
-    $dateStart = $resultat[0]['jour'];
-    $idChambre = $resultat[0]['chambre_id'];
-    $payed = $resultat[0]['paye'];
-    $priceperDay = getPriceRoom($dbh, $idChambre);
-    $price = $priceperDay['prix'];
-    $count = count($resultat);
-    $totalPrice = $price * $count;
-    $jour = $dateStart;
-    $reservationDateStart = new DateTime("$jour");
-    $reservationDateStartFormatted = $reservationDateStart->format('Y-m-d');
-    $reservationDateEnd = $reservationDateStart;
-    $reservationDateEnd-> add(new DateInterval('P'.$count.'D'));
-    $reservationDateEndFormatted = $reservationDateEnd->format('Y-m-d');
-    $resultats[$compteur] = array('chambre_id'=>$idChambre, 'idReservation'=>$premieres['idReservation'],  'dateStart'=>$reservationDateStartFormatted, 'dateEnd'=>$reservationDateEndFormatted, 'prix'=>$totalPrice, 'paye'=>$payed,'nombreDeJours'=>$count, 'client_id'=>$clientId);
-    $compteur ++;
-}   
+            foreach ($arrayIds as $arrayId){
 
+                $jour = $arrayId['dateDeDepart'];
+                $reservationDateStart = new DateTime("$jour");
+                $reservationDateStartFormatted = $reservationDateStart->format('Y-m-d');
+                $reservationDateEnd = $reservationDateStart;
+                $reservationDateEnd-> add(new DateInterval("P$arrayId[nombreDeJours]D"));
+                $reservationDateEndFormatted = $reservationDateEnd->format('Y-m-d');
+                
+                    $resultats[$compteur] = array('chambre_id'=>$arrayId['idChambre'], 'idReservation'=>$arrayId['idReservation'],  'dateStart'=>$reservationDateStartFormatted, 'dateEnd'=>$reservationDateEndFormatted, 'prix'=>$arrayId['prix'], 'paye'=>$arrayId['payed'],'nombreDeJours'=>$arrayId['nombreDeJours'], 'client_id'=>$arrayId['client_id']);
+                
+                $compteur ++;
+            }
             
 // ?>
 <!-- Feuilles de style de la page -->
@@ -261,29 +268,17 @@ foreach($premiere as $premieres){
     }
 
     /* Dropdown Content (Hidden by Default) */
-    <?php if(empty($_SESSION['theme'])):?>
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: black;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-            border-radius: 20px;
-        }
-    <?php else: ?>
     .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: none;
-            backdrop-filter: blur(10px);
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-            border-radius: 20px;
-    }   
-        
-    <?php endif; ?>    
+        display: none;
+        position: absolute;
+        background-color: none;
+        backdrop-filter: blur(10px);
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+        border-radius: 20px;
+    }
+
     /* Links inside the dropdown */
     .dropdown-content a {
         color: white;
@@ -318,8 +313,6 @@ foreach($premiere as $premieres){
             <a href="administration-reservations.php?sort=4">Date de départ décroissant</a>
             <a href="administration-reservations.php?sort=5">Date d'arrivée croissante</a>
             <a href="administration-reservations.php?sort=6">Date d'arrivée décroissante</a>
-            <a href="administration-reservations.php?sort=7">ID chambre croissante</a>
-            <a href="administration-reservations.php?sort=8">ID chambre décroissante</a>
             
         </div>
     </div>   
@@ -342,71 +335,34 @@ foreach($premiere as $premieres){
                 <tbody>
                 <?php
                 $countt = 0;
-                if(!empty($_GET['sort']) && ($_GET['sort'] > 2 && $_GET['sort'] < 7)){
-                    foreach ($resultats as $res){
-                        
-                            if ($premier <= $countt && $countt < ($currentPage*$parpage)){
-                            
-                                    $id = $res['idReservation'];
-                                    $chid = $res['chambre_id'];
-                                    $dateStart = $res['dateStart'];
-                                    $dateEnd = $res['dateEnd'];
-                                    $paye = $res['paye'];
-                                    $cid = $res['client_id'];
-                                ?>
-                                <tr>
-                                        <td style="font-weight: bold;" class="idres"><?= $id ?></td>
-                                        <td class="id"><?= $chid ?></td>
-                                        <td class="jour"><?= mb_substr($dateStart, 0, 10) ?></td>
-                                        <td class="jour"><?= mb_substr($dateEnd, 0, 10) ?></td>
-                                        <td class="paye">
-                                            <form class='form' method="post" action="payeChambre.php">
-                                                <?php echo ($paye? '✅' : '🔴');?>
-                                                <?php if ($paye == '0'):?>
-                                                    <input type="hidden" name="idReservation" value="<?= $id ?>">
-                                                <?php endif;?>
-                                            </form>
-                                        </td>
-                                    <td><a class="delete-button" href="./removeReservation.php?id=<?= $id ?>"><?= $lang['delete']?></a></td>
-                                </tr>
-                            <?php }
-                                $countt++;
-                    } ?>
-                <?php }else{ 
-                    foreach ($resultats as $res){
-                        
-                        
-                        
-                                $id = $res['idReservation'];
-                                $chid = $res['chambre_id'];
-                                $dateStart = $res['dateStart'];
-                                $dateEnd = $res['dateEnd'];
-                                $paye = $res['paye'];
-                                $cid = $res['client_id'];
-                            ?>
-                            <tr>
-                                    <td style="font-weight: bold;" class="idres"><?= $id ?></td>
-                                    <td class="id"><?= $chid ?></td>
-                                    <td class="jour"><?= mb_substr($dateStart, 0, 10) ?></td>
-                                    <td class="jour"><?= mb_substr($dateEnd, 0, 10) ?></td>
-                                    <td class="paye">
-                                        <form class='form' method="post" action="payeChambre.php">
-                                            <?php echo ($paye? '✅' : '🔴');?>
-                                            <?php if ($paye == '0'):?>
-                                                <input type="hidden" name="idReservation" value="<?= $id ?>">
-                                            <?php endif;?>
-                                        </form>
-                                    </td>
-                                <td><a class="delete-button" href="./removeReservation.php?id=<?= $id ?>"><?= $lang['delete']?></a></td>
-                            </tr>
-                    <?php }
-                            
+                foreach ($resultats as $res){
+                    if ($premier <= $countt && $countt < ($currentPage*$parpage)){
+
+                    $id = $res['idReservation'];
+                    $chid = $res['chambre_id'];
+                    $dateStart = $res['dateStart'];
+                    $dateEnd = $res['dateEnd'];
+                    $paye = $res['paye'];
+                    $cid = $res['client_id'];
+                ?>
+                <tr>
+                        <td style="font-weight: bold;" class="idres"><?= $id ?></td>
+                        <td class="id"><?= $chid ?></td>
+                        <td class="jour"><?= mb_substr($dateStart, 0, 10) ?></td>
+                        <td class="jour"><?= mb_substr($dateEnd, 0, 10) ?></td>
+                        <td class="paye">
+                            <form class='form' method="post" action="payeChambre.php">
+                                <?php echo ($paye? '✅' : '🔴');?>
+                                <?php if ($paye == '0'):?>
+                                    <input type="hidden" name="idReservation" value="<?= $id ?>">
+                                <?php endif;?>
+                            </form>
+                        </td>
+                    <td><a class="delete-button" href="./removeReservation.php?id=<?= $id ?>"><?= $lang['delete']?></a></td>
+                    </tr>
+                <?php }
+                    $countt++;
                 } ?>
-                    
-
-
-
-
                 </tbody>
             </table>
 

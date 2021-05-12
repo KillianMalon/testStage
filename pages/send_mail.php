@@ -1,4 +1,5 @@
 <?php
+require_once '../component/session.php';
 require_once '../component/header.php';
 require_once '../functions/functions.php';
 require_once '../functions/sql.php';
@@ -13,6 +14,7 @@ if (isset($_POST['email']) && !empty($_POST{'email'}) && isset($_POST['text']) &
     $headers  = 'From: '. $mail . "\r\n" .
         'MIME-Version: 1.0' . "\r\n" .
         'Content-type: text/html; charset=utf-8';
+    mail('envoiedemailtest@gmail.com', $subject, $text, $headers);
     if(mail('nathan.caruelle@epsi.fr', $subject, $text, $headers)) {
         mail($to, $subject, 'Votre message a bien été envoyé. Le voici : ' . $text, $headers);
         $msg = "Votre mail a bien été envoyé !";

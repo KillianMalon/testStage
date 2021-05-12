@@ -1,4 +1,5 @@
 <?php
+require_once '../component/session.php';
 require_once '../component/header.php';
 require_once '../functions/sql.php';
 require_once 'bdd.php';
@@ -69,12 +70,14 @@ foreach ($clients as $client){
                 <div>
                     <label><?= $lang['country'] ?></label>
                     <select name="civility" id="">
+                        <!--Affiche pays du client-->
                         <option default value="<?php echo $paysid?>"><?php echo $pays['nom_fr_fr'] ?></option>
                         <?php
                         $allCountry = getCountry($dbh);
                         foreach($allCountry as $country){
                             $countryId = $country['id'];
                             $countryName = $country['nom_fr_fr'];
+                            //on affiche tous les pays qui ne sont pas celui du client
                             if($countryId != $cid){
                                 ?>
                                 <option value="<?php echo $countryId?>"><?php echo $countryName; ?></option>
@@ -87,7 +90,9 @@ foreach ($clients as $client){
                     <div>
                         <label>Type</label>
                         <select name="type" id="">
+                            <!--On vérifie le type d'utilisatateur et on lui affiche le bon role -->
                             <option default value="<?php if($type == 'client'){ echo 'client';} elseif ($type == 'admin'){ echo 'admin';} ?>"><?php if($type == 'client'){ echo 'Client';} elseif ($type == 'admin'){ echo 'Admin';} ?></option>
+                            <!--On vérifie le type d'utilisatateur et on propose le role inverse en non selected -->
                             <option value="<?php if($type == 'client'){ echo 'admin';} elseif ($type == 'admin'){ echo 'client';} ?>"><?php if($type == 'client'){ echo 'Admin';} elseif ($type == 'admin'){ echo 'Client';} ?></option>
                         </select>
                     </div>

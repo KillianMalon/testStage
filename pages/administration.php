@@ -1,4 +1,5 @@
 <?php
+require_once '../component/session.php';
 require_once '../component/header.php';
 require_once '../functions/sql.php';
 require_once 'bdd.php';
@@ -69,7 +70,7 @@ require_once 'bdd.php';
         color: #19B3D3;
     }
 </style>
-<!-- Affichage admin client -->
+<!-- AFFICHAGE ADMIN CLIENT -->
 <div class="content">
    <div class="globalAdmin">
         <div class="adminAffichage"">
@@ -87,6 +88,7 @@ require_once 'bdd.php';
                    </thead>
                    <tbody>
                    <?php
+                   //on récupère les 10 derniers utilisateurs qui se sont inscrit sur le site
                         $clients = getLastUsers($dbh);
                         foreach($clients as $client){
                             $id = $client['id'];
@@ -107,6 +109,7 @@ require_once 'bdd.php';
                </table>
             </div>
         </div>
+    <!--AFFICHAGE ADMIN RESERVATION-->
         <div class="adminAffichage">
             <h2><?= $lang['bookingsAdministration'] ?> <i class="fas fa-table"></i> <a href="./administration-reservations.php" class="viewAll"> <?= $lang['seeAll'] ?> <i class="fas fa-arrow-right"></i></a></h2>
             <div>
@@ -141,6 +144,8 @@ require_once 'bdd.php';
                 </table>
             </div>
         </div>
+    <!--AFFICHAGE AJOUT DE CHAMBRE-->
+
     <div class="adminAffichage"><h2><?= $lang['addARoom'] ?></h2>
         <form name="addchambre" style="text-align: center" method="post" action="addchambre.php">
             <input class="buton-submit" name="submit" type="submit" value="<?= $lang['add'] ?>">

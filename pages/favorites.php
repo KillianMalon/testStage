@@ -1,4 +1,5 @@
 <?php
+require_once '../component/session.php';
 require_once '../component/header.php';
 require_once '../functions/sql.php';
 require_once 'bdd.php';
@@ -120,6 +121,7 @@ require_once 'bdd.php';
     $id = $_SESSION['id'];
     $clientInfos = getClient($dbh, $id);
     $numberOfFavorites = getNumberOfFavorite($dbh,$id);
+    //on vérifie si le client a un favoris
     if($numberOfFavorites === 0){
         ?>
         <div class="content">
@@ -127,6 +129,7 @@ require_once 'bdd.php';
         </div>
             <?php
     }
+    //on récupère les favoris du client
     $favorites = getFavoriteOfClient($dbh, $id);
     if(isset($_POST['delete'])){
         $idForRemove = $_POST['favoriteId'];
@@ -139,6 +142,7 @@ require_once 'bdd.php';
    <div class="content">
        
 <?php
+//on cycle sur tous les favoris du client
     foreach ($favorites as $favorite){
         $favoriteId = $favorite['id'];
         $chambreId = $favorite['chambre_id'];
