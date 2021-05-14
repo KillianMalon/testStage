@@ -7,8 +7,12 @@ require_once 'bdd.php';
 
 $resid = $_POST['IdReservation'];
 $allres = getReservationbyrid($dbh, $resid);
+$last = getLastiDCancel($dbh);
+$lastId = $last[0];
+$lastId1 = $lastId + 1;
+
 foreach ($allres as $res){
-    addReservationDel($dbh, $res['chambre_id'], $res['jour'], $res['client_id'], $resid);
+    addReservationDel($dbh, $res['chambre_id'], $res['jour'], $res['paye'], $res['client_id'], $lastId1);
 }
 removeReservation($dbh, $resid);
 

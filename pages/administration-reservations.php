@@ -126,20 +126,15 @@ if(empty($_GET['sort'])){
 }
 
 
-// var_dump($premiere);
 if(!empty($prem)){
     //$prem est le tableau obtenu suite au trie avec les dates je le met donc dans $premiere car celui-ci est utilisée pour le reste du traitement
     $premiere = $prem;
-}
-
-
-
-            $todays = date("Y-m-d");
-            $today = New DateTime("$todays");   
-            $compteur = 0;
+} 
+    //Ce compteur va me permettre d'indexer les tableau suivant
+    $compteur = 0;
 foreach($premiere as $premieres){
     $idReservation = $premieres['idReservation'];
-    //Grâce aux idReservation je récupére toutes les infos liées à la chmabre
+    //Grâce aux idReservation je récupére toutes les infos liées à celle-ci
     $resultat = reservationByReservId($dbh, $idReservation);
     $clientId = $resultat[0]['client_id'];            
     $dateStart = $resultat[0]['jour'];
@@ -147,14 +142,19 @@ foreach($premiere as $premieres){
     $payed = $resultat[0]['paye'];
     $priceperDay = getPriceRoom($dbh, $idChambre);
     $price = $priceperDay['prix'];
+    //Grâce à count je compte le nombre d'apparition de l'idReservation dans la table et j'obtiens le nombre de jours que contient la reservation
     $count = count($resultat);
+    //ce count me permet d'obtenir le prix total
     $totalPrice = $price * $count;
+    //Grâce à la date d'arrivée et le nombre de jours je peux obtenir la date de départ par ajout du $count
     $jour = $dateStart;
     $reservationDateStart = new DateTime("$jour");
     $reservationDateStartFormatted = $reservationDateStart->format('Y-m-d');
     $reservationDateEnd = $reservationDateStart;
     $reservationDateEnd-> add(new DateInterval('P'.$count.'D'));
     $reservationDateEndFormatted = $reservationDateEnd->format('Y-m-d');
+    //Une fois les dates récupérées je les convertis en string pout les renter dans le tableau dans le format souhaité
+    //ce tableau rescence toutes les réservations pour les afficher
     $resultats[$compteur] = array('chambre_id'=>$idChambre, 'idReservation'=>$premieres['idReservation'],  'dateStart'=>$reservationDateStartFormatted, 'dateEnd'=>$reservationDateEndFormatted, 'prix'=>$totalPrice, 'paye'=>$payed,'nombreDeJours'=>$count, 'client_id'=>$clientId);
     $compteur ++;
 }   
@@ -312,6 +312,7 @@ foreach($premiere as $premieres){
     <div class="dropdown">
         <button class="dropbtn">Trier</button>
         <div class="dropdown-content">
+        <!-- Ici ce sont les filtres nous n'avons pas de formulaire pour passer le sort dans l'URL nous le simulont en rechargeant la page et en le mettant à la fin comme s'il avait été passé en GET -->
             <a href="administration-reservations.php?sort=1">ID croissant</a>
             <a href="administration-reservations.php?sort=2">ID décroissant</a>
             <a href="administration-reservations.php?sort=3">Date de départ croissante</a>
@@ -422,6 +423,7 @@ foreach($premiere as $premieres){
                             echo '<span>' . $link . '</span>';
                         }elseif (($link != $currentPage)&& empty($_GET['sort'])) {
                             echo '<a href="?page=' . $link . '">' . $link . '</a>';
+                            //Ici nous allons penser à la pagination et au tri pour cela nous devons passer en GET le numéro de la page ainsi que le trie 
                         }elseif (($link != $currentPage)&& !empty($_GET['sort'])){
                             echo '<a href="?page=' . $link .'&sort='.$sort. '">' . $link . '</a>';
                         }
