@@ -23,7 +23,7 @@ function getCapacity($dbh, $numeroChambre){
 
 //Fonction pour vérifier que la date de réservation est libre
 function checkReservationsEmpty($dbh, $date, $id){
-    $query = $dbh->prepare( "SELECT * FROM planning WHERE chambre_id = ? AND jour = ?" );
+    $query = $dbh->prepare( "SELECT * FROM planning WHERE chambre_id = ? AND jour = ? " );
     $query->execute(array($id, $date)); // execute le SQL dans la base de données (MySQL / MariaDB)
     return $query->fetchAll( PDO::FETCH_ASSOC );
 }
@@ -308,7 +308,13 @@ function getLastReservationId($dbh){
 
 //Fonction qui récupère les réservations d'un client en supprimant les doublons
 function reservationByUserId($dbh, $id){
-    $query = $dbh->prepare("SELECT DISTINCT idReservation FROM planning WHERE client_id = ?");
+    $query = $dbh->prepare("SELECT DISTINCT idReservation FROM planning WHERE client_id = ? ");
+    $query->execute(array($id));
+    return $last = $query->fetchAll();
+}
+//Fonction qui récupère les réservations d'un client en supprimant les doublons
+function reservationByUserIdCancel($dbh, $id){
+    $query = $dbh->prepare("SELECT DISTINCT idReservation FROM deleted_planning WHERE client_id = ?");
     $query->execute(array($id));
     return $last = $query->fetchAll();
 }
@@ -316,6 +322,12 @@ function reservationByUserId($dbh, $id){
 //Fonction qui récupère les réservations en fonction d'un iD de réservation
 function ReservationByReservationId($dbh, $idReservation){
     $query = $dbh->prepare("SELECT * FROM planning WHERE idReservation = ?");
+    $query->execute(array($idReservation));
+    return $last = $query->fetchAll();
+}
+//Fonction qui récupère les réservations en fonction d'un iD de réservation
+function ReservationByReservationIdCancel($dbh, $idReservation){
+    $query = $dbh->prepare("SELECT * FROM deleted_planning WHERE idReservation = ?");
     $query->execute(array($idReservation));
     return $last = $query->fetchAll();
 }
@@ -490,6 +502,11 @@ function getLastiD($dbh, $id){
     $query->execute(array($id));
     return $select = $query->fetch();
 }
+function getLastIdCancel($dbh){
+    $query = $dbh->prepare('SELECT idReservation FROM deleted_planning  ORDER BY idReservation DESC LIMIT 1');
+    $query->execute();
+    return $select = $query->fetch();
+}
 
 function getLastMessage ($dbh, $id){
     $query = $dbh->prepare('SELECT * FROM messages WHERE id = ? ORDER BY date');
@@ -636,13 +653,17 @@ function noteVerif($dbh, $id, $roomId){
     $query ->execute(array($id, $roomId));
     return $nb = $query->rowCount();
 }
-function addReservationDel($dbh, $chambreId, $dateStart, $id, $idReservation){
-    $query = $dbh->prepare( "INSERT INTO deleted_planning (chambre_id, jour, paye, client_id, idReservation) VALUES(?, ?, '0', ?, ?)" );
-    $query->execute(array($chambreId,$dateStart, $id, $idReservation));
+function addReservationDel($dbh, $chambreId, $dateStart, $payed, $id, $idReservation){
+    $query = $dbh->prepare( "INSERT INTO deleted_planning (chambre_id, jour, paye, client_id, idReservation) VALUES(?, ?, ?, ?, ?)" );
+    $query->execute(array($chambreId,$dateStart, $payed, $id, $idReservation));
     return $query->fetchAll();
 }
 function getOptionsbyid($dbh, $id){
     $query = $dbh->prepare('SELECT * FROM options WHERE id = ?');
     $query->execute(array($id));
     return $all = $query->fetchAll();
+}
+function cancelReservation($dbh, $redid){
+    $query = $dbh->prepare('UPDATE planning SET annule = 1 WHERE idReservation = ?');
+    $query->execute(array($redid));
 }

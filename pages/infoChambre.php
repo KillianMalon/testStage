@@ -52,7 +52,7 @@ if(!empty($_POST['start']) && !empty($_POST['end']) && !empty($_POST['idChambre'
                         $_SESSION['numberAdult'] = $numberAdult;
                         $_SESSION['numberChild'] = $numberChild;
                         if (!empty($_SESSION['start']) && !empty($_SESSION['end']) &&  !empty($_SESSION['chambreId'])  &&  !empty($_SESSION['numberAdult']) && isset($_SESSION['numberChild'])) {
-                        header('Location:./chambre.php');
+                        header('Location:./confirmReservation.php');
                         }
                     }
                 }

@@ -12,51 +12,76 @@ if (isset($_SESSION['id'])){
     $client = getClient($dbh, $uid);
     $lname = $client['nom'];
     $fname = $client['prenom'];
-    // $count = countReservations($dbh, $uid);
-    $rlists = getReservations($dbh, $uid);
+    //récupération de toutes les réservations d'un client
+    $reservationsByUsereId = reservationByUserId($dbh, $_SESSION['id']);
     $i = 0;
-    if(!empty($rlists)){
-        
-        $reservationsByUsereId = reservationByUserId($dbh, $_SESSION['id']);
+    //nous vérifions que le client a bien des réservations aavant de les afficher
+    if(!empty($reservationsByUsereId)){
+        //Ce compteur va me permettre d'indexer les tableau suivant
+        $compteur = 0;
         foreach($reservationsByUsereId as $reservationByUsereId){
             $idReservation = $reservationByUsereId['idReservation'];
-        
-            $nombre = 0;
+            //pour chaque réservation nous récupérons toutes les infos associés
             $reservations = ReservationByReservationId($dbh, $idReservation); 
-
             $dateStart = $reservations[0]['jour'];
             $idChambre = $reservations[0]['chambre_id'];
             $payed = $reservations[0]['paye'];
             $priceperDay = getPriceRoom($dbh, $idChambre);
             $price = $priceperDay['prix'];
+            //Grâce à count je compte le nombre d'apparition de l'idReservation dans la table et j'obtiens le nombre de jours que contient la reservation
             $count = count($reservations);
+            //ce count me permet d'obtenir le prix total
             $totalPrice = $price * $count;
-
-            $arrayIds[] = array('idChambre'=> $idChambre , 'idReservation'=> $reservationByUsereId['idReservation'], "dateDeDepart" => $dateStart, 'nombreDeJours' => $count,  'payed'=>$payed, 'prix'=>$totalPrice);
             
-        }
-
-
-        // foreach ($arrayIds as $arrayId){ var_dump($arrayId);
-
-                
+            //je récupére la date d'aujourd'hui
             $todays = date("Y-m-d");
             $today = New DateTime("$todays");   
-            $compteur = 0;
-            foreach ($arrayIds as $arrayId){
-                $jour = $arrayId['dateDeDepart'];
+            
+            //Grâce à la date d'arrivée et le nombre de jours je peux obtenir la date de départ par ajout du $count
+                $jour = $dateStart;
                 $reservationDateStart = new DateTime("$jour");
                 $reservationDateStartFormatted = $reservationDateStart->format('Y-m-d');
                 $reservationDateEnd = $reservationDateStart;
-                $reservationDateEnd-> add(new DateInterval("P$arrayId[nombreDeJours]D"));
+                $reservationDateEnd-> add(new DateInterval("P".$count."D"));
                 $reservationDateEndFormatted = $reservationDateEnd->format('Y-m-d');
+                //Grâce à la date du jour mais aussi grâce à la de départ je peux voir si une réservation est passée est en fonction de cela je met celle-ci dans un tableau différent
                 if ($reservationDateEnd < $today){
-                    $passed[$compteur] = array('chambre_id'=>$arrayId['idChambre'], 'idReservation'=>$arrayId['idReservation'],  'dateStart'=>$reservationDateStartFormatted, 'dateEnd'=>$reservationDateEndFormatted,'prix'=>$arrayId['prix'], 'paye'=>$arrayId['payed'],'nombreDeJours'=>$arrayId['nombreDeJours']);
+                    $passed[$compteur] = array('chambre_id'=>$idChambre, 'idReservation'=>$idReservation,  'dateStart'=>$reservationDateStartFormatted, 'dateEnd'=>$reservationDateEndFormatted,'prix'=>$price, 'paye'=>$payed,'nombreDeJours'=>$count);
                 }elseif ($reservationDateStart >= $today){
-                    $future[$compteur] = array('chambre_id'=>$arrayId['idChambre'], 'idReservation'=>$arrayId['idReservation'],  'dateStart'=>$reservationDateStartFormatted, 'dateEnd'=>$reservationDateEndFormatted, 'prix'=>$arrayId['prix'], 'paye'=>$arrayId['payed'],'nombreDeJours'=>$arrayId['nombreDeJours']);
+                    $future[$compteur] = array('chambre_id'=>$idChambre, 'idReservation'=>$idReservation,  'dateStart'=>$reservationDateStartFormatted, 'dateEnd'=>$reservationDateEndFormatted, 'prix'=>$price, 'paye'=>$payed,'nombreDeJours'=>$count);
                 }
                 $compteur ++;
+            }  
+        }
+        
+        //M^me principe qu'au dessus mais pour les réservtaions annulés
+        $reservationsByUsereIdCancel = reservationByUserIdCancel($dbh, $_SESSION['id']);
+        if(!empty($reservationsByUsereIdCancel)){
+            $compteur = 0;
+            foreach($reservationsByUsereIdCancel as $reservationByUsereIdCancel){
+                $idReservation = $reservationByUsereIdCancel['idReservation'];
+                $reservations = ReservationByReservationIdCancel($dbh, $idReservation); 
+                $dateStart = $reservations[0]['jour'];
+                $idChambre = $reservations[0]['chambre_id'];
+                $payed = $reservations[0]['paye'];
+                $priceperDay = getPriceRoom($dbh, $idChambre);
+                $price = $priceperDay['prix'];
+                $count = count($reservations);
+                $totalPrice = $price * $count;
+                    $jour = $dateStart;
+                    $reservationDateStart = new DateTime("$jour");
+                    $reservationDateStartFormatted = $reservationDateStart->format('Y-m-d');
+                    $reservationDateEnd = $reservationDateStart;
+                    $reservationDateEnd-> add(new DateInterval("P".$count."D"));
+                    $reservationDateEndFormatted = $reservationDateEnd->format('Y-m-d');
+
+                $cancel[$compteur] = array('chambre_id'=>$idChambre, 'idReservation'=>$idReservation,  'dateStart'=>$reservationDateStartFormatted, 'dateEnd'=>$reservationDateEndFormatted, 'prix'=>$price, 'paye'=>$payed,'nombreDeJours'=>$count);
+                $compteur ++;
+                }  
             }
+}    
+ 
+            
             if (!empty($future)):?>
                 <h2 class="futur">Réservations en cours/à venir <a href="pdfViewer.php">Voir la galerie de vos PDF</a></h2>
                 <br>
@@ -116,13 +141,10 @@ if (isset($_SESSION['id'])){
                                     </form>
                                 </td>
                                 <td>
-                                    <button>X</button>
-                                    <!-- <form action="" method="post">
-                                        <input type="hidden" name="chambreId" value="<?php echo($future2['chambre_id'])?>">
-                                        <input type="hidden" name="day" value="<?php echo($future2['jour'])?>">
-                                        <input type="hidden" name="clientId" value="<?php echo($_SESSION['id'])?>">
+                                    <form action="delete_reservation.php" method="post">
+                                        <input type="hidden" name="IdReservation" value="<?php echo($future2['idReservation'])?>">
                                         <input type="submit" class="btn btn-danger" value="X">
-                                    </form> -->
+                                    </form>
                                 </td> 
                                 <td><?php echo($future2['prix'])?> €</td>
                             </tr>
@@ -177,13 +199,47 @@ if (isset($_SESSION['id'])){
 
             <?php endif;?>
 
+            <?php if (!empty($cancel)):?>
+
+            <h2 class="futur">Réservations annulés</h2>
+            <br>
+            <table>
+                <thead>
+                <tr>
+                    <th>Numéro chambre</th>
+                    <th>Date d'arrivée</th>
+                    <th>Date de départ</th>
+                    <th>Chambre payé</th>
+                    <th>Prix</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach($cancel as $cancel2): ?>
+                    <tr>
+                        <td style="font-weight: bold;" class="id"><?php echo($cancel2['chambre_id'])?></td>
+                        <td class="jour"><?php echo($cancel2['dateStart'])?></td>
+                        <td class="jour"><?php echo($cancel2['dateEnd'])?></td>
+                        <td class="paye">                           
+                                <?php echo ($cancel2['paye']? '✅' : '🔴');?>      
+                        </td>
+                        <td><?php echo($cancel2['prix'])?> €</td>  
+                    </tr>
+                <?php endforeach;?>
+                <tbody>
+            </table>
+            <br>
+
+
+
+            <?php endif;?>
+
     <?php
-        } ?>
+         ?>
 
 
     
     <?php
-}
+
         echo "</div>";
 
     ?>
