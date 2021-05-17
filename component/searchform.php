@@ -205,6 +205,6 @@ input, select{
         </form>
     </div>    
 </div>
-
+<!-- <?php require_once 'cookie.php'; ?> -->
 </body>
 </html>

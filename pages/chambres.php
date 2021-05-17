@@ -144,11 +144,11 @@ require_once 'bdd.php';
     }
 </style>
 <?php ?>
-<main class="content">
+<div class="content">
 
         <br><br>
         <?php
-// Requêtes de selectiond es informations des chambres
+    // Requêtes de selectiond es informations des chambres
     ?>
         <?php
         if (empty($_GET['sort']) && empty($_POST['search'])){
@@ -197,45 +197,46 @@ require_once 'bdd.php';
         // }
         ?>
     <div>
-    <div class="dropdown">
-        <button class="dropbtn">Trier</button>
-        <div class="dropdown-content"> 
-            <a href="chambres.php?sort=1">A-Z</a>
-            <a href="chambres.php?sort=2">Z-A</a>
-            <a href="chambres.php?sort=3">Prix croissant</a>
-            <a href="chambres.php?sort=4">Prix décroissant</a>
-            
-        </div>
-    </div>   
-    </div>
-<?php //Affichage des informations récupérées pour chaque chambre
-    if (!empty($chambres)):
-        if(isset($_SESSION['id'])){
-            $client = getClient($dbh, $_SESSION['id']);
-            $type = $client['type'];
-        }
-        ?>
-        <?php foreach ($chambres as $chambre): ?>
-            <div class="chambre">
-                <div class="picture"><img src="<?php echo($chambre['image'])?>"></div>
-                <div class="text">
-                    <h3><?= $lang['room']; ?>  <?php echo($chambre['id'])?></h3>
-                    <p class="description"><?php echo($chambre['description'])?></p>
-                    <p class="capacity"><?php echo($chambre['capacite'])?>  <?php echo $chambre['capacite'] < 2 ? $lang['aPerson']  : $lang['people'];;?></p>
-                </div>
-                <div class="prix">
-                    <h2 class="price"><?php echo($chambre['prix'])?> €</h2>
-                    <a href="infoChambre.php?id=<?php echo($chambre['id'])?>"><button class="button"><?php echo (isset($type) AND $type ==="admin")? $lang['see'] : $lang['book'] ?></button></a>
-                </div>
+        <div class="dropdown">
+            <button class="dropbtn">Trier</button>
+            <div class="dropdown-content"> 
+                <a href="chambres.php?sort=1">A-Z</a>
+                <a href="chambres.php?sort=2">Z-A</a>
+                <a href="chambres.php?sort=3">Prix croissant</a>
+                <a href="chambres.php?sort=4">Prix décroissant</a>
+                
             </div>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <div class="milieu">
-            <p> Aucun résultat pour votre recherche</p>
-        </div>
-    <?php endif; ?>
-    <br><br>
+        </div>   
+    </div>
+    <?php //Affichage des informations récupérées pour chaque chambre
+        if (!empty($chambres)):
+            if(isset($_SESSION['id'])){
+                $client = getClient($dbh, $_SESSION['id']);
+                $type = $client['type'];
+            }
+            ?>
+            <?php foreach ($chambres as $chambre): ?>
+                <div class="chambre">
+                    <div class="picture"><img src="<?php echo($chambre['image'])?>"></div>
+                    <div class="text">
+                        <h3><?= $lang['room']; ?>  <?php echo($chambre['id'])?></h3>
+                        <p class="description"><?php echo($chambre['description'])?></p>
+                        <p class="capacity"><?php echo($chambre['capacite'])?>  <?php echo $chambre['capacite'] < 2 ? $lang['aPerson']  : $lang['people'];;?></p>
+                    </div>
+                    <div class="prix">
+                        <h2 class="price"><?php echo($chambre['prix'])?> €</h2>
+                        <a href="infoChambre.php?id=<?php echo($chambre['id'])?>"><button class="button"><?php echo (isset($type) AND $type ==="admin")? $lang['see'] : $lang['book'] ?></button></a>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <div class="milieu">
+                <p> Aucun résultat pour votre recherche</p>
+            </div>
+        <?php endif; ?>
+        <br><br>
 </div>
+
 <?php
 require_once '../component/footer.php';  
 

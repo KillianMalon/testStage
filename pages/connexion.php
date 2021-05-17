@@ -130,6 +130,7 @@ require_once '../component/header.php';
     ?>
 </div>
 </div>
-
+<?php require_once '../component/footer.php';?>
 </body>
+
 </html>

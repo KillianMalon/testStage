@@ -15,3 +15,4 @@ require_once '../component/header.php';
 <div class="content">
     <p style="background-color: forestgreen; color: white; text-align: center;"><?= $lang['reservationNumber'] ?> <?= $id ?> <?= $lang['deleteOk'] ?></p>
 </div>
+<?php require_once '../component/footer.php';?>

@@ -153,3 +153,4 @@ require_once 'bdd.php';
     </div>
    </div>
 </div>
+<?php require_once '../component/footer.php';?>

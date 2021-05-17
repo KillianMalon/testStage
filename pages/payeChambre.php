@@ -54,3 +54,4 @@ require_once '../component/header.php';
 
     </form>
 </div>
+<?php require_once '../component/footer.php';?>

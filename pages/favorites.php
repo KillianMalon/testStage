@@ -179,3 +179,4 @@ require_once 'bdd.php';
     }
 ?>
 </div>
+<?php require_once '../component/footer.php';?>

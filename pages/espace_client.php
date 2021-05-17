@@ -108,3 +108,4 @@ if (isset($_SESSION['id'])){
     <?php
 }
 ?>
+<?php require_once '../component/footer.php';?>

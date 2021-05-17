@@ -97,3 +97,4 @@ foreach ($alls as $all){
 
 </body>
 </html>
+<?php require_once '../component/footer.php';?>

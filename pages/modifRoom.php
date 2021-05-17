@@ -113,3 +113,4 @@ foreach ($rooms as $room) {
 </div>
 <?php
 }
+ require_once '../component/footer.php';?>

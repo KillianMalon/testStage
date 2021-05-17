@@ -28,3 +28,4 @@ $ok = $lang['roomModificationOk'];
 <div class="content">
     <p style="background-color: forestgreen; color: white; text-align: center;"><?php echo isset($ok)? $ok : "";?></p>
 </div>
+<?php require_once '../component/footer.php';?>

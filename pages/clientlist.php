@@ -109,3 +109,4 @@ foreach ($clients as $client){
 <?php
 }
 ?>
+<?php require_once '../component/footer.php';?>

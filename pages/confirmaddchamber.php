@@ -31,3 +31,4 @@ if (isset($_POST['description']) && !empty($_POST['description'])) {
 <?php
 }
 ?>
+<?php require_once '../component/footer.php';?>

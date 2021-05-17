@@ -72,3 +72,4 @@ require_once 'bdd.php';
         <input type="submit" value="<?= $lang['add'] ?>">
     </form>
 </div>
+<?php require_once '../component/footer.php';?>

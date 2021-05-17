@@ -336,3 +336,4 @@ else{
     }
 }
 ?>
+<?php require_once '../component/footer.php';?>

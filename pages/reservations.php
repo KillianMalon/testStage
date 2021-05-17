@@ -243,6 +243,7 @@ if (isset($_SESSION['id'])){
         echo "</div>";
 
     ?>
+    <?php require_once '../component/footer.php';?>
     <style>
 
     table{

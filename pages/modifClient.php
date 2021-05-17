@@ -93,3 +93,4 @@ if(isset($_POST['modif'])){
     <br>
     <img style="width: 250px;height: auto;" src="<?php echo isset($img)? $img :" " ?>">
 </div>
+<?php require_once '../component/footer.php';?>

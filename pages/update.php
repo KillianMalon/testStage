@@ -265,3 +265,4 @@ if (isset($_SESSION['id'])){
     </div>
 
             <?php } ?>
+            <?php require_once '../component/footer.php';?>

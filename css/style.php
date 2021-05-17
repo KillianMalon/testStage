@@ -199,7 +199,7 @@ label #sidebar_btn:hover{
   margin-top: 60px;
   padding: 20px;
   margin-left: 250px;
-  height: 100vh;
+  height: 100%;
   transition: 0.5s;
 }
 .window{

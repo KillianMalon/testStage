@@ -744,3 +744,4 @@ $todays = date("Y-m-d");
         <p><?= $lang['noRoom']?></p>
     </div>
 <?php endif;?>
+<?php require_once '../component/footer.php';?>

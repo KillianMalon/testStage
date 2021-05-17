@@ -16,3 +16,4 @@ require_once  'bdd.php';
         </form>
     </div>
 </div>
+<?php require_once '../component/footer.php';?>

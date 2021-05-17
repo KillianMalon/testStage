@@ -85,6 +85,6 @@ if(isset($_POST['verify']) AND !empty($_POST['verify'])){
     }
     ?>
 <div>
-
+<?php require_once '../component/footer.php';?>
 
     
