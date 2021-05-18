@@ -15,7 +15,7 @@ require_once 'bdd.php';
     h1 {
       text-align: center;
     }
-    p:first-of-type {
+    .para:first-of-type {
       text-align: center;
     }
   </style>
@@ -23,10 +23,10 @@ require_once 'bdd.php';
     <div class="content">
       <div class="global">
         <h1>Mentions Légales</h1>
-        <p>En vigueur au 17/05/2021</p>
+        <p class="para">En vigueur au 17/05/2021</p>
         <div></div>
 
-        <p>
+        <p class="para">
           Conformément aux dispositions des Articles 6-III et 19 de la Loi
           n°2004-575 du 21 juin 2004 pour la Confiance dans l’économie numérique,
           dite L.C.E.N., il est porté à la connaissance des Utilisateurs du site
@@ -37,7 +37,7 @@ require_once 'bdd.php';
           légales ».
         </p>
         <h3>ARTICLE 1 : L’éditeur</h3>
-        <p>
+        <p class="para">
           L’édition et la direction de la publication du site dorianroulet.com est
           assurée par Dorian ROULET, domiciliée adressedudomicile, dont le numéro
           de téléphone est 0608626513, et l'adresse e-mail
@@ -48,7 +48,7 @@ require_once 'bdd.php';
         siège social est situé au RCS Clermont Ferrand SARL, avec le numéro de
         téléphone : 04 44 44 60 40.
         <h3>ARTICLE 3 : Accès au site</h3>
-        <p>
+        <p class="para">
           Le site est accessible par tout endroit, 7j/7, 24h/24 sauf cas de force
           majeure, interruption programmée ou non et pouvant découlant d’une
           nécessité de maintenance. En cas de modification, interruption ou
@@ -56,7 +56,7 @@ require_once 'bdd.php';
           responsable.
         </p>
         <h3>ARTICLE 4 : Collecte des données</h3>
-        <p>
+        <p class="para">
           Le site assure à l'Utilisateur une collecte et un traitement
           d'informations personnelles dans le respect de la vie privée
           conformément à la loi n°78-17 du 6 janvier 1978 relative à
@@ -69,7 +69,7 @@ require_once 'bdd.php';
           personnel;
         </p>
         <h3>ARTICLE 5 : Cookies</h3>
-        <p>
+        <p class="para">
           <!-- L’Utilisateur est informé que lors de ses visites sur le site, un cookie peut s’installer automatiquement 
   sur son logiciel de navigation.
   En naviguant sur le site, il les accepte.
@@ -79,7 +79,7 @@ require_once 'bdd.php';
           Nous n'utilisons pas les cookies sur ce site !
         </p>
         <h3>ARTICLE 6 : Propriété intellectuelle</h3>
-        <p>
+        <p class="para">
           Toute utilisation, reproduction, diffusion, commercialisation,
           modification de toute ou partie du site dorianroulet.com, sans
           autorisation de l’Editeur est prohibée et pourra entraînée des actions

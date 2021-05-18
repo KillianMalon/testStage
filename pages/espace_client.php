@@ -26,6 +26,9 @@ if (isset($_SESSION['id'])){
 
     ?>
     <style>
+        .content{
+            height: 100%;
+        }
         li{
             list-style:  none;
             border: 1px solid #B5B2B2;

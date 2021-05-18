@@ -9,13 +9,14 @@
     justify-content: space-between;
     }
     .test{
-        padding: 4%;
+        padding: 2%;
         padding-left: 10%;
         background-color: grey ;
         width: 100%;
         text-align: left;
         display: flex;
         flex-direction: column;
+    
     }
     #check:checked ~ footer{
     margin-left: 60px;
@@ -50,14 +51,29 @@
     <div class="test">
         <p class="p">MENTIONS LEGALES</p>
         
-        <a class="lien" href="./pages/mentionslegales.php">Mentions légales</a>
+        <a class="lien" href="<?php if((isset($index)) && ($index==1)){
+            echo "./pages/";
+        }else{
+            echo "";
+        }
+        ?>mentionslegales.php">Mentions légales</a>
         <a class="lien" href="./pages/mentionslegales.php">C.G.V</a>
         
     </div>
     <div class="test">
         <p class="p">INFORMATIONS</p>
-        <a class="lien" href="./pages/contact.php">Contact</a>
-        <a class="lien" href="./pages/contact.php">Conditions d'utilisations</a>
+        <a class="lien" href="<?php if((isset($index)) && ($index==1)){
+            echo "./pages/";
+        }else{
+            echo "";
+        }
+        ?>contact.php">Contact</a>
+        <a class="lien" href="<?php if((isset($index)) && ($index==1)){
+            echo "./pages/";
+        }else{
+            echo "";
+        }
+        ?>contact.php">Conditions d'utilisations</a>
         <p class="p2">contact@dorianroulet.com</p>
     </div>
     <!-- <div class="test">

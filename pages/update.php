@@ -134,6 +134,9 @@ if (isset($_SESSION['id'])){
         require_once '../component/header.php';
     ?>
     <style>
+        .content{
+            height: 100%;
+        }
         .form1{
             border: 1px solid #c7c7c7;
             width: 40%;

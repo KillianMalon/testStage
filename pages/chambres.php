@@ -7,6 +7,14 @@ require_once 'bdd.php';
 ?>
 <!-- Style de la page chambres -->
 <style>
+    .content{
+    width: (100% - 250px);
+    margin-top: 60px;
+    padding: 20px;
+    margin-left: 250px;
+    height: 100%;
+    transition: 0.5s;
+    }
     .chambre{
         width: 85%;
         display: flex;
