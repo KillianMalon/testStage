@@ -1,9 +1,18 @@
 <?php
 require_once '../component/session.php';
+if(isset($_SESSION['id'])){
+    $client = getClient($dbh, $_SESSION['id']);
+    if($client['type'] != "client"){
+        header("Location:../index.php");
+    }
+}else{
+    header("Location:../index.php");
+}
 require_once '../component/header.php';
 require_once '../functions/functions.php';
 require_once '../functions/sql.php';
 require_once  'bdd.php';
+
 
 //Récupération des informations d'un client en focntion de son iD (stockée en SESSION)
 if (isset($_SESSION['id'])){
@@ -26,6 +35,9 @@ if (isset($_SESSION['id'])){
 
     ?>
     <style>
+        .content{
+            height: 100%;
+        }
         li{
             list-style:  none;
             border: 1px solid #B5B2B2;
@@ -108,3 +120,4 @@ if (isset($_SESSION['id'])){
     <?php
 }
 ?>
+<?php require_once '../component/footer.php';?>

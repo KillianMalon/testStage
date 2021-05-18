@@ -1,9 +1,19 @@
 <?php
 require_once '../component/session.php';
+if(isset($_SESSION['id'])){
+    $client = getClient($dbh, $_SESSION['id']);
+    if($client['type'] != "admin"){
+        header("Location:../index.php");
+    }
+}else{
+    header("Location:../index.php");
+}
 require_once '../component/header.php';
 require_once '../functions/sql.php';
 require_once '../functions/functions.php';
 require_once 'bdd.php';
+
+
 // CONFIRMATION D'AJOUT D'UNE CHAMBREQ
 if (isset($_POST['description']) && !empty($_POST['description'])) {
     $count = countChambers($dbh);
@@ -31,3 +41,4 @@ if (isset($_POST['description']) && !empty($_POST['description'])) {
 <?php
 }
 ?>
+<?php require_once '../component/footer.php';?>

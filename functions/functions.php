@@ -52,9 +52,9 @@ function generatePdf($dbh, $id,$lname ,$fname, $arrival,$departure, $roomId, $nb
     $pdf->SetFont('Helvetica', '', 11);
     $pdf->SetTextColor(0);
 
-// Infos de la commande calées à gauche
+    // Infos de la commande calées à gauche
     $num = utf8_decode("N°");
-//sur une ligne 8mm du bord gauche et a 43mm du haut de la page
+    //sur une ligne 8mm du bord gauche et a 43mm du haut de la page
     $pdf->SetFont('Helvetica', 'B', 11);
     $pdf->Text(140, 18, "Entreprise : ");
     $pdf->SetFont('Helvetica', '', 11);
@@ -68,7 +68,7 @@ function generatePdf($dbh, $id,$lname ,$fname, $arrival,$departure, $roomId, $nb
     $pdf->Text(8, 63, utf8_decode("Date de d'arrivée") . ": " . $formattedArrival);
     $pdf->Text(8, 68, utf8_decode("Date de départ") . " : " . $formattedDeparture);
 
-// Position de l'entête à 10mm des infos (48 + 10)
+    // Position de l'entête à 10mm des infos (48 + 10)
     $position_entete = 73;
     if(function_exists('entete_table')){}else {
         function entete_table($position_entete, $pdf)
@@ -95,7 +95,7 @@ function generatePdf($dbh, $id,$lname ,$fname, $arrival,$departure, $roomId, $nb
         }
     }
     entete_table($position_entete, $pdf);
-// Liste des détails
+    // Liste des détails
     $position_detail = 81; // Position à 8mm de l'entête
         $pdf->SetY($position_detail);
         $pdf->SetX(8);
@@ -114,7 +114,7 @@ function generatePdf($dbh, $id,$lname ,$fname, $arrival,$departure, $roomId, $nb
         $pdf->SetX(168);
         $pdf->MultiCell(40, 8, utf8_decode($total."euros"), 1, 'C');
         $position_detail += 8;
-// Nom du fichier
+    // Nom du fichier
     $nom = 'Facture-' . $id . '.pdf';
     $folderName = "Facture";
     $folder2 = $clientId;

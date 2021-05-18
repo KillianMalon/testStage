@@ -10,16 +10,19 @@ $today = date("Y-m-d");
 ?>
 
 <style>
+    .content{
+        height: 100%;
+    }
     .chambre{
-        border: 1px solid black;
+        /* border: 1px solid black; */
         width: 20%;
         margin-right: 3%;
-        margin-bottom: 2%;
         display: flex;
         align-items: center;
         flex-direction: column;
-        border-radius: 25px;
+        border-radius: 30px;
         padding: 4%;    
+        /* background-color: red; */
     }
     .client{
         display: flex;
@@ -30,10 +33,23 @@ $today = date("Y-m-d");
     }
     .form{
         margin-top: 0%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
     }
+    .contour{
+        border: 1px solid #c7ccd4;
+        border-bottom: none;
+        border-radius: 30px 30px 0px 0px;
+        padding: 15%;
+        width: 100%;
+    }
+    
     .button{
-    width: 100%;
-    border-radius: 0px 0px 20px 20px;
+    width: 131%;
+    border-radius: 0px 0px 30px 30px;
     padding: 6% ;
     border: none;
     background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
@@ -44,8 +60,23 @@ $today = date("Y-m-d");
     .button:hover{
         box-shadow: 2px 2px 12px grey;
     }
+    
     .element{
         width: 100%;
+    }
+    li{
+        list-style-type: none;
+        margin-bottom: 3%;
+    }
+    @media screen and (max-width: 1000px){
+        .chambre{
+            width: 25%;
+        }
+    }
+    @media screen and (max-width: 1000px){
+        .chambre{
+            width: 40%;
+        }
     }
 </style>
 
@@ -53,7 +84,7 @@ $today = date("Y-m-d");
 
 <?php
 //Si la réservation dure plus d'une nuit :
-if (isset($_POST['depart']) and !empty($_POST['depart'])){
+if (isset($_POST['depart']) and !empty($_POST['depart']) && isset($_POST['arrivee']) and !empty($_POST['arrivee'])){
     ?>
     <div class="content">
         <div class="client">
@@ -175,57 +206,58 @@ if (isset($_POST['depart']) and !empty($_POST['depart'])){
 
             ?>
             <div class="chambre">
-                <?php
-                if (isset($_SESSION['id']) && !empty($_SESSION['id'])){
-                ?>
 
-                <form class="form" method="post" action="confirmReservation.php">
+                    <?php
+                    if (isset($_SESSION['id']) && !empty($_SESSION['id'])){
+                    ?>
 
-                    <?php }else{ ?>
+                    <form class="form" method="post" action="confirmReservation.php">
 
-                    <form class="form" method="post" action="./connexion.php">
+                        <?php }else{ ?>
 
-                    <?php } ?>
-                    
-                        <!-- <h3>2 dates</h3> -->
-                        <div>
-                            <label>Chambre numéro <?= $chid ?></label>
-                        </div>
-                        <div>
-                            <label>Prix : <?= $chprix ?> €</label>
-                        </div>
-                        <div>
-                            <label>Capacité : <?= $chcap ?> personnes</label>
-                        </div>
-                        <div>
-                            <label>Exposition : <?= $chexp ?></label>
-                        </div>
-                        <div>
-                            <label>Etage numéro <?= $chetage ?></label>
-                        </div>
-                        <?php
-                        foreach ($allopt as $oneopt){
-                            $opt = getOptionsbyid($dbh, $oneopt);
-                            foreach ($opt as $opts){
-                                ?><label> <?= $opts['option'] ?> </label><br><?php
+                        <form class="form" method="post" action="./connexion.php">
+
+                        <?php } ?>
+                        
+                            <!-- <h3>2 dates</h3> -->
+                            <div class="contour">
+                                <li>Chambre numéro <?= $chid ?></li>
+                            
+                                <li>Prix : <?= $chprix ?> €</li>
+                            
+                                <li>Capacité : <?= $chcap ?> personnes</li>
+                            
+                                <li>Exposition : <?= $chexp ?></li>
+                            
+                                <li>Etage numéro <?= $chetage ?></li>
+                            
+
+
+                            <?php
+                            foreach ($allopt as $oneopt){
+                                $opt = getOptionsbyid($dbh, $oneopt);
+                                foreach ($opt as $opts){
+                                    ?><li> <?= $opts['option'] ?> </li><?php
+                                }
                             }
-                        }
-                        ?>
-                        <div style="display: none">
-                            <input name="datestart" value="<?= $arrivee ?>">
-                            <input name="dateend" value="<?= $depart ?>">
-                            <input name="chambreId" value="<?= $chid ?>">
-                            <input name="capacity" value="<?= $chcap ?>">
-                            <input name="numberAdult" value="<?= $adulte ?>">
-                            <input name="numberChild" value="<?= $enfant ?>">
-                            <input name="check" value="1">
-                        </div>
-                        <div>
-                            <input  type="submit" name="confirmReserv" value="Valider votre réservation">
-                        </div>
-                        </form>
-            </div>    
+                            ?>
+                            </div>    
+                        
+                                    <div style="display: none">
+                                        <input name="datestart" value="<?= $arrivee ?>">
+                                        <input name="dateend" value="<?= $depart ?>">
+                                        <input name="chambreId" value="<?= $chid ?>">
+                                        <input name="capacity" value="<?= $chcap ?>">
+                                        <input name="numberAdult" value="<?= $adulte ?>">
+                                        <input name="numberChild" value="<?= $enfant ?>">
+                                        <input name="check" value="1">
+                                    </div>
+                        <!-- <div class="contour2"> -->
+                            <input class="button" type="submit" name="confirmReserv" value="Valider votre réservation">
+                        <!-- </div> -->
                 
+            </div>    
+            </form>
                 <?php
                 }
                 }
@@ -236,103 +268,6 @@ if (isset($_POST['depart']) and !empty($_POST['depart'])){
     <?php
 }
 
-//Si la réservation ne dure qu'une nuit :
-else{
-    ?>
-    <div class="content">
-    <div class="client">
-    <?php
 
-    $arrivee = $_POST['arrivee'];
-    $adulte = $_POST['adulte'];
-    $enfant = $_POST['enfant'];
-    $total = $adulte + $enfant;
-    $exposition = $_POST['exposition'];
-    $idprix = $_POST['prix'];
-
-    $datearrivee = new DateTime("$arrivee");
-    $datedepart = new DateTime("$arrivee");
-    $datedepart->add(new DateInterval('P1D'));
-    $depart = $datedepart->format('Y-m-d');
-    if ($today > $datearrivee){
-        ?>
-        <div>
-            <label>La date saisie n'est pas valide</label>
-            <a href="../index.php">Retour à l'Accueil</a>
-        </div>
-        <?php
-    }else{
-
-        $tags = Search($dbh, $total, $exposition, $idprix);
-        //on récupère toutes les chambres indisponible le jour en question
-        $dayoff = Free($dbh, $arrivee);
-        //on cyle sur le nombre de tags
-        for ($i=0; $i < count($tags); $i++){
-            //on cycle sur le nombre de chambre indisponible ce jour la
-            for ($in=0; $in < count($dayoff); $in++){
-                //si l'id de tags est dans le tableau indisponible on supprime l'id de la chambre de la liste de tag
-                if ($tags[$i] == $dayoff[$in]){
-                    unset($tags[$i]);
-                }
-            }
-        }
-//on cycle sur tous les tags qui correspondent aux critères
-        foreach ($tags as $tag){
-            $id = $tag['id'];
-            $alls = getRoom($dbh, $id);
-
-            foreach ($alls as $all){
-                $chid = $all['id'];
-                $chprix = $all['prix'];
-                $chexp = $all['exposition'];
-                $chcap = $all['capacite'];
-                $chetage = $all['etage'];
-                if (isset($_SESSION['id']) && !empty($_SESSION['id'])){
-                    ?>
-
-                    <form method="post" action="confirmReservation.php">
-
-                <?php }else{ ?>
-
-                    <form method="post" action="./connexion.php">
-
-                <?php } ?>
-                <h3>1 date</h3>
-                <div>
-                    <label>Chambre numéro <?= $chid ?></label>
-                </div>
-                <div>
-                    <label>Prix : <?= $chprix ?> €</label>
-                </div>
-                <div>
-                    <label>Capacité : <?= $chcap ?> personnes</label>
-                </div>
-                <div>
-                    <label>Exposition : <?= $chexp ?></label>
-                </div>
-                <div>
-                    <label>Etage numéro <?= $chetage ?></label>
-                </div>
-                <div style="display: none">
-                    <input type="date" name="datestart" value="<?= $arrivee ?>">
-                    <input type="date" name="dateend" value="<?= $depart ?>">
-                    <input type="text" name="chambreId" value="<?= $chid ?>">
-                    <input type="text" name="capacity" value="<?= $chcap ?>">
-                    <input type="text" name="numberAdult" value="<?= $adulte ?>">
-                    <input type="text" name="numberChild" value="<?= $enfant ?>">
-                    <input name="check" value="1">
-                </div>
-                <div class="divButton">
-                    <button type="submit">Réserver</button>
-                </div>
-                </form>
-                <?php
-            }
-        }
-        ?>
-        </div>
-        </div>
-        <?php
-    }
-}
 ?>
+<?php require_once '../component/footer.php';?>

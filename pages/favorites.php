@@ -1,8 +1,17 @@
 <?php
 require_once '../component/session.php';
+if(isset($_SESSION['id'])){
+    $client = getClient($dbh, $_SESSION['id']);
+    if($client['type'] != "client"){
+        header("Location:../index.php");
+    }
+}else{
+    header("Location:../index.php");
+}
 require_once '../component/header.php';
 require_once '../functions/sql.php';
 require_once 'bdd.php';
+
 ?>
 <style>
     .chambre{
@@ -115,6 +124,49 @@ require_once 'bdd.php';
             width: 45%;
         }
     }
+    @media screen and (max-width:780px){
+        .content{
+            margin-top: 0px;
+        }
+    
+        .description{
+            display: none;
+        }
+        .text{
+           display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            padding-right: 5%;
+            width: 15%;
+        }
+        .picture{
+            width: 75%;
+        }
+        img{
+            width: 90%;
+        }
+        .chambre{
+            width: 85%;
+            margin-left: 7.5%;
+            margin-right: 7.5%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            /* border-radius: 15px;
+            margin-bottom: -2%;
+            padding: 3%;
+            margin-left: 2%; */
+        }
+        .text{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            width: 80%;
+            margin-right: 7%;
+        }
+        
+    }
 </style>
 
 <?php if(!empty($_SESSION['id'])){
@@ -179,3 +231,4 @@ require_once 'bdd.php';
     }
 ?>
 </div>
+<?php require_once '../component/footer.php';?>

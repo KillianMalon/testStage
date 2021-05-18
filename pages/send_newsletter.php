@@ -22,4 +22,5 @@ foreach ($allmails as $allmail){
 <div class="content">
     <meta http-equiv="refresh" content="2;URL=newsletter.php"><p style="background-color: forestgreen; color: white; text-align: center;"><?php echo "La Newsletter a bien été envoyée.";?></p>
 </div>
+<?php require_once '../component/footer.php';?>
 

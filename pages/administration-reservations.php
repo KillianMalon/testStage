@@ -1,9 +1,18 @@
 <?php
 require_once '../component/session.php';
+if(isset($_SESSION['id'])){
+    $client = getClient($dbh, $_SESSION['id']);
+    if($client['type'] != "admin"){
+        header("Location:../index.php");
+    }
+}else{
+    header("Location:../index.php");
+}
 require_once '../component/header.php';
 require_once '../functions/functions.php';
 require_once '../functions/sql.php';
 require_once  'bdd.php';
+
 
 //S'il y a une page en paramètre GET, on stock ce paramètre sinon, on stock 1
 if(isset($_GET['page']) && !empty($_GET['page'])){
@@ -434,3 +443,4 @@ foreach($premiere as $premieres){
         </div>
     </div>
 </div>
+<?php require_once '../component/footer.php';?>

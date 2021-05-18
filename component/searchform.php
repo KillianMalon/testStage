@@ -103,6 +103,15 @@ input, select{
     padding: 10%;
     
 }
+@media screen and (max-width: 600px){
+        .formulaire{
+            font-weight: 100;
+        }
+        .date2{
+            padding: 0px;
+        }        
+}
+
 <?php if($_SESSION['theme']=="sombre"):?>
     input, select{
         background-color: #464644;
@@ -205,6 +214,6 @@ input, select{
         </form>
     </div>    
 </div>
-
+<!-- <?php require_once 'cookie.php'; ?> -->
 </body>
 </html>

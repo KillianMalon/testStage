@@ -390,7 +390,7 @@ label #sidebar_btn:hover{
 
   .content{
     margin-left: 0;
-    margin-top: 0;
+    margin-top: 0px;
     padding: 10px 20px;
     transition: 0s;
   }
@@ -462,6 +462,7 @@ label #sidebar_btn:hover{
     display: block;
   }
 }
+
 <?php if($_SESSION['theme']=="sombre"):?>
     body{
       background-color: #222;

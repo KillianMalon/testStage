@@ -315,6 +315,6 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
         document.getElementById("myInput").value = password
     }
 </script>
-
+<?php require_once '../component/footer.php';?>
 </body>
 </html>

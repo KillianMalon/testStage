@@ -1,3 +1,5 @@
+<!-- Chat inutile pour le moment-->
+
 <?php session_start();
 include '../pages/chat.php';
 include '../pages/bdd.php';

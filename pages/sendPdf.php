@@ -2,6 +2,16 @@
 session_start();
 require_once 'bdd.php';
 require_once '../functions/sql.php';
+if(isset($_SESSION['id'])){
+  $client = getClient($dbh, $_SESSION['id']);
+  if($client['type'] != "client"){
+      header("Location:../index.php");
+  }
+}else{
+  header("Location:../index.php");
+}
+
+
 if(!isset($_POST['sendMail']) || empty($_POST['idReservation']) || !isset($_SESSION['id'])){
     ?>
     <meta http-equiv="refresh" content="0;URL=./reservations.php">
