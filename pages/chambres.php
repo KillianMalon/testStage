@@ -11,7 +11,7 @@ require_once 'bdd.php';
     width: (100% - 250px);
     margin-top: 60px;
     padding: 20px;
-    margin-left: 250px;
+    /* margin-left: 250px; */
     height: 100%;
     transition: 0.5s;
     }
@@ -136,7 +136,11 @@ require_once 'bdd.php';
     .dropdown:hover .dropbtn {
         background-color: #3e8e41;
     }
-    @media screen and (max-width:600px){
+    @media screen and (max-width:780px){
+        .content{
+            margin-top: 0px;
+        }
+    
         .description{
             display: none;
         }
@@ -145,10 +149,35 @@ require_once 'bdd.php';
             flex-direction: column;
             align-items: flex-end;
             padding-right: 5%;
+            width: 15%;
         }
-        picture{
-            width: 45%;
+        .picture{
+            width: 75%;
         }
+        img{
+            width: 90%;
+        }
+        .chambre{
+            width: 85%;
+            margin-left: 7.5%;
+            margin-right: 7.5%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            /* border-radius: 15px;
+            margin-bottom: -2%;
+            padding: 3%;
+            margin-left: 2%; */
+        }
+        .text{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            width: 80%;
+            margin-right: 7%;
+        }
+        
     }
 </style>
 <?php ?>

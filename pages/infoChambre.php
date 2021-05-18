@@ -77,6 +77,9 @@ require_once '../component/header.php';
 ?>
 <!-- Style de la page -->
 <style>
+    .content{
+        height: 100%;
+        }
     .form2{
         box-shadow: 1px 1px 12px #555;
         border-radius: 20px;
@@ -113,6 +116,7 @@ require_once '../component/header.php';
     .text{
         display: flex;
         justify-content: center;
+        margin-top: 50px;
     }
     .texte{
         margin-left: 10%;

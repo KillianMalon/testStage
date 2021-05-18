@@ -11,7 +11,7 @@
     .test{
         padding: 2%;
         padding-left: 10%;
-        background-color: grey ;
+        background-color: #5D5D5D ;
         width: 100%;
         text-align: left;
         display: flex;
@@ -33,7 +33,7 @@
         margin-bottom: 3%;
     }
     .lien:hover{
-        color:  #0051FF ;
+        color:  black ;
     }
     .p2{
         margin-top: 0px;
@@ -45,6 +45,18 @@
             transition: 0s;
         }
     }
+    @media screen and (max-width: 515px){
+        footer{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }    
+        .test{
+        text-align: center;
+        padding: 0%;
+    
+    }
+}
 </style>
 
 <footer>
@@ -57,7 +69,12 @@
             echo "";
         }
         ?>mentionslegales.php">Mentions légales</a>
-        <a class="lien" href="./pages/mentionslegales.php">C.G.V</a>
+        <a class="lien" href="<?php if((isset($index)) && ($index==1)){
+            echo "./pages/";
+        }else{
+            echo "";
+        }
+        ?>cgv.php">C.G.V</a>
         
     </div>
     <div class="test">

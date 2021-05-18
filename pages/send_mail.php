@@ -4,6 +4,14 @@ require_once '../component/session.php';
 require_once '../functions/functions.php';
 require_once '../functions/sql.php';
 require_once  'bdd.php';
+if(isset($_SESSION['id'])){
+    $client = getClient($dbh, $_SESSION['id']);
+    if($client['type'] != "client"){
+        header("Location:../index.php");
+    }
+}else{
+    header("Location:../index.php");
+}
 
 if (isset($_POST['email']) && !empty($_POST{'email'}) && isset($_POST['text']) && !empty($_POST['text'])){
     $mail = $_POST['email'];

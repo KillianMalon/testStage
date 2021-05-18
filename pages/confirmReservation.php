@@ -3,7 +3,14 @@ require_once '../component/session.php';
 require '../functions/functions.php';
 require_once '../functions/sql.php';
 require_once  'bdd.php';
-
+if(isset($_SESSION['id'])){
+    $client = getClient($dbh, $_SESSION['id']);
+    if($client['type'] != "client"){
+        header("Location:../index.php");
+    }
+}else{
+    header("Location:../index.php");
+}
 //Si on a des informations en SESSION, on les stock en local
 if (!empty($_SESSION['start']) && !empty($_SESSION['end']) &&  !empty($_SESSION['chambreId'])  &&  !empty($_SESSION['numberAdult'])  && isset($_SESSION['numberChild'])) {
     $end = $_SESSION['end'];
@@ -78,19 +85,39 @@ require_once '../component/header.php';
 ?>
 
 
-
+<style>
+    .content{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: 1rem;
+    }
+    .submit{
+        padding: 8%;
+        border-radius: 30px;
+        border: none;
+        background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
+        color: white;
+        width: 77%;
+    }
+    .formu{
+        width: 50%;
+        display: flex;
+        justify-content: center;
+    }
+</style>
 <!-- Affichage de la demande de confirmation de réservation -->
-<main>
     <div class="content">
         <p><?= $lang['ConfirmReservation']; ?></p>
-        <form method="post" action="">
+        <form class="formu" method="post" action="">
             <input type="text" name="chambreId" value="<?php echo $chambreId ?>" hidden="hidden">
             <input type="text" name="start" value="<?php echo $start?>" hidden="hidden">
             <input type="text" name="end" value="<?php echo $end ?>" hidden="hidden">
             <input type="text" name="numberAdult" value="<?php echo $numberAdult?>" hidden="hidden">
             <input type="text" name="numberChild" value="<?php echo $numberChild ?>" hidden="hidden">
             <input type="text" name="idReservation" value="<?php echo $idReservation?>" hidden="hidden">
-            <input  type="submit" id="decale" class="btn btn-primary taille" name="confirmReserv" value="<?= $lang['ValidateYourBooking'] ?>">
+            <input  type="submit" id="decale" class="submit" name="confirmReserv" value="<?= $lang['ValidateYourBooking'] ?>">
         </form>
     </div>
     <?php

@@ -1,8 +1,28 @@
 <?php
 require_once '../component/session.php';
-
-require_once '../component/header.php';
+if(isset($_SESSION['id'])){
+    $client = getClient($dbh, $_SESSION['id']);
+    if($client['type'] != "client"){
+        header("Location:../index.php");
+    }
+}else{
+    header("Location:../index.php");
+}
 require_once 'bdd.php';
+$reservation = getReservations($dbh, $_SESSION['id']);
+if($reservation === 0){
+    header('Location:reservations.php');
+}
+$dir2 = "Facture/".$_SESSION['id'];
+
+if(!file_exists($dir2)){
+    //TODO afficher un message avant
+header("Location:./reservations.php");
+}
+if(sizeof(scandir($dir2)) <= 2){
+    header("Location:./reservations.php");
+}
+require_once '../component/header.php';
 $id = $_SESSION['id'];
 //le dossier sur lequel j'ai envie de travailler
 $dir = "Facture";
@@ -47,25 +67,25 @@ $files = array_slice(scandir($trueDir), 2);
 </style>
 <div class="content">
 
-<?php
-foreach ($files as $file){
-    //je récupère que les nombres dans la chaine de caractères $file
-    $out = preg_replace('~\D~', '', $file);
-    ?>
+    <?php
+    foreach ($files as $file){
+        //je récupère que les nombres dans la chaine de caractères $file
+        $out = preg_replace('~\D~', '', $file);
+        ?>
         <div class="div">
             <!--"a" qui target la popup et qui permet donc de l'afficher-->
             <p style="text-align: center"><a href="#<?= $out ?>"  ><?= $file ?></a></p>
             <embed style="margin-top: 1%" src="<?= $trueDir."/".$file ?>" width="400" height="300" type="">
         </div>
-    <!--POPUP qui s'affiche au click du "a" au dessus -->
-    <div class="popup" id="<?= $out ?>">
-        <a href="" style="color: white; text-decoration: none;">X</a>
-        <br>
-        <!--Fabrication manuelle du chemin pour accèder au pdf-->
-        <?php $bigPdf = $trueDir."/"."Facture-$out"; ?>
-        <embed src="<?= $bigPdf ?>" type="">
-    </div>
-            <?php
-}
-?>
+        <!--POPUP qui s'affiche au click du "a" au dessus -->
+        <div class="popup" id="<?= $out ?>">
+            <a href="" style="color: white; text-decoration: none;">X</a>
+            <br>
+            <!--Fabrication manuelle du chemin pour accèder au pdf-->
+            <?php $bigPdf = $trueDir."/"."Facture-$out"; ?>
+            <embed src="<?= $bigPdf ?>" type="">
+        </div>
+        <?php
+    }
+    ?>
 </div>
