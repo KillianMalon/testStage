@@ -105,11 +105,51 @@ input, select{
 }
 @media screen and (max-width: 600px){
         .formulaire{
-            font-weight: 100;
+            font-size: 1rem;
+        }  
+        input, select{
+            border: 1px solid #c7ccd4;
+            padding: 3%;
+            background-color: #ececec;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 80%;
+        }   
+        select{
+            margin-top: 3%;
         }
-        .date2{
-            padding: 0px;
-        }        
+        .date, .capacity, .exposition{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .date2, .capacity2, .exposition2{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        form{
+            width: 85%;
+        }
+        .content{
+            height: 100%;
+            margin-bottom: 50px;
+        }
+        .capacity2, .exposition2, .date2{
+            padding: 0%;
+            padding-top: 3%;
+            padding-bottom: 6%;
+            width: 100%;
+        }
+        .line{
+            border-right: none;
+            border-bottom: 1px solid #c7ccd4;
+        }
+        label{
+            margin-bottom: 0%;
+        }
+
 }
 
 <?php if($_SESSION['theme']=="sombre"):?>

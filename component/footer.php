@@ -62,35 +62,13 @@
 <footer>
     <div class="test">
         <p class="p">MENTIONS LEGALES</p>
-        
-        <a class="lien" href="<?php if((isset($index)) && ($index==1)){
-            echo "./pages/";
-        }else{
-            echo "";
-        }
-        ?>mentionslegales.php">Mentions légales</a>
-        <a class="lien" href="<?php if((isset($index)) && ($index==1)){
-            echo "./pages/";
-        }else{
-            echo "";
-        }
-        ?>cgv.php">C.G.V</a>
-        
+        <a class="lien" href="<?php echo (isset($index)) ? "./pages/mentionslegales.php" : "mentionslegales.php" ?>">Mentions Légales</a>
+        <a class="lien" href="<?php echo (isset($index)) ? "./pages/cgv.php" : "cgv.php" ?>">Mentions Légales</a>
     </div>
     <div class="test">
         <p class="p">INFORMATIONS</p>
-        <a class="lien" href="<?php if((isset($index)) && ($index==1)){
-            echo "./pages/";
-        }else{
-            echo "";
-        }
-        ?>contact.php">Contact</a>
-        <a class="lien" href="<?php if((isset($index)) && ($index==1)){
-            echo "./pages/";
-        }else{
-            echo "";
-        }
-        ?>contact.php">Conditions d'utilisations</a>
+        <a class="lien" href="<?php echo (isset($index)) ? "./pages/contact.php" : "contact.php" ?>">Contact</a>
+        <a class="lien" href="<?php echo (isset($index)) ? "./pages/contact.php" : "contact.php" ?>">Conditions d'utilisations</a>
         <p class="p2">contact@dorianroulet.com</p>
     </div>
     <!-- <div class="test">

@@ -43,15 +43,17 @@
             <?php endif;?>
 
             </form>
+            
         </div>
-        <div class="right_area">
+        <div class="right_area2">
             <a href="<?php echo (isset($index)) ? "./pages/logout.php" : "logout.php" ?>" class="logout_btn"><?= $lang['logOut']; ?></a>
+            <i class="fa fa-bars nav_btn" id="slider"></i>
         </div>
         
         
         
     <?php } else { ?>
-        <div class="right_area">
+        <div class="right_area1">
             <form class="formu" action="" method='POST'>
             <?php
             if(empty($_SESSION['theme'])):?>
@@ -62,10 +64,11 @@
 
             </form>
         </div>
-        <div class="right_area">
+        <div class="right_area2">
             <a href="<?php echo (isset($index)) ? "./pages/inscription.php" : "inscription.php" ?>" class="logout_btn2"><?= $lang['signUp']; ?></a>
+            <i class="fa fa-bars nav_btn" id="slider"></i>
         </div>
-        <div class="right_area">
+        <div class="right_area3">
             <a href="<?php echo (isset($index)) ? "./pages/connexion.php" : "connexion.php" ?>" class="logout_btn"><?= $lang['logIn']; ?></a>
         </div>
     <?php } ?>
@@ -84,6 +87,8 @@
             <a href="<?php echo (isset($index)) ? "index.php" : "../index.php"; ?>"><i class="fas fa-home"></i><span><?= $lang['home']; ?></span></a>
             <a href="<?php echo (isset($index)) ? "./pages/chambres.php" : "chambres.php"?>"><i class="fas fa-bed"></i><span><?= $lang['rooms']; ?></span></a>
             <a href="<?php echo (isset($index)) ? "./pages/contact.php" : "contact.php" ?>"><i class="fas fa-comment"></i><span><?= $lang['contact']; ?></span></a>
+            <a href="<?php echo (isset($index)) ? "./pages/inscription.php" : "inscription.php" ?>"><i class="fas fa-sign"></i><span><?= $lang['signUp']; ?></span></a>
+            <a href="<?php echo (isset($index)) ? "./pages/connexion.php" : "connexion.php" ?>"><i class="fas fa-sign-in-alt"></i><span><?= $lang['logIn']; ?></span></a>
         <?php }else{
             $nbOfFavorites = getNumberOfFavorite($dbh, $_SESSION['id']);
             ?>
@@ -94,6 +99,7 @@
             <a href="<?php echo (isset($index)) ? "./pages/reservations.php" : "reservations.php" ?>"><i class="fas fa-table"></i><span><?= $lang['myBookings']; ?></span></a>
             <a href="<?php echo (isset($index)) ? "./pages/favorites.php" : "favorites.php" ?>"><i class="fas fa-bookmark"></i><span><?= $lang['myFavourites']; ?> <?php echo ($nbOfFavorites > 0)? "($nbOfFavorites)":""?></span></a>
             <a href="<?php echo (isset($index)) ? "./pages/contact.php" : "contact.php" ?>"><i class="fas fa-comment"></i><span><?= $lang['contact']; ?></span></a>
+            <a href="<?php echo (isset($index)) ? "./pages/logout.php" : "logout.php" ?>"><i class="fas fa-sign-out-alt"></i><span><?= $lang['logOut']; ?></span></a>
             
             <?php if(isset($admin)){ ?>
                 <a href="<?php echo (isset($index)) ? "./pages/statistics.php" : "statistics.php"?>"><i class="fas fa-chart-bar"></i><span><?= $lang['statistics']; ?></span></a>
