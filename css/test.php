@@ -486,9 +486,9 @@ label #sidebar_btn:hover{
   .active{
     display: block;
   }
-  .logout_btn{
+  /* .logout_btn{
     display: none;
-  }
+  } */
   .logout_btn2{
     display: none;
   }

@@ -174,10 +174,22 @@ require_once 'bdd.php';
             display: flex;
             flex-direction: row;
             justify-content: space-around;
+            align-items: center;
             width: 80%;
             margin-right: 7%;
         }
-        
+        .dropdown{
+            margin-top: 40px;
+        }
+        .prix{
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+            width: 100%;
+        }
+        .button{
+            margin-left: -50%;
+        }
     }
 </style>
 <?php ?>

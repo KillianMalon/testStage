@@ -290,6 +290,19 @@ require_once '../component/header.php';
         font-weight: bold;
         font-size: x-large;
     }
+    @media screen and (max-width:780px){
+        .picture{
+            flex-direction: column;
+            align-items: center;
+        }
+        img{
+            width: 75%;
+        }
+        .favoris{
+            justify-content: center;
+        }
+
+    }
     <?php if($_SESSION['theme']=="sombre"):?>
             .favoriteButton{
                 background-color: #222;

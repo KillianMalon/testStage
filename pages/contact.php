@@ -83,7 +83,7 @@ input::placeholder, textarea::placeholder{
     justify-content: space-around;
     align-items: center;
     background-color: #5D5D5D;
-    margin-top: 3%;
+    margin-top: 6%;
     width: 75%;
     border-radius: 15px;
     }
@@ -116,7 +116,11 @@ input::placeholder, textarea::placeholder{
         display: none;
     }
     .contact{
-        height: 50%;
+        height: 60%;
+        margin-top: 50px;
+    }
+    .content{
+        height: 80vh;
     }
 }
 
