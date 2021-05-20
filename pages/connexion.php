@@ -39,11 +39,14 @@ require_once '../component/header.php';
     .content{
         margin-top: 10%;
         height: 70vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     .form{
-        border: 1px solid #c7c7c7;
+        /* border: 1px solid #c7c7c7; */
         border-radius: 20px;
-        width: 20%;
+        width: 100%;
         text-align: center;
     }
     .input{
@@ -58,13 +61,21 @@ require_once '../component/header.php';
         display: flex;
         flex-direction: column;
         text-align: center;
+        border: #c7c7c7 1px solid;
+        border-top: none;
+        border-bottom: none;
+
     }
     .oui{
         padding-top: 5%;
+        border: #c7c7c7 1px solid;
+        border-bottom: none;
+        border-radius: 20px 20px 0px 0px;
     }
     .container{
         display: flex;
         justify-content: center;
+        width: 100%;
     }
     .submit{
         background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
@@ -81,7 +92,7 @@ require_once '../component/header.php';
         display: flex;
         justify-content: center;
         flex-direction: row;
-        margin-top: 2%;
+        margin-top: 8%;
     }
     .a2{
         background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
@@ -91,6 +102,7 @@ require_once '../component/header.php';
         padding: 1%;
         text-decoration: none;
         font-size: small;
+        text-align: center;
     }
     .decale{
         margin-right: 3%;

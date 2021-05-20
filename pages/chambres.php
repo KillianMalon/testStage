@@ -9,7 +9,7 @@ require_once 'bdd.php';
 <style>
     .content{
     width: (100% - 250px);
-    margin-top: 60px;
+    margin-top: 10%;
     padding: 20px;
     /* margin-left: 250px; */
     height: 100%;
@@ -51,6 +51,7 @@ require_once 'bdd.php';
     .button{
         padding: 30%;
         border-radius: 15px;
+        margin-left: -25%;
         border: none;
         background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
         cursor:pointer;
@@ -66,6 +67,7 @@ require_once 'bdd.php';
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        text-align: center;
         width: 20%;
     }
     #check:checked ~ .content{
@@ -137,9 +139,7 @@ require_once 'bdd.php';
         background-color: #3e8e41;
     }
     @media screen and (max-width:780px){
-        .content{
-            margin-top: 0px;
-        }
+        
     
         .description{
             display: none;
@@ -188,14 +188,14 @@ require_once 'bdd.php';
             width: 100%;
         }
         .button{
-            margin-left: -50%;
+            margin-left: -70%;
         }
     }
 </style>
 <?php ?>
 <div class="content">
 
-        <br><br>
+        
         <?php
     // Requêtes de selectiond es informations des chambres
     ?>
@@ -283,7 +283,7 @@ require_once 'bdd.php';
                 <p> Aucun résultat pour votre recherche</p>
             </div>
         <?php endif; ?>
-        <br><br>
+        
 </div>
 
 <?php

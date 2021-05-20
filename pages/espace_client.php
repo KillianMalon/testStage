@@ -49,8 +49,8 @@ if (isset($_SESSION['id'])){
         }
         .client{
             margin-top: 3%;
-            width: 60%;
-            margin-left: 20%;
+            width: 80%;
+            margin-left: 10%;
             display: flex;
             justify-content: center;
             flex-direction: column;
@@ -76,6 +76,18 @@ if (isset($_SESSION['id'])){
         .liHaut{
             border-radius: 15px 15px 0px 0px;
         }
+        .profil{
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        @media screen and (max-width:780px){
+            .client{
+                margin-top: 10%;
+                width: 95%;
+                margin-left:2.5% ;            }
+        }
     </style>
     <!-- Affichage des informations du client -->
     <div class="content">
@@ -98,7 +110,7 @@ if (isset($_SESSION['id'])){
 
             <li><p> <?= $lang['country']; ?>  :</p><?= $country['nom_fr_fr'] ?> </li>
             <li><p><?= $lang['civility']; ?>: </p><?= $civility ?></li>
-            <li><p><?= $lang['profilePicture']; ?> :</p> <?= $img ?></li>
+            <li><p><?= $lang['profilePicture']; ?> :</p><img class="profil" src="<?= $img ?>" alt=""> </li>
             <a href="update.php"><button class="button"><?= $lang['edit']; ?></button> </a>
         </div>
         <br><br>

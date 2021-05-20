@@ -20,6 +20,11 @@ require_once 'bdd.php';
     .content{
         height: 100%;
     }
+    @media screen and (max-width:780px){
+        h1{
+            margin-top: 10%;
+        }
+    }
 </style>
 <div class="content">      
         <div class="global">

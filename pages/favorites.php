@@ -14,22 +14,31 @@ require_once 'bdd.php';
 
 ?>
 <style>
+    .content{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        justify-content: flex-start;
+        height: 100vmax;
+        
+    }
     .chambre{
-        width: 85%;
+        width: 90%;
         display: flex;
         flex-direction: row;
         align-items: center;
         border-radius: 15px;
         margin-bottom: 4%;
+        margin-left: 5%;
         /* padding: 3%; */
-        margin-left: 2%;
+        
     }
     .chambre:hover{
         box-shadow: 2px 2px 12px grey;
     }
     h2{
         color: black;
-        margin-bottom: 0rem;
+        /* margin-bottom: 0rem; */
         margin-left: 2%;
     }
     a{
@@ -59,8 +68,9 @@ require_once 'bdd.php';
         color :linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
     }
     .button{
-        padding: 5%;
+        padding: 30%;
         border-radius: 15px;
+        margin-left: -30%;
         border: none;
         background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
         cursor:pointer;
@@ -72,8 +82,9 @@ require_once 'bdd.php';
         box-shadow: 2px 2px 12px grey;
     }
     .boutton{
-        padding: 15%;
+        padding: 11%;
         border-radius: 15px;
+        margin-top: 3%;
         border: none;
         background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
         cursor:pointer;
@@ -126,7 +137,9 @@ require_once 'bdd.php';
     }
     @media screen and (max-width:780px){
         .content{
-            margin-top: 0px;
+            margin-top: 100px;
+            height: 100%;
+            margin-left: none;
         }
     
         .description{
@@ -141,14 +154,16 @@ require_once 'bdd.php';
         }
         .picture{
             width: 75%;
+            display: flex;
+            justify-content: center;
         }
         img{
             width: 90%;
         }
         .chambre{
-            width: 85%;
+            /* width: 85%;
             margin-left: 7.5%;
-            margin-right: 7.5%;
+            margin-right: 7.5%; */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -162,11 +177,21 @@ require_once 'bdd.php';
             display: flex;
             flex-direction: row;
             justify-content: space-around;
+            align-items: center;
             width: 80%;
-            margin-right: 7%;
+            /* margin-left: 5%; */
         }
         
     }
+     .noFavori{
+         height: 70vh;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         font-weight: 600;
+         font-size: xx-large;
+         width: 100%;
+     }     
 </style>
 
 <?php if(!empty($_SESSION['id'])){
@@ -176,9 +201,9 @@ require_once 'bdd.php';
     //on vérifie si le client a un favoris
     if($numberOfFavorites === 0){
         ?>
-        <div class="content">
-            <p><?= $lang['noFavourites'] ?></p>
-        </div>
+        <!-- <div class="content"> -->
+            <!-- <p><?= $lang['noFavourites'] ?></p> -->
+        <!-- </div> -->
             <?php
     }
     //on récupère les favoris du client
@@ -192,7 +217,11 @@ require_once 'bdd.php';
     }
     ?>
    <div class="content">
-       
+        <?php if($numberOfFavorites === 0): ?>
+            
+            
+            <p class="noFavori"><?= $lang['noFavourites'] ?></p>
+        <?php endif ?>    
 <?php
 //on cycle sur tous les favoris du client
     foreach ($favorites as $favorite){
@@ -208,6 +237,10 @@ require_once 'bdd.php';
 
         <a class="linkRoom" href="infochambre.php?id=<?= $chambreId ?>">
         <div class="chambre">
+        
+       
+
+    
             <div class="picture"><img src="<?php echo($img)?>"></div>
             <div class="text">
                 <h3><?= $lang['room'] ?> <?php echo($chambreId)?></h3>
@@ -217,7 +250,8 @@ require_once 'bdd.php';
             <div class="prix" >
                 <h2 class="price"><?php echo($prix)?> €</h2>
                 <!-- <a href="infoChambre.php?id=<?php echo($chambreId)?>"><button class="boutton">Réserver</button></a> -->
-                <form action="" method="post"><input type="hidden" name="favoriteId" value="<?= $favoriteId ?>"><button type="submit" name="delete" class="button"><?= $lang['deleteBookmark'] ?></button></form>
+                <form action="" method="post"><input type="hidden" name="favoriteId" value="<?= $favoriteId ?>">
+                <button type="submit" name="delete" class="button"><?= $lang['deleteBookmark'] ?></button></form>
             </div>
         </div>
         </a>

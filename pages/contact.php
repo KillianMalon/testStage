@@ -117,10 +117,12 @@ input::placeholder, textarea::placeholder{
     }
     .contact{
         height: 60%;
-        margin-top: 50px;
+        margin-top: -70px;
     }
     .content{
         height: 80vh;
+        display: flex;
+        align-items: center;
     }
 }
 

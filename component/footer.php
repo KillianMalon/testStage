@@ -21,11 +21,12 @@
     #check:checked ~ footer{
     margin-left: 60px;
     }
-    .p{
+    .p10{
         font-size: larger;
         text-decoration: none;
         color:  white ;
         margin-bottom: 4%;
+        font-weight: bold;
     }
     .lien{
         text-decoration: none;
@@ -61,12 +62,12 @@
 
 <footer>
     <div class="test">
-        <p class="p">MENTIONS LEGALES</p>
+        <p class="p10">MENTIONS LEGALES</p>
         <a class="lien" href="<?php echo (isset($index)) ? "./pages/mentionslegales.php" : "mentionslegales.php" ?>">Mentions Légales</a>
-        <a class="lien" href="<?php echo (isset($index)) ? "./pages/cgv.php" : "cgv.php" ?>">Mentions Légales</a>
+        <a class="lien" href="<?php echo (isset($index)) ? "./pages/cgv.php" : "cgv.php" ?>">C.G.V</a>
     </div>
     <div class="test">
-        <p class="p">INFORMATIONS</p>
+        <p class="p10">INFORMATIONS</p>
         <a class="lien" href="<?php echo (isset($index)) ? "./pages/contact.php" : "contact.php" ?>">Contact</a>
         <a class="lien" href="<?php echo (isset($index)) ? "./pages/contact.php" : "contact.php" ?>">Conditions d'utilisations</a>
         <p class="p2">contact@dorianroulet.com</p>
