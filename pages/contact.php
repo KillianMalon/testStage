@@ -116,14 +116,16 @@ input::placeholder, textarea::placeholder{
         display: none;
     }
     .contact{
-        height: 60%;
+        height: 62%;
         margin-top: -70px;
+        width: 90%;
     }
     .content{
         height: 80vh;
         display: flex;
         align-items: center;
     }
+    
 }
 
 

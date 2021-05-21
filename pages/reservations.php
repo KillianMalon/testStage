@@ -92,7 +92,9 @@ if (isset($_SESSION['id'])){
  
             
             if (!empty($future)):?>
-                <h2 class="futur">Réservations en cours/à venir <a href="pdfViewer.php">Voir la galerie de vos PDF</a></h2>
+                <h2 class="futur">Réservations en cours/à venir </h2>
+                <a class="pdf" href="pdfViewer.php">Voir la galerie de vos PDF</a>
+                <br>
                 <br>
                 <table>
                     <thead>
@@ -100,9 +102,9 @@ if (isset($_SESSION['id'])){
                             <th>Numéro chambre</th>
                             <th>Date d'arrivée</th>
                             <th>Date de départ</th>
-                            <th>Chambre payée</th>
-                            <th>Télécharger la facture</th>
-                            <th>Mail de la facture</th>
+                            <th>Paiement</th>
+                            <th>Télécharger</th>
+                            <th>Mail facture</th>
                             <th>Supprimer</th>
                             <th>Prix</th>
                         </tr>
@@ -115,8 +117,12 @@ if (isset($_SESSION['id'])){
                                 <td class="jour"><?php echo($future2['dateEnd'])?></td>
                                 
                                 <td class="paye">  
-                                    <form class='form' method="post" action="payeChambre.php">                         
-                                        <?php echo ($future2['paye']? '✅' : '🔴');?>
+                                    <form class='form' method="post" action="payeChambre.php">  
+                                        <div>                    
+                                            <?php echo ($future2['paye']? '✅' : '🔴');?>
+                                        </div> 
+                                        <br>
+                                        <div>     
                                         <?php if ($future2['paye'] == '0'):?>
                                             <input type="hidden" name="idReservation" value="<?php echo($future2['idReservation'])?>">
                                             <input type="submit" class="btn btn-info" value="Payer">
@@ -127,7 +133,8 @@ if (isset($_SESSION['id'])){
                                             <input type="hidden" name="prix" value="<?php echo $future2['prix'] ?>">
                                             <input type="hidden" name="lname" value="<?php echo $lname ?>">
                                             <input type="hidden" name="fname" value="<?php echo $fname ?>">
-                                        <?php endif;?>     
+                                        <?php endif;?> 
+                                        </div>       
                                     </form> 
                                 </td>
                                 <td>
@@ -136,7 +143,7 @@ if (isset($_SESSION['id'])){
 
                                     if($future2['paye'] === 1){ ?>
                                     <form action="Facture/<?=$_SESSION['id']?>/Facture-<?= $idReservation ?>.pdf" method="post">
-                                        <input type="submit" name="download" value="Télécharger"></form>
+                                    <button class="button" type="submit"><i class="fas fa-download"></i></button></form>
                                         <?php }else{ echo 'Payez la réservation'; }?>
                                 </td>
                                 <td>
@@ -146,13 +153,13 @@ if (isset($_SESSION['id'])){
                                         <input type="hidden" name="idReservation" value="<?= $future2['idReservation'] ?>">
                                         <input type="hidden" name="dateStart" value="<?= $future2['dateStart']; ?>">
                                         <input type="hidden" name="prix" value="<?php echo $future2['prix'] ?>">
-                                        <input type="submit" name="sendMail" value="Pdf par mail">
+                                        <button class="button2" type="submit"><i class="fas fa-envelope"></i></button>
                                     </form>
                                 </td>
                                 <td>
                                     <form action="delete_reservation.php" method="post">
                                         <input type="hidden" name="IdReservation" value="<?php echo($future2['idReservation'])?>">
-                                        <input type="submit" class="btn btn-danger" value="X">
+                                        <button class="delete" type="submit">X</button>
                                     </form>
                                 </td> 
                                 <td><?php echo($future2['prix'])?> €</td>
@@ -163,7 +170,48 @@ if (isset($_SESSION['id'])){
                     
                     <tbody>
                 </table>
-                <br>
+                <br>    
+                        <div class="responsive">
+                            <div class="canceled">
+                                <p><span class="bold"> Numéro chambre</span> : <span><?php echo($future2['chambre_id']) ?></span></p>
+                                <p><span class="bold">Date d'arrvivée</span> : <span><?php echo($future2['dateStart']) ?></span></p>
+                                <p><span class="bold">Date de départ</span> : <span><?php echo($future2['dateEnd']) ?></span></p>
+                                <p><form class='form' method="post" action="payeChambre.php">                         
+                                                    <?php echo ($future2['paye']? '✅' : '🔴');?>
+                                                    <?php if ($future2['paye'] == '0'):?>
+                                                        <input type="hidden" name="idReservation" value="<?php echo($future2['idReservation'])?>">
+                                                        <input type="submit" class="btn btn-info" value="Payer">
+                                                        <input type="hidden" name="dateStart" value="<?php echo $future2['dateStart'] ?>">
+                                                        <input type="hidden" name="dateEnd" value="<?php echo $future2['dateEnd'] ?>">
+                                                        <input type="hidden" name="chambre_id" value="<?php echo $future2['chambre_id'] ?>">
+                                                        <input type="hidden" name="nombreDeJours" value="<?php echo $future2['nombreDeJours'] ?>">
+                                                        <input type="hidden" name="prix" value="<?php echo $future2['prix'] ?>">
+                                                        <input type="hidden" name="lname" value="<?php echo $lname ?>">
+                                                        <input type="hidden" name="fname" value="<?php echo $fname ?>">
+                                                    <?php endif;?>     
+                                                </form></p>
+                                <div class="load">
+                                <?php
+                                                $idReservation = $future2['idReservation'];
+
+                                                if($future2['paye'] === 1){ ?>
+                                                        <form class="test2" action="Facture/<?=$_SESSION['id']?>/Facture-<?= $idReservation ?>.pdf" method="post">
+                                                        <button class="button" type="submit"><i class="fas fa-download"></i></button></form>
+                                                <?php }else{ echo '<div class="center">Indisponible</div>'; }?>
+                                                <?php if($future2['paye'] === 1){ ?>
+                                                    <form class="test2" action="sendPdf.php" method="post">
+                                                        <!--Je passe de manière caché pour l'utilisateur les données qui me seront nécessaires pour le traitement  -->
+                                                        <input type="hidden" name="idReservation" value="<?= $future2['idReservation'] ?>">
+                                                        <input type="hidden" name="dateStart" value="<?= $future2['dateStart']; ?>">
+                                                        <input type="hidden" name="prix" value="<?php echo $future2['prix'] ?>">
+                                                        <button class="button2" type="submit"><i class="fas fa-envelope"></i></button>
+                                                    </form>
+                                                <?php }else{ echo '<div class="center">Indisponible</div>'; }?>    
+
+                                </div>    
+                            <p><span class="bold">Prix</span> : <span><?php echo($future2['prix']) ?> €</span></p>
+                        </div> 
+            </div>
             <?php endif;?>
 
             <?php if (!empty($passed)):?>
@@ -203,6 +251,15 @@ if (isset($_SESSION['id'])){
                     <tbody>
                 </table>
                 <br>
+                <div class="responsive">
+                   <div class="canceled">
+                    <p><span class="bold"> Numéro chambre</span> : <span><?php echo($passed2['chambre_id']) ?></span></p>
+                    <p><span class="bold">Date d'arrvivée</span> : <span><?php echo($passed2['dateStart']) ?></span></p>
+                    <p><span class="bold">Date de départ</span> : <span><?php echo($passed2['dateEnd']) ?></span></p>
+                    <p><span class="bold">Payée</span> : <span><?php echo ($passed2['paye']? '✅' : '🔴');?></span>   </p>
+                    <p><span class="bold">Prix</span> : <span><?php echo($passed2['prix']) ?> €</span></p>
+                   </div> 
+            </div>
 
 
 
@@ -239,6 +296,17 @@ if (isset($_SESSION['id'])){
             <br>
 
 
+            <div class="responsive">
+                   <div class="canceled">
+                    <p><span class="bold"> Numéro chambre</span> : <span><?php echo($cancel2['chambre_id']) ?></span></p>
+                    <p><span class="bold">Date d'arrvivée</span> : <span><?php echo($cancel2['dateStart']) ?></span></p>
+                    <p><span class="bold">Date de départ</span> : <span><?php echo($cancel2['dateEnd']) ?></span></p>
+                    <p><span class="bold">Payée</span> : <span><?php echo ($cancel2['paye']? '✅' : '🔴');?></span>   </p>
+                    <p><span class="bold">Prix</span> : <span><?php echo($cancel2['prix']) ?> €</span></p>
+                   </div> 
+            </div>
+
+
 
             <?php endif;?>
 
@@ -254,10 +322,20 @@ if (isset($_SESSION['id'])){
     ?>
     <?php require_once '../component/footer.php';?>
     <style>
-
+    .btn{
+        border: none;
+        border-radius: 15px;
+        background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
+        color: white;
+        padding: 10%;
+    }
+    .content{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
     table{
-        width: 80%;
-        margin-left: 10%;
+        width: 90%;
         border: 1px solid black;
         border-collapse: collapse;
     }
@@ -270,15 +348,97 @@ if (isset($_SESSION['id'])){
     .futur{
         text-decoration: underline;
         font-style: italic;
-        margin-left: 10%;
+        width: 90%;
     }
-    .futur a{
-        color: blue;
+    .pdf{
+        color: white;
         font-size: 15px;
         text-decoration: none;
+        width: 90%;
+        margin-bottom: 2%;
     }
     .form{
         margin : 0px
+    }
+    .button{
+        background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
+        border: none;
+        border-radius: 8px;
+        padding: 4%;
+        color: white;
+        cursor: pointer;
+    }
+    .button2{
+        background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
+        border: none;
+        border-radius: 8px;
+        padding: 5%;
+        color: white;
+        cursor: pointer;
+    }
+    .delete{
+        background: linear-gradient(to right, red, #C20808);
+        border: none;
+        border-radius: 10px;
+        padding: 8%;
+        color: white;
+    }
+    @media screen and (max-width : 1100px){
+        table{
+            display: none;
+        }
+        .btn{
+        border: none;
+        border-radius: 15px;
+        background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
+        color: white;
+        padding: 3%;
+        }
+        .responsive{
+            width: 80%;
+            display: flex;
+            justify-content: center;
+        }
+        .canceled{
+            /* background-color: white; */
+            width: 100%;
+            text-align: center;
+            border: 1px solid;
+            border-radius: 20px;
+            padding: 5%;
+        }
+        .bold{
+            font-weight: 700;
+        }
+        .load{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .test2{
+            height: 100%;
+            background-color: none;
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .center{
+            display: flex;
+            justify-content: center;
+            width: 50%;
+        }
+        .pdf{
+            margin: 0px;
+        }
+    }
+    @media screen and (min-width : 1100px){
+        .responsive{
+            display: none;
+        }
+        
     }
     @media screen and (max-width : 900px){
         table{
@@ -289,6 +449,9 @@ if (isset($_SESSION['id'])){
     @media screen and (max-width : 500px){
         table{
             font-size: 0.4rem;
+        }
+        .button2{
+            padding: 4%;
         }
         
     }

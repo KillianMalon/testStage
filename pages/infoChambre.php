@@ -294,6 +294,7 @@ require_once '../component/header.php';
         .picture{
             flex-direction: column;
             align-items: center;
+            justify-content: center;
         }
         img{
             width: 75%;
@@ -301,7 +302,25 @@ require_once '../component/header.php';
         .favoris{
             justify-content: center;
         }
+        .texte{
+            /* margin-left: 0px; */
+        }
 
+    }
+    @media screen and (max-width:695px){
+        .commentaire{
+            display: flex;
+            flex-direction: column;
+        }
+        .titre{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .centre{
+            width: 100%;
+        }
     }
     <?php if($_SESSION['theme']=="sombre"):?>
             .favoriteButton{
@@ -588,7 +607,7 @@ $todays = date("Y-m-d");
                                                 </select>
                                             </div>
                                         </div>    
-                                    
+                                                        
                                     <div class="boutton">
                                             <input type="number" name="idChambre" hidden="hidden" value="<?php echo($chambres['id']); ?>">
                                             <input type="number" name="capacity" hidden="hidden" value="<?php echo($chambres['capacite']); ?>">

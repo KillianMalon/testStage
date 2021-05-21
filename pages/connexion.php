@@ -38,8 +38,9 @@ require_once '../component/header.php';
 <style>
     .content{
         margin-top: 10%;
-        height: 70vh;
+        height: 80vh;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
     }
@@ -99,7 +100,7 @@ require_once '../component/header.php';
         border: none;
         color: white;
         border-radius: 15px;
-        padding: 1%;
+        padding: 4%;
         text-decoration: none;
         font-size: small;
         text-align: center;
@@ -107,10 +108,16 @@ require_once '../component/header.php';
     .decale{
         margin-right: 3%;
     }
+    .error{
+        margin-top: 3%;
+    }
+    .carre{
+        width: 26%;
+    }
 </style>
 <!-- Affichage de formulaire de connexion -->
 <div class="content">
-    <div>
+    <div class="carre">
         <div class="container">
             <form class="form" action="" method="post">
                 <div class="divInput oui">
@@ -136,16 +143,19 @@ require_once '../component/header.php';
         </div>
 
 
+        
+    </div> 
+    <div class="error">
         <?php
-        //on affiche les messages d'erreur qu'il y a plus haut
-        if(isset($error) AND !empty($error)){
-            echo $error;
-        }
-        if(isset($message) AND !empty($message)){
-            echo $message;
-        }
-        ?>
-    </div>    
+            //on affiche les messages d'erreur qu'il y a plus haut
+            if(isset($error) AND !empty($error)){
+                echo $error;
+            }
+            if(isset($message) AND !empty($message)){
+                echo $message;
+            }
+            ?> 
+    </div>          
 </div>
 <?php require_once '../component/footer.php';?>
 </body>

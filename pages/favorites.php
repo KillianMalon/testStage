@@ -181,6 +181,11 @@ require_once 'bdd.php';
             width: 80%;
             /* margin-left: 5%; */
         }
+        .prix{
+            flex-direction: row;
+            justify-content: space-around;
+            width: 80%  ;
+        }
         
     }
      .noFavori{
@@ -250,8 +255,10 @@ require_once 'bdd.php';
             <div class="prix" >
                 <h2 class="price"><?php echo($prix)?> €</h2>
                 <!-- <a href="infoChambre.php?id=<?php echo($chambreId)?>"><button class="boutton">Réserver</button></a> -->
-                <form action="" method="post"><input type="hidden" name="favoriteId" value="<?= $favoriteId ?>">
-                <button type="submit" name="delete" class="button"><?= $lang['deleteBookmark'] ?></button></form>
+                <div> 
+                    <form action="" method="post"><input type="hidden" name="favoriteId" value="<?= $favoriteId ?>">
+                    <button type="submit" name="delete" class="button"><?= $lang['deleteBookmark'] ?></button></form>
+                </div> 
             </div>
         </div>
         </a>

@@ -10,7 +10,9 @@ body{
   font-family: "Roboto", sans-serif; 
   background-color: #ececec;
 }
-
+.profil{
+  width: 15%;
+}
 
 header{  
   z-index: 1;
@@ -173,7 +175,7 @@ label #sidebar_btn{
   color: #fff;
   position: fixed;
   cursor: pointer;
-  left: 300px;
+  left: 200px;
   font-size: 20px;
   margin: 5px 0;
   transition: 0.5s;
@@ -181,7 +183,7 @@ label #sidebar_btn{
 }
 
 label #sidebar_btn:hover{
-  color: #19B3D3;
+  color: #196ad3;
 }
 
 #check:checked ~ .sidebar{
@@ -245,7 +247,9 @@ label #sidebar_btn:hover{
   .sidebar{
     display: none;
   }
-
+  #slider{
+    color: white;
+  }
   #sidebar_btn{
     display: none;
   }
@@ -261,6 +265,8 @@ label #sidebar_btn:hover{
   }
   .left_area{
     width: 90%;
+    display: flex;
+    flex-direction: r;
   }
   #slider{
     float: right;
@@ -371,4 +377,5 @@ label #sidebar_btn:hover{
       color: white;
     }
   <?php endif; ?>
+ 
 </style>

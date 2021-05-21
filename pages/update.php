@@ -186,6 +186,24 @@ if (isset($_SESSION['id'])){
         width: 100%;
         color: white;
         padding: 4%;
+        cursor: pointer;
+        }   
+        .submit:hover{
+            background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
+            box-shadow: 2px 2px 12px grey;
+        }
+    }
+    @media screen and (max-width: 1200px) {
+        .form1{
+            width: 80%;
+        }
+        
+    }
+    @media screen and (max-width: 500px) {
+        .form1{
+            width: 90%;
+        }
+        
     }
     <?php if($_SESSION['theme']=="sombre"):?>
 

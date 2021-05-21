@@ -8,6 +8,9 @@ require_once 'bdd.php';
 
 
   <style>
+    .content{
+      height: 100%;
+    }
     .global{
         width: 80%;
         margin-left: 10%;
@@ -88,7 +91,7 @@ require_once 'bdd.php';
           reporter aux CGV du site dorianroulet.com accessible à la rubrique «CGV»
         </p>
 
-        Rédigé sur http://legalplace.fr
+        
       </div>
       </div>
   

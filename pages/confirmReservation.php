@@ -94,12 +94,13 @@ require_once '../component/header.php';
         font-size: 1rem;
     }
     .submit{
-        padding: 8%;
+        padding: 4%;
         border-radius: 30px;
         border: none;
         background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
         color: white;
         width: 77%;
+        cursor: pointer;
     }
     .formu{
         width: 50%;

@@ -21,7 +21,7 @@
     #check:checked ~ footer{
     margin-left: 60px;
     }
-    .p10{
+    .title{
         font-size: larger;
         text-decoration: none;
         color:  white ;
@@ -36,8 +36,9 @@
     .lien:hover{
         color:  black ;
     }
-    .p2{
+    .mail{
         margin-top: 0px;
+        color: white;
     }
     @media screen and (max-width: 780px){
         footer{
@@ -62,15 +63,15 @@
 
 <footer>
     <div class="test">
-        <p class="p10">MENTIONS LEGALES</p>
+        <p class="title">MENTIONS LEGALES</p>
         <a class="lien" href="<?php echo (isset($index)) ? "./pages/mentionslegales.php" : "mentionslegales.php" ?>">Mentions Légales</a>
         <a class="lien" href="<?php echo (isset($index)) ? "./pages/cgv.php" : "cgv.php" ?>">C.G.V</a>
     </div>
     <div class="test">
-        <p class="p10">INFORMATIONS</p>
+        <p class="title">INFORMATIONS</p>
         <a class="lien" href="<?php echo (isset($index)) ? "./pages/contact.php" : "contact.php" ?>">Contact</a>
         <a class="lien" href="<?php echo (isset($index)) ? "./pages/contact.php" : "contact.php" ?>">Conditions d'utilisations</a>
-        <p class="p2">contact@dorianroulet.com</p>
+        <p class="mail">contact@dorianroulet.com</p>
     </div>
     <!-- <div class="test">
         <a class="lien" href="./pages/mentionslegales.php">Mentions légales</a>
