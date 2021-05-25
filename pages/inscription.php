@@ -65,7 +65,7 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
                                                                 //je prépare ce qu'il faut pour l'envoie de mail
                                                                 $to       = $mail;
                                                                 $subject  = 'Validation de compte';
-                                                                $message  = '<p>Veuillez cliquer sur le lien pour valider votre compte</p><br><a href="http://localhost/testStage/hotel/pages/confirmInscription.php?key='.$key.'">Valider mon compte</a>';
+                                                                $message  = '<p>Veuillez cliquer sur le lien pour valider votre compte</p><a href="https://www.dorian-roulet.com/testStage/hotel/pages/confirmInscription.php?key='.$key.'">Valider mon compte</a>';
                                                                 $headers  = 'From: envoiedemailtest@gmail.com' . "\r\n" .
                                                                     'MIME-Version: 1.0' . "\r\n" .
                                                                     'Content-type: text/html; charset=utf-8';
@@ -127,32 +127,200 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
 
 ?>
 <style>
-    input[type="checkbox"].demo3 {
-        display: none;
+.div label{
+    margin-left: 1%;
+}
+    .contentInscription{
+  width: (100% - 250px);
+  margin-top: 60px;
+  padding: 20px;
+  margin-left: 250px;
+  height: 88vh;
+  transition: 0.5s;
+}
+.div{
+    display: flex;
+    align-items: flex-start;
+}
+#check:checked ~ .contentInscription{
+  margin-left: 60px;
+}
+/* form{
+  margin-top:50px;
+} */
+.divInfos{
+  margin-left: 7.5%;
+  width: 85%;
+  display: flex;
+  flex-direction:row;
+  justify-content: center;
+}
+.divInfos div{
+  width: 40%;
+  display: flex;
+  flex-direction:column;
+  margin-right: 2%;
+  margin-left: 2%;
+}
+/* .divInfos div div label{
+  float: left;
+  margin-left: -10px;
+} */
+.divInfos div input[type="text"]{
+  height: 25px;
+  border:none;
+  outline-style:none;
+  border-bottom: 1px solid #1992d3;
+  background-color: #ececec;
+}
+.divInfos2{
+  display: flex;
+  flex-direction: column;
+  align-items:center ;
+  width: 85%;
+  margin-left: 7.5%;
+  margin-bottom: 2%;
+}
+.divInfos2 div {
+  width: 86%;
+}
+.divInfos2 div label{
+  float: left;
+  margin-left: 1%;
+}
+.divInfos2 input{
+height: 25px;
+width: 84%;
+margin-right: 2%;
+margin-left: 2%;
+float: right;
+border:none;
+outline-style:none;
+border-bottom: 1px solid #1992d3;
+background-color: #ececec;
+}
+.divInfos2 select{
+  height:30px;
+  width: 85%;
+  margin-right: 2%;
+  margin-left: 2%;
+  border:none;
+  outline-style:none;
+  border-bottom: 1px solid #1992d3;
+  background-color: #ececec;
+  margin-top: 2%;
+}
+.divInfos3{
+  width: 84%;
+  margin-left: 7.5%;
+  display: flex;
+  justify-content: center;
+}
+.divInfos3 input[type="submit"]{
+  margin-right: 7%;
+  background-color: #1992d3;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  padding: 10px;
+}
+.divInfos3 input[type="submit"]:hover{
+  background-color:#0B87A6;
+  cursor: pointer;
+}
+
+.inscriptionH1{
+  display: flex;
+  justify-content: center;
+}
+.errorMessageInscription{
+  display: flex;
+  justify-content: center;
+}
+
+input[type="checkbox"].demo3 {
+    display: none;
+}
+input[type="checkbox"].demo3 +label:hover{
+    cursor: pointer;
+}
+input[type="checkbox"].demo3 + label::before {
+    font-family: "Font Awesome 5 Free";
+    content: '\f070';
+    font-size: 1.2em;
+    margin-right: 0.3rem;
+}
+input[type="checkbox"].demo3:checked + label::before {
+    content:'\f06e';
+}
+.passwordGeneratorButton{
+    background-color: #ececec;
+    border: none;
+    
+}
+.content{
+    height:  100%;
+}
+.send{
+    background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
+}
+.generator{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2%;
+    justify-content: space-around;
+
+}
+@media screen and (max-width: 780px){
+    .content{
+        margin-left: 0px;
     }
-    input[type="checkbox"].demo3 +label:hover{
-        cursor: pointer;
+}
+@media screen and (max-width:490px){
+    .divInfos{
+        margin-left: 7.5%;
+        width: 85%;
+        display: flex;
+        flex-direction:column;
+        justify-content: center;
     }
-    input[type="checkbox"].demo3 + label::before {
-        font-family: "Font Awesome 5 Free";
-        content: '\f070';
-        font-size: 1.2em;
-        margin-right: 0.3rem;
+    .divInfos input{
+        width: 84%;
     }
-    input[type="checkbox"].demo3:checked + label::before {
-        content:'\f06e';
+    .divInfos2 input{
+        width: 93%;
     }
-    .passwordGeneratorButton{
-        background-color: #ececec;
-        border: none;
-        
+    .divInfos2 div{
+        width: 93%;
     }
-    .send{
-        background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
+    .divInfos2 select{
+        width: 93%;
     }
+    .divInfos div{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+<?php if($_SESSION['theme']=="sombre"):?>
+    .divInfos2 input{
+      background-color: #222;
+      color: white;
+    }
+    .divInfos2 select{
+        background-color: #222;
+        color: white;
+    }
+    .inscriptionH1 {
+        font-size: 10px;
+        margin-top: 10%;
+    }
+  <?php endif; ?>
 </style>
 
-<div class="contentInscription">
+<div class="content">
     <div class="inscriptionH1">
         <h1>Formulaire d'inscription</h1>
     </div>
@@ -164,22 +332,23 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
             }
             ?>
         </p>
-        <div class="divInfos">
-            <div>
-                <div>
+        <!-- <div class="divInfos"> -->
+            <div class="divInfos2">
+                <div >
                     <label for="" >Nom* :</label>
                 </div>
                 <!--Le code php permet de réinscrire dans le champ ce que l'utilisateur à rentré dans le post si il y a eu un message d'erreur ce qui lui évite de tout re-rentrer-->
                 <input type="text" name="lastName" value="<?php echo (!empty($_POST['lastName']))? $_POST['lastName'] : "" ?>">
             </div>
-            <div>
-                <div>
+            
+            <div class="divInfos2"> 
+                <div >
                     <label for="">Prénom* :</label>
                 </div>
                 <input type="text" name="firstName" value="<?php echo (!empty($_POST['firstName']))? $_POST['firstName'] : "" ?>">
             </div>
-        </div>
-        <br>
+        <!-- </div> -->
+        
 
         <div class="divInfos2">
             <div>
@@ -187,7 +356,7 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
             </div>
             <input type="mail" name="mail" value="<?php echo (!empty($_POST['mail']))? $_POST['mail'] : "" ?>">
         </div>
-        <br>
+        
         <div class="divInfos2">
             <div>
                 <label for="">Confirmer Adresse email :*</label>
@@ -196,7 +365,7 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
         </div>
 
 
-        <br>
+        
 
         <div class="divInfos2">
             <div>
@@ -206,19 +375,21 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
             <?php
             $ok = 0;
             ?>
-            <input type="checkbox" class="demo3" onclick="displayPassword()" id="demo3">
-            <label for="demo3"></label>
-
+            <div class="generator">
+                <input type="checkbox" class="demo3" onclick="displayPassword()" id="demo3">
+                <label for="demo3"></label>
+            
             <i class="fas fa-random" id="btn" onclick="getPassword();"></i>
+            </div>
         </div>
-        <br>
+        
         <div class="divInfos2">
             <div>
                 <label for="">Confirmer mot de passe :*</label>
             </div>
             <input type="password" name="passwordVerify">
         </div>
-        <br>
+        
 
         <div class="divInfos2">
             <div>
@@ -226,7 +397,7 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
             </div>
             <input type="text" name="address" value="<?php echo (!empty($_POST['address']))? $_POST['address'] : "" ?>">
         </div>
-        <br>
+        
         <div class="divInfos2">
             <div>
                 <label for="">Code postal :*</label>
@@ -234,7 +405,7 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
             <input type="number" name="postalCode" value="<?php echo (!empty($_POST['postalCode']))? $_POST['postalCode'] : "" ?>">
         </div>
 
-        <br>
+        
 
         <div class="divInfos2">
             <div>
@@ -242,16 +413,19 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
             </div>
             <input type="text" name="city" value="<?php echo (!empty($_POST['city']))? $_POST['city'] : "" ?>">
         </div>
-        <br>
+        
         <div class="divInfos2">
             <div>
                 <label for=""> Photo de profil :</label>
             </div>
             <input type="url" name="image" value="<?php echo (!empty($_POST['image']))? $_POST['image'] : "" ?>">
         </div>
-        <br>
+        
 
         <div class="divInfos2">
+            <div>
+                <label for="">Pays :*</label>
+            </div>
             <select name="country">
                 <option value="">Pays</option>
                 <?php
@@ -266,14 +440,17 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
                 ?>
             </select>
         </div>
-        <br>
+        
         <div class="divInfos2">
+            <div>
+                <label for="">Civilité :*</label>
+            </div>
             <select name="civility" id="">
                 <option value="Monsieur" default>Monsieur</option>
                 <option value="Madame">Madame</option>
             </select>
         </div>
-        <br>
+        
         <div class="errorMessageInscription">
             <p style="color:red;">
                 <?php
@@ -283,13 +460,13 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
                 ?>
             </p>
         </div>
-        <a href="connexion.php">Connectez-vous ici</a>
-        <br>
+        <!-- <a href="connexion.php">Connectez-vous ici</a> -->
+        
         <div class="divInfos3">
             <input type="submit" name="send" class="send" value="S'inscrire">
         </div>
     </form>
-    <br>
+    
 </div>
 
 <script>

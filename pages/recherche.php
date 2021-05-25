@@ -45,6 +45,7 @@ $today = date("Y-m-d");
         border-radius: 30px 30px 0px 0px;
         padding: 15%;
         width: 100%;
+        /* height: 200px; */
     }
     
     .button{
@@ -70,8 +71,16 @@ $today = date("Y-m-d");
     }
     @media screen and (max-width: 1000px){
         .chambre{
-            width: 25%;
+            width: 65%;
+            margin-right: 0px;
         }
+        .client{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 3%;
+        width: 100%;
+    }
     }
     @media screen and (max-width: 1000px){
         .chambre{

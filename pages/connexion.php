@@ -38,12 +38,16 @@ require_once '../component/header.php';
 <style>
     .content{
         margin-top: 10%;
-        height: 70vh;
+        height: 80vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
     .form{
-        border: 1px solid #c7c7c7;
+        /* border: 1px solid #c7c7c7; */
         border-radius: 20px;
-        width: 20%;
+        width: 100%;
         text-align: center;
     }
     .input{
@@ -58,13 +62,21 @@ require_once '../component/header.php';
         display: flex;
         flex-direction: column;
         text-align: center;
+        border: #c7c7c7 1px solid;
+        border-top: none;
+        border-bottom: none;
+
     }
     .oui{
         padding-top: 5%;
+        border: #c7c7c7 1px solid;
+        border-bottom: none;
+        border-radius: 20px 20px 0px 0px;
     }
     .container{
         display: flex;
         justify-content: center;
+        width: 100%;
     }
     .submit{
         background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
@@ -81,24 +93,31 @@ require_once '../component/header.php';
         display: flex;
         justify-content: center;
         flex-direction: row;
-        margin-top: 2%;
+        margin-top: 8%;
     }
     .a2{
         background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
         border: none;
         color: white;
         border-radius: 15px;
-        padding: 1%;
+        padding: 4%;
         text-decoration: none;
         font-size: small;
+        text-align: center;
     }
     .decale{
         margin-right: 3%;
     }
+    .error{
+        margin-top: 3%;
+    }
+    .carre{
+        width: 26%;
+    }
 </style>
 <!-- Affichage de formulaire de connexion -->
 <div class="content">
-    <div>
+    <div class="carre">
         <div class="container">
             <form class="form" action="" method="post">
                 <div class="divInput oui">
@@ -124,16 +143,19 @@ require_once '../component/header.php';
         </div>
 
 
+        
+    </div> 
+    <div class="error">
         <?php
-        //on affiche les messages d'erreur qu'il y a plus haut
-        if(isset($error) AND !empty($error)){
-            echo $error;
-        }
-        if(isset($message) AND !empty($message)){
-            echo $message;
-        }
-        ?>
-    </div>    
+            //on affiche les messages d'erreur qu'il y a plus haut
+            if(isset($error) AND !empty($error)){
+                echo $error;
+            }
+            if(isset($message) AND !empty($message)){
+                echo $message;
+            }
+            ?> 
+    </div>          
 </div>
 <?php require_once '../component/footer.php';?>
 </body>

@@ -23,12 +23,22 @@ $tomorrowFormatted = $tomorrow->format('Y-m-d');
 ?>
 <style>
 
+.content{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.hotel{
+    height: 100%;
+    background-image: url(./images/hotel4k.jpg);
+}
 .formulaire{
     display: flex;
     flex-direction: column;
     align-items: center;
     color: grey;
     margin-top: 50px;
+    background-image: url(../images/envelope.jpg);   
 }
 /* form{
     border: 1px solid #c7ccd4;
@@ -83,7 +93,15 @@ label{
 .input{
     margin-top: 5%;
 }
-input, select{
+select{
+    border: 1px solid #c7ccd4;
+    padding: 10%;
+    background-color: #ececec;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 115%;
+}
+input{
     border: 1px solid #c7ccd4;
     padding: 10%;
     background-color: #ececec;
@@ -107,7 +125,15 @@ input, select{
         .formulaire{
             font-size: 1rem;
         }  
-        input, select{
+        input{
+            border: 1px solid #c7ccd4;
+            padding: 3%;
+            background-color: #ececec;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 72%; 
+        }   
+        select{
             border: 1px solid #c7ccd4;
             padding: 3%;
             background-color: #ececec;
@@ -160,16 +186,17 @@ input, select{
 <?php endif;?>
 </style>
 <div class="content">
+    
     <div class="formulaire">
         <form method="post" action="./pages/recherche.php">
             <div class="date">
                 <div class="date2 line"> 
                     <label for="">Date d'arrivée</label>
-                    <input class="input" value="<?php echo $today ?>" name="arrivee" type="date" placeholder="Arrivée" required pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2}$">
+                    <input class="input dated" value="<?php echo $today ?>" name="arrivee" type="date" placeholder="Arrivée" required pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2}$">
                 </div>
                 <div class="date2">
                     <label for="">Date de départ</label>
-                    <input class="input" value="<?php echo $tomorrowFormatted ?>"   name="depart" type="date" placeholder="Départ" required pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2}$">
+                    <input class="input dated" value="<?php echo $tomorrowFormatted ?>"   name="depart" type="date" placeholder="Départ" required pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2}$">
                 </div>
             </div>
             <div class="capacity">
@@ -253,6 +280,7 @@ input, select{
             <button type="submit">Rechercher</button>
         </form>
     </div>    
+    
 </div>
 <!-- <?php require_once 'cookie.php'; ?> -->
 </body>

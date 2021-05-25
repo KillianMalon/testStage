@@ -9,7 +9,7 @@ require_once 'bdd.php';
 <style>
     .content{
     width: (100% - 250px);
-    margin-top: 60px;
+    margin-top: 6%;
     padding: 20px;
     /* margin-left: 250px; */
     height: 100%;
@@ -51,6 +51,7 @@ require_once 'bdd.php';
     .button{
         padding: 30%;
         border-radius: 15px;
+        margin-left: -25%;
         border: none;
         background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
         cursor:pointer;
@@ -66,6 +67,7 @@ require_once 'bdd.php';
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        text-align: center;
         width: 20%;
     }
     #check:checked ~ .content{
@@ -75,7 +77,7 @@ require_once 'bdd.php';
         color: lightslategrey ;
     }
     .dropbtn {
-        background-color: #19B3D3;
+        background-color: #1992d3;
         color: white;
         padding: 16px;
         font-size: 16px;
@@ -134,11 +136,28 @@ require_once 'bdd.php';
 
     /* Change the background color of the dropdown button when the dropdown content is shown */
     .dropdown:hover .dropbtn {
-        background-color: #3e8e41;
+        background-color: #196ad3;
     }
+    .prix2{
+        width: 100%;
+        display: flex;
+        justify-content: center ;
+    }
+    @media screen and (max-width:1200px){
+        .content{
+            margin-top: 9%;
+        }
+
+    }    
     @media screen and (max-width:780px){
         .content{
-            margin-top: 0px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .prix2{
+            width: 50%;
+            justify-content: flex-end;
         }
     
         .description{
@@ -158,17 +177,20 @@ require_once 'bdd.php';
             width: 90%;
         }
         .chambre{
-            width: 85%;
-            margin-left: 7.5%;
-            margin-right: 7.5%;
+            width: 93%;
+            /* margin-left: 3.5%;
+            margin-right: 3.5%; */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            /* border: 1px solid #cecece; */
             /* border-radius: 15px;
             margin-bottom: -2%;
             padding: 3%;
             margin-left: 2%; */
+            margin: 0px;
+            margin-bottom: 3%;
         }
         .text{
             display: flex;
@@ -183,19 +205,24 @@ require_once 'bdd.php';
         }
         .prix{
             flex-direction: row;
-            justify-content: space-around;
+            justify-content: space-evenly;
             align-items: center;
-            width: 100%;
+            width: 80%;
         }
         .button{
-            margin-left: -50%;
+            margin-left: -70%;
+        }
+        .picture{
+            width: 100%;
+            display: flex;
+            justify-content: center;
         }
     }
 </style>
 <?php ?>
 <div class="content">
 
-        <br><br>
+        
         <?php
     // Requêtes de selectiond es informations des chambres
     ?>
@@ -274,7 +301,9 @@ require_once 'bdd.php';
                     </div>
                     <div class="prix">
                         <h2 class="price"><?php echo($chambre['prix'])?> €</h2>
-                        <a href="infoChambre.php?id=<?php echo($chambre['id'])?>"><button class="button"><?php echo (isset($type) AND $type ==="admin")? $lang['see'] : $lang['book'] ?></button></a>
+                        <div class="prix2">
+                            <a href="infoChambre.php?id=<?php echo($chambre['id'])?>"><button class="button"><?php echo (isset($type) AND $type ==="admin")? $lang['see'] : $lang['book'] ?></button></a>
+                            </div>    
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -283,7 +312,7 @@ require_once 'bdd.php';
                 <p> Aucun résultat pour votre recherche</p>
             </div>
         <?php endif; ?>
-        <br><br>
+        
 </div>
 
 <?php
