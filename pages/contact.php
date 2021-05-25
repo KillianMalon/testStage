@@ -135,7 +135,7 @@ input::placeholder, textarea::placeholder{
     
     <div class="contact">
         <div class="divContact">
-            <img class="enveloppe" src="../images/undraw-contact.svg" alt="">
+            <img class="enveloppe" src="https://i.ibb.co/61pzyhT/undraw-contact.png" alt="">
         </div>
         <div class="divContact2">
             <form class="formContact" method="post" action="send_mail.php">

@@ -240,8 +240,8 @@ require_once 'bdd.php';
 
         ?>
 
-        <a class="linkRoom" href="infochambre.php?id=<?= $chambreId ?>">
-        <div class="chambre">
+        <a class="linkRoom" href="infoChambre.php?id=<?= $chambreId ?>">
+        <div class="chambre"></div>
         
        
 

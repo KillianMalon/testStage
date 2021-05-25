@@ -65,7 +65,7 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
                                                                 //je prépare ce qu'il faut pour l'envoie de mail
                                                                 $to       = $mail;
                                                                 $subject  = 'Validation de compte';
-                                                                $message  = '<p>Veuillez cliquer sur le lien pour valider votre compte</p><a href="https://www.dorian-roulet.com/testStage/hotel/pages/confirmInscription.php?key='.$key.'">Valider mon compte</a>';
+                                                                $message  = '<p>Veuillez cliquer sur le lien pour valider votre compte</p><a href="https://www.dorian-roulet.com/testStage-master/pages/confirmInscription.php?key='.$key.'">Valider mon compte</a>';
                                                                 $headers  = 'From: envoiedemailtest@gmail.com' . "\r\n" .
                                                                     'MIME-Version: 1.0' . "\r\n" .
                                                                     'Content-type: text/html; charset=utf-8';

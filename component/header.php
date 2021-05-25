@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://i.ibb.co/KGZxRkj/hr.png">
     <title>Hotel</title>
     <?php
     //utiliser une seule page css pour plusieurs fichiers (pas au meme niveau de répertoire)

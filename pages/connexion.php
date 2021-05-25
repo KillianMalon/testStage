@@ -16,15 +16,15 @@ if(isset($_POST['send']) AND !empty($_POST['send'])){
         $query = getUserByMailAndPassword($dbh, $mail, $password);
         $userExist = $query->rowCount();
         //on vérifie si l'utilisateur existe
-        if($userExist === 1 ){
+        if($userExist == 1 ){
             $user = $query->fetch();
             //on vérifie si l'utilisateur à bien cliqué sur le lien2 dans son mail !
-            if($user['statut'] === 1) {
+            if($user['statut'] == 1) {
                 $_SESSION['id'] = $user['id'];
                     header('Location:../index.php');                  
                 exit();
             }else{
-                $error = "Veuillez confirmer votre compte en cliquant sur le lien2 que vous avez reçu par mail";
+                $error = "Veuillez confirmer votre compte en cliquant sur le lien que vous avez reçu par mail";
             }
         }else{
             $error = "Le mot de passe ou l'identifiant est incorrect";
@@ -71,7 +71,7 @@ require_once '../component/header.php';
         padding-top: 5%;
         border: #c7c7c7 1px solid;
         border-bottom: none;
-        border-radius: 20px 20px 0px 0px;
+        border-radius: 25px 25px 0px 0px;
     }
     .container{
         display: flex;
@@ -81,19 +81,23 @@ require_once '../component/header.php';
     .submit{
         background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
         border: none;
-        border-radius: 0px 0px 15px 15px;
+        border-radius: 0px 0px 25px 25px;
         width: 100%;
         color: white;
         padding: 6%;
+        padding: 6%;
+        cursor: pointer;
     }
     label{
         font-weight: bold;
+        
     }
     .lien2{
         display: flex;
         justify-content: center;
         flex-direction: row;
         margin-top: 8%;
+        
     }
     .a2{
         background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
@@ -112,11 +116,42 @@ require_once '../component/header.php';
         margin-top: 3%;
     }
     .carre{
-        width: 26%;
+        width: 50%;
+    }
+    .jsp{
+        width: 75%;
+        display: flex;
+        justify-content: center;
+    }
+    @media screen and (min-width:700px) and (max-width:900px) {
+        
+        .carre{
+            width: 80%;
+        }
+        .lien2{
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+            margin-top: 8%;
+        }
+    }
+    @media screen and (max-width:700px) {
+        .carre{
+            width: 80%;
+        }
+        .lien2{
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+            margin-top: 8%;
+        }
     }
 </style>
 <!-- Affichage de formulaire de connexion -->
 <div class="content">
+    <div class="jsp">
     <div class="carre">
         <div class="container">
             <form class="form" action="" method="post">
@@ -141,10 +176,11 @@ require_once '../component/header.php';
             <br>
             <a class="a2" href="lostPassword.php">Mot de passe oublié ? </a>
         </div>
-
+    </div>
 
         
     </div> 
+
     <div class="error">
         <?php
             //on affiche les messages d'erreur qu'il y a plus haut
