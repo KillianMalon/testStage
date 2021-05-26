@@ -19,7 +19,7 @@ require_once 'bdd.php';
         flex-direction: column;
         justify-content: center;
         justify-content: flex-start;
-        height: 100vmax;
+        height: 100vh;
         
     }
     .chambre{
@@ -68,7 +68,7 @@ require_once 'bdd.php';
         color :linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
     }
     .button{
-        padding: 30%;
+        padding: 12%;
         border-radius: 15px;
         margin-left: -30%;
         border: none;
@@ -138,7 +138,7 @@ require_once 'bdd.php';
     @media screen and (max-width:780px){
         .content{
             margin-top: 100px;
-            height: 100%;
+            height: 100vh;
             margin-left: none;
         }
     
@@ -161,17 +161,11 @@ require_once 'bdd.php';
             width: 90%;
         }
         .chambre{
-            /* width: 85%;
-            margin-left: 7.5%;
-            margin-right: 7.5%; */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            /* border-radius: 15px;
-            margin-bottom: -2%;
-            padding: 3%;
-            margin-left: 2%; */
+            padding-top: 2%;
         }
         .text{
             display: flex;
@@ -188,6 +182,7 @@ require_once 'bdd.php';
         }
         
     }
+    
      .noFavori{
          height: 70vh;
          display: flex;
@@ -241,7 +236,7 @@ require_once 'bdd.php';
         ?>
 
         <a class="linkRoom" href="infoChambre.php?id=<?= $chambreId ?>">
-        <div class="chambre"></div>
+        <div class="chambre">
         
        
 
@@ -272,4 +267,13 @@ require_once 'bdd.php';
     }
 ?>
 </div>
+<style>
+    <?php if(($numberOfFavorites)>2): ?>
+        @media screen and (max-width : 780px){
+            .content{
+                height: 100%;
+            }
+        }
+    <?php endif; ?>
+</style>
 <?php require_once '../component/footer.php';?>

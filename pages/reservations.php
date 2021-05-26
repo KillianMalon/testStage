@@ -482,8 +482,20 @@ if (isset($_SESSION['id'])){
         .pdf{
             margin: 0px;
         }
+        
     }
-    @media screen and (min-width : 1100px){
+    <?php
+    
+    if(($compteur+$compteurRes)>2): ?>
+    @media screen and (max-width : 1100px){
+        .content{
+            height: 100%;
+        }
+    }
+    <?php endif; ?>
+
+
+    @media screen and (min-width : 1101px){
         .responsive{
             display: none;
         }
