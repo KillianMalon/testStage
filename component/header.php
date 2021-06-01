@@ -90,6 +90,7 @@
             <a href="<?php echo (isset($index)) ? "./pages/contact.php" : "contact.php" ?>"><i class="fas fa-comment"></i><span><?= $lang['contact']; ?></span></a>
             <a href="<?php echo (isset($index)) ? "./pages/inscription.php" : "inscription.php" ?>"><i class="fas fa-sign"></i><span><?= $lang['signUp']; ?></span></a>
             <a href="<?php echo (isset($index)) ? "./pages/connexion.php" : "connexion.php" ?>"><i class="fas fa-sign-in-alt"></i><span><?= $lang['logIn']; ?></span></a>
+            
         <?php }else{
             $nbOfFavorites = getNumberOfFavorite($dbh, $_SESSION['id']);
             ?>
