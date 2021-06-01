@@ -113,7 +113,6 @@ if (isset($_POST['depart']) and !empty($_POST['depart']) && isset($_POST['arrive
     <div class="content">
         <div class="client">
             <?php
-            // var_dump($_POST);
             //Stockage des informations du $_POST
             $arrivee = $_POST['arrivee'];
             $depart = $_POST['depart'];

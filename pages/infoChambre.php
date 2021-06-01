@@ -649,12 +649,13 @@ $todays = date("Y-m-d");
                                             <input type="number" name="idChambre" hidden="hidden" value="<?php echo($chambres['id']); ?>">
                                             <input type="number" name="capacity" hidden="hidden" value="<?php echo($chambres['capacite']); ?>">
                                             <input type="submit"  class="bouton" value="<?= $lang['book']; ?>">
-                                        <?php  }else{ $id = intval($_GET['id']);?>
-                                                        <a href="modifRoom.php?room=<?php echo $id ?>"><?= $lang['edit']; ?></a>
-                                        <?php } ?>   
+                                          
                                     </div>
                                 </form>
-                            </div>    
+                            </div>   
+                            <?php  }else{ $id = intval($_GET['id']);?>
+                                        <a href="modifRoom.php?room=<?php echo $id ?>"><?= $lang['edit']; ?></a>
+                            <?php } ?>  
                 <?php } ?>  
             </div>
 

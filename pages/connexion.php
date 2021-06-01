@@ -123,7 +123,7 @@ require_once '../component/header.php';
         display: flex;
         justify-content: center;
     }
-    @media screen and (min-width:700px) and (max-width:900px) {
+    @media screen and (min-width:700px) and (max-width:1200px) {
         
         .carre{
             width: 80%;
@@ -137,8 +137,11 @@ require_once '../component/header.php';
         }
     }
     @media screen and (max-width:700px) {
+        .jsp{
+            width: 90%;
+        }
         .carre{
-            width: 80%;
+            width: 90%;
         }
         .lien2{
             display: flex;

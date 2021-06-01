@@ -57,6 +57,8 @@ require_once 'bdd.php';
         cursor:pointer;
         color: white;
         transition: background-color 500ms ease-out;
+        text-align: center;
+        
     }
     .button:hover{
         background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
