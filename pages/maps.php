@@ -75,7 +75,6 @@ input::placeholder, textarea::placeholder{
     background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
     color: white;
     width: 77%;
-    cursor: pointer;
 }
 @media screen and (max-width: 1100px){
     .contact{
@@ -134,23 +133,7 @@ input::placeholder, textarea::placeholder{
 </style>
 <div class="content">
     
-    <div class="contact">
-        <div class="divContact">
-            <img class="enveloppe" src="https://i.ibb.co/61pzyhT/undraw-contact.png" alt="">
-        </div>
-        <div class="divContact2">
-            <form class="formContact" method="post" action="send_mail.php">
-            <h2>Nous contacter</h2>
-                <!-- <label><?= $lang['yourMail']; ?></label> -->
-                <input class="contactInput" name="email" placeholder="Email" type="text">
-                <br>
-                <!-- <label><?= $lang['yourMessage'] ?></label> -->
-                <textarea class="contactText" name="text" placeholder="Message"></textarea>
-                <br>
-                <input class="submit" type="submit" value="<?= $lang['send'] ?>">
-            </form>
-        </div>
-    </div>
+<iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d23109.374106462023!2d3.8673648944766543!3d43.61337549657565!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sRestaurants!5e0!3m2!1sfr!2sfr!4v1622464934450!5m2!1sfr!2sfr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
 </div>
 
 <?php require_once '../component/footer.php';?>

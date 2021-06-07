@@ -45,6 +45,7 @@ $today = date("Y-m-d");
         border-radius: 30px 30px 0px 0px;
         padding: 15%;
         width: 100%;
+        
         /* height: 200px; */
     }
     
@@ -69,11 +70,20 @@ $today = date("Y-m-d");
         list-style-type: none;
         margin-bottom: 3%;
     }
+    .picture{
+        width: 100%;
+        align-items: center;
+        margin-bottom: 4%;
+    }
+    img{
+        width: 100%;
+        border-radius: 10px;
+    }
     @media screen and (max-width: 1000px){
-        .chambre{
+        /* .chambre{
             width: 65%;
             margin-right: 0px;
-        }
+        } */
         .client{
         display: flex;
         flex-direction: column;
@@ -82,9 +92,14 @@ $today = date("Y-m-d");
         width: 100%;
     }
     }
-    @media screen and (max-width: 1000px){
+    @media screen and (max-width: 1100px){
         .chambre{
-            width: 40%;
+            width: 50%;
+        }
+    }
+    @media screen and (max-width: 550px){
+        .chambre{
+            width: 70%;
         }
     }
 </style>
@@ -98,7 +113,6 @@ if (isset($_POST['depart']) and !empty($_POST['depart']) && isset($_POST['arrive
     <div class="content">
         <div class="client">
             <?php
-
             //Stockage des informations du $_POST
             $arrivee = $_POST['arrivee'];
             $depart = $_POST['depart'];
@@ -204,7 +218,7 @@ if (isset($_POST['depart']) and !empty($_POST['depart']) && isset($_POST['arrive
             $id = $tag;
             $alls = getRoom($dbh, $id);
 
-            foreach ($alls as $all){
+            foreach ($alls as $all){    
             $chid = $all['id'];
             $chprix = $all['prix'];
             $chexp = $all['exposition'];
@@ -230,26 +244,29 @@ if (isset($_POST['depart']) and !empty($_POST['depart']) && isset($_POST['arrive
                         
                             <!-- <h3>2 dates</h3> -->
                             <div class="contour">
-                                <li>Chambre numéro <?= $chid ?></li>
-                            
-                                <li>Prix : <?= $chprix ?> €</li>
-                            
-                                <li>Capacité : <?= $chcap ?> personnes</li>
-                            
-                                <li>Exposition : <?= $chexp ?></li>
-                            
-                                <li>Etage numéro <?= $chetage ?></li>
-                            
+                                <div class="picture">
+                                    <img src="<?php echo($chimage)?>"> 
+                                </div>
+                                    <li>Chambre numéro <?= $chid ?></li>
+                                
+                                    <li>Prix : <?= $chprix ?> €</li>
+                                
+                                    <li>Capacité : <?= $chcap ?> personnes</li>
+                                
+                                    <li>Exposition : <?= $chexp ?></li>
+                                
+                                    <li>Etage numéro <?= $chetage ?></li>
+                                
 
 
-                            <?php
-                            foreach ($allopt as $oneopt){
-                                $opt = getOptionsbyid($dbh, $oneopt);
-                                foreach ($opt as $opts){
-                                    ?><li> <?= $opts['option'] ?> </li><?php
+                                <?php
+                                foreach ($allopt as $oneopt){
+                                    $opt = getOptionsbyid($dbh, $oneopt);
+                                    foreach ($opt as $opts){
+                                        ?><li> <?= $opts['option'] ?> </li><?php
+                                    }
                                 }
-                            }
-                            ?>
+                                ?>
                             </div>    
                         
                                     <div style="display: none">

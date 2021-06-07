@@ -63,6 +63,7 @@ require_once '../component/header.php';
         background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
         color: white;
         width: 77%;
+        cursor: pointer;
     }
     .formu{
         width: 50%;

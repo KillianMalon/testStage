@@ -122,6 +122,11 @@ $premiere = getAllClients($dbh);
         color: #19B3D3;
         background-color: #ffffff;
     }
+    .noresult{
+        text-align: center;
+        color: #ffffff;
+    }
+    
 </style>
 <?php
 if(isset($_GET['search']) AND !empty($_GET['search'])){
@@ -148,7 +153,9 @@ if(isset($_GET['search']) AND !empty($_GET['search'])){
         <div class="adminAffichage">
         <h2><a href="./administration.php" class="viewAll"><i class="fas fa-arrow-left"></i> <?= $lang['back']?></a> <?= $lang['customerAdministration']?> <i class="fas fa-user"></i></h2>
         <div>
+            <?php if(!empty($premiere)):  ?>
             <table>
+            
                 <thead>
                 <tr>
                     <th><?= $lang['lname']?></th>
@@ -186,13 +193,15 @@ if(isset($_GET['search']) AND !empty($_GET['search'])){
                 </tbody>
 
             </table>
+            <?php elseif((isset($search)) && empty($premiere)):  ?>
+                <p class="noresult">Pas de résultat</p>
 
             <!-- Affichage de la pagination -->
-
+                <?php endif;?>
 <?php
-if ((isset($clientCount) && $clientCount > $parpage) ||
-    ($count > $parpage && !isset($clientCount)) ||
-    ($count > $parpage && isset($clientCount) && $clientCount > $parpage)){ ?>
+// if ((isset($clientCount) && $clientCount > $parpage) ||
+//     ($count > $parpage && !isset($clientCount)) ||
+//     ($count > $parpage && isset($clientCount) && $clientCount > $parpage)){ ?>
             <div class="pagination">
                 <?php
                 foreach($list AS $link) {
@@ -211,18 +220,9 @@ if ((isset($clientCount) && $clientCount > $parpage) ||
                 ?></div>
         </div>
         </div>
+    
+
+    
     </div>
-
-    <?php
-    }else{
-    ?>
-        <tr>
-            <th><?php if (isset($message)){
-                $message; }?></th>
-
-        </tr>
-    <?php
-    }
-    ?>
 </div>
 <?php require_once '../component/footer.php';?>

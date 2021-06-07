@@ -175,6 +175,9 @@ input{
         label{
             margin-bottom: 0%;
         }
+        .formulaire{
+            width: 95%;
+        }
 
 }
 

@@ -15,10 +15,10 @@ $lang = array(
     'edit' => 'Modifier',
     'room' => 'Chambre',
     'book' => 'Réserver',
-    'see' => 'Voir',
+    'see' => 'Afficher',
     'aPerson' => 'personne',
     'people' => 'personnes',
-    'category' => 'Categorie',
+    'category' => 'Catégorie',
     'floor' => 'Etage',
     'equipment' => 'Equipement',
     'capacity' => 'Capacité',
@@ -77,6 +77,6 @@ $lang = array(
     'deleteOk' => 'à bien été supprimée!',
     'publishedOn' => 'Publié le',
     'ConfirmReservation' => 'Il vous suffit de cliquer sur le bouton pour valider la réservation',
-    'contact' => 'Nous contactez'
+    'contact' => 'Nous contacter'
 );
 ?>

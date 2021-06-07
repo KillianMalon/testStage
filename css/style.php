@@ -4,6 +4,9 @@
     display: none;
   }
 }
+input{
+  outline: none;
+}
 body{
   margin: 0;
   padding: 0;

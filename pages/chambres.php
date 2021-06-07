@@ -57,6 +57,8 @@ require_once 'bdd.php';
         cursor:pointer;
         color: white;
         transition: background-color 500ms ease-out;
+        text-align: center;
+        
     }
     .button:hover{
         background: linear-gradient(to right, #19B3D3, #1992d3, #196ad3);
@@ -245,32 +247,6 @@ require_once 'bdd.php';
                 $chambres = $statement->fetchAll(PDO::FETCH_ASSOC);
             }
         }
-        // }elseif (!empty($_POST['search'])){
-        //     $search = $_POST['search'];
-        //     $statement = $dbh->prepare("SELECT chambres.*,tarifs.prix, libelle FROM chambres,tarifs WHERE chambres.tarif_id = tarifs.id AND chambres.id = '$search' ORDER BY tarifs.prix ASC ");
-        //     $statement->execute();
-        //     $chambres = $statement->fetchAll(PDO::FETCH_ASSOC);
-        //     if (empty($chambres)) {
-        //         $statement = $dbh->prepare('SELECT chambres.*,tarifs.prix, libelle FROM chambres,tarifs WHERE chambres.tarif_id = tarifs.id AND prix LIKE "%' . $search . '%" ORDER BY tarifs.prix ASC ');
-        //         $statement->execute();
-        //         $chambres = $statement->fetchAll(PDO::FETCH_ASSOC);
-        //         if (empty($chambres)) {
-        //             $statement = $dbh->prepare('SELECT chambres.*,tarifs.prix, libelle FROM chambres,tarifs WHERE chambres.tarif_id = tarifs.id AND exposition LIKE "%' . $search . '%" ORDER BY tarifs.prix ASC ');
-        //             $statement->execute();
-        //             $chambres = $statement->fetchAll(PDO::FETCH_ASSOC);
-        //             if (empty($chambres)) {
-        //                 $statement = $dbh->prepare('SELECT chambres.*,tarifs.prix, libelle FROM chambres,tarifs WHERE chambres.tarif_id = tarifs.id AND libelle LIKE "%' . $search . '%" ORDER BY tarifs.prix ASC ');
-        //                 $statement->execute();
-        //                 $chambres = $statement->fetchAll(PDO::FETCH_ASSOC);
-        //                 if (empty($chambres)) {
-        //                     $statement = $dbh->prepare('SELECT chambres.*,tarifs.prix, libelle FROM chambres,tarifs WHERE chambres.tarif_id = tarifs.id AND description LIKE "%' . $search . '%" ORDER BY tarifs.prix ASC ');
-        //                     $statement->execute();
-        //                     $chambres = $statement->fetchAll(PDO::FETCH_ASSOC);
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
         ?>
     <div>
         <div class="dropdown">

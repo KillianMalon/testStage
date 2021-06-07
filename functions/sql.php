@@ -228,24 +228,24 @@ function updateRank($dbh, $rank, $id){
 //Fonction de recherche multi-tag
 function Search($dbh, $total, $exposition, $idprix){
     $type = "SELECT id FROM chambres c WHERE c.capacite >= ?";
-    if ($idprix == 0) {
+    if (empty($idprix)) {
         if ($exposition == 0) {
             $query = $dbh->prepare( "$type" );
-            $query->execute( array($total) );
+            $query->execute(array($total));
             return $final = $query->fetchAll();
         } else {
             $query = $dbh->prepare( "$type" . " AND c.exposition = ?" );
-            $query->execute( array($total, $exposition) );
+            $query->execute(array($total, $exposition));
             return $final = $query->fetchAll();
         }
     } else {
         if ($exposition == 0) {
             $query = $dbh->prepare( "$type" . " AND c.tarif_id = ?" );
-            $query->execute( array($total, $idprix) );
+            $query->execute(array($total, $idprix));
             return $final = $query->fetchAll();
         } else {
             $query = $dbh->prepare( "$type" . " AND c.exposition = ? AND c.tarif_id = ?" );
-            $query->execute( array($total, $exposition, $idprix) );
+            $query->execute(array($total, $exposition, $idprix));
             return $final = $query->fetchAll();
         }
     }

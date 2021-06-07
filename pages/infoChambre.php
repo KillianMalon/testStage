@@ -322,6 +322,43 @@ require_once '../component/header.php';
             width: 100%;
         }
     }
+    @media screen and (max-width:600px){
+        .date, .capacity, .exposition{
+            display: flex;
+            flex-direction: column;
+            /* justify-content: space-around; */
+            text-align: left;
+        }
+        .date2{
+            display: flex;
+            flex-direction: column;
+            border-top: 1px solid #cecece;
+        }
+        .capacity2{
+            border-top: 1px solid #cecece;
+        }
+        .line{
+            border: none;
+        }
+        .formulaire{
+            width: 100%;
+        }
+        .form2{
+            width: 80%;
+        }
+        .input, .select{
+            padding: 5%;
+            width: 80%;
+            margin-top: auto;
+        }
+        .capacity2, .exposition2, .date2 {
+            width: auto;
+            align-items: center;
+        }
+        .select{
+            width: 90%;
+        }
+    }
     <?php if($_SESSION['theme']=="sombre"):?>
             .favoriteButton{
                 background-color: #222;
@@ -612,12 +649,13 @@ $todays = date("Y-m-d");
                                             <input type="number" name="idChambre" hidden="hidden" value="<?php echo($chambres['id']); ?>">
                                             <input type="number" name="capacity" hidden="hidden" value="<?php echo($chambres['capacite']); ?>">
                                             <input type="submit"  class="bouton" value="<?= $lang['book']; ?>">
-                                        <?php  }else{ $id = intval($_GET['id']);?>
-                                                        <a href="modifRoom.php?room=<?php echo $id ?>"><?= $lang['edit']; ?></a>
-                                        <?php } ?>   
+                                          
                                     </div>
                                 </form>
-                            </div>    
+                            </div>   
+                            <?php  }else{ $id = intval($_GET['id']);?>
+                                        <a href="modifRoom.php?room=<?php echo $id ?>"><?= $lang['edit']; ?></a>
+                            <?php } ?>  
                 <?php } ?>  
             </div>
 

@@ -77,6 +77,16 @@ require_once 'bdd.php';
         background-color: #ffffff;
         color: #19B3D3;
     }
+    @media screen and (max-width: 1375px){
+        .globalAdmin{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .adminAffichage{
+            width: 90%;
+        }
+    }
 </style>
 <!-- AFFICHAGE ADMIN CLIENT -->
 <div class="content">
