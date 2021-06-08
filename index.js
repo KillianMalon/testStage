@@ -14,86 +14,86 @@ const db = mysql.createConnection({
     charset : 'utf8'
 });
 
-// (async () => {
-//     const browser = await puppeteer.launch({headless : true});
-//     const page = await browser.newPage();
-//     await page.setDefaultNavigationTimeout(0);
-//     await page.goto('https://fr.pornhub.com/categories?o=al');
-//     const categories = await page.evaluate(() => {
-//         let categories = [];
-//         let elements = document.querySelectorAll('div.category-wrapper');
-//
-//         for (element of elements){
-//             categories.push({
-//                 title: element.querySelector('strong').textContent,
-//                 link : element.querySelector('a').href,
-//                 picture : element.querySelector('img').dataset.thumb_url
-//             })
-//         }
-//         return categories;
-//     })
-//     for (categorie of categories){
-//         let title = categorie['title'];
-//         let link = categorie['link'];
-//         let picture = categorie['picture'];
-//         let verif = db.query("SELECT title FROM categories WHERE title = '"+title+"'");
-//
-//         if (empty(verif)) {
-//             db.query("INSERT INTO categories(title, link, picture) VALUES ('" + title + "','" + link + "','" + picture + "')")
-//         }
-//     }
-//
-//     await browser.close();
-// })
-// ();
-//
-// (async () => {
-//     const browser = await puppeteer.launch({headless : false});
-//     const page = await browser.newPage();
-//     let porn = [];
-//     for (let compteur=1747; compteur<=1754; compteur++) {
-//         await page.goto('https://fr.pornhub.com/pornstars?t=a&page='+compteur+'');
-//         const pornstars = await page.evaluate(() => {
-//             let reponses = [];
-//             let elements = document.querySelectorAll('#popularPornstars > li > div.wrap');
-//             for (element of elements){
-//                 let video = element.querySelector('div.thumbnail-info-wrapper > span').textContent;
-//                 let videos = video.split(' ');
-//                 let name = element.querySelector('a').dataset.mxptext;
-//                 if(name.includes('"')){
-//                     name = name.toString().replace('"', "'");
-//                     if(name.includes('"')) {
-//                         name = name.toString().replace('"', "'");
-//                     }
-//                 }
-//                 reponses.push({
-//                     rank : element.querySelector('a > span > span > span.rank_number').textContent.trim(),
-//                     name: name,
-//                     link : element.querySelector('a').href,
-//                     number_video : videos[0],
-//                     picture : element.querySelector('a img').dataset.thumb_url,
-//                 })
-//             }
-//             return reponses;
-//         })
-//         for (reponses of pornstars){
-//             let name = reponses['name'];
-//             let link = reponses['link'];
-//             let videos_number = reponses['number_video'];
-//             let picture = reponses['picture'];
-//             let rank =reponses['rank'];
-//             if (empty(rank)){
-//                 rank=1;
-//             }
-//             db.query('INSERT INTO pornstars(rank, name, link, videos_number, picture) VALUES ("'+rank+'","'+name+'","'+link+'","'+videos_number+'","'+picture+'")')
-//         }
-//         porn.push(compteur);
-//     }
-//     console.log(porn);
-//     await browser.close();
-// })
-//
-// ();
+(async () => {
+    const browser = await puppeteer.launch({headless : true});
+    const page = await browser.newPage();
+    await page.setDefaultNavigationTimeout(0);
+    await page.goto('https://fr.pornhub.com/categories?o=al');
+    const categories = await page.evaluate(() => {
+        let categories = [];
+        let elements = document.querySelectorAll('div.category-wrapper');
+
+        for (element of elements){
+            categories.push({
+                title: element.querySelector('strong').textContent,
+                link : element.querySelector('a').href,
+                picture : element.querySelector('img').dataset.thumb_url
+            })
+        }
+        return categories;
+    })
+    for (categorie of categories){
+        let title = categorie['title'];
+        let link = categorie['link'];
+        let picture = categorie['picture'];
+        let verif = db.query("SELECT title FROM categories WHERE title = '"+title+"'");
+
+        if (empty(verif)) {
+            db.query("INSERT INTO categories(title, link, picture) VALUES ('" + title + "','" + link + "','" + picture + "')")
+        }
+    }
+
+    await browser.close();
+})
+();
+
+(async () => {
+    const browser = await puppeteer.launch({headless : false});
+    const page = await browser.newPage();
+    let porn = [];
+    for (let compteur=1747; compteur<=1754; compteur++) {
+        await page.goto('https://fr.pornhub.com/pornstars?t=a&page='+compteur+'');
+        const pornstars = await page.evaluate(() => {
+            let reponses = [];
+            let elements = document.querySelectorAll('#popularPornstars > li > div.wrap');
+            for (element of elements){
+                let video = element.querySelector('div.thumbnail-info-wrapper > span').textContent;
+                let videos = video.split(' ');
+                let name = element.querySelector('a').dataset.mxptext;
+                if(name.includes('"')){
+                    name = name.toString().replace('"', "'");
+                    if(name.includes('"')) {
+                        name = name.toString().replace('"', "'");
+                    }
+                }
+                reponses.push({
+                    rank : element.querySelector('a > span > span > span.rank_number').textContent.trim(),
+                    name: name,
+                    link : element.querySelector('a').href,
+                    number_video : videos[0],
+                    picture : element.querySelector('a img').dataset.thumb_url,
+                })
+            }
+            return reponses;
+        })
+        for (reponses of pornstars){
+            let name = reponses['name'];
+            let link = reponses['link'];
+            let videos_number = reponses['number_video'];
+            let picture = reponses['picture'];
+            let rank =reponses['rank'];
+            if (empty(rank)){
+                rank=1;
+            }
+            db.query('INSERT INTO pornstars(rank, name, link, videos_number, picture) VALUES ("'+rank+'","'+name+'","'+link+'","'+videos_number+'","'+picture+'")')
+        }
+        porn.push(compteur);
+    }
+    console.log(porn);
+    await browser.close();
+})
+
+();
 
  (async () => {
     const browser = await puppeteer.launch({headless : true});
