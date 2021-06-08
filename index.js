@@ -51,7 +51,7 @@ const db = mysql.createConnection({
     const browser = await puppeteer.launch({headless : false});
     const page = await browser.newPage();
     let porn = [];
-    for (let compteur=1747; compteur<=1754; compteur++) {
+    for (let compteur=1; compteur<=1754; compteur++) {
         await page.goto('https://fr.pornhub.com/pornstars?t=a&page='+compteur+'');
         const pornstars = await page.evaluate(() => {
             let reponses = [];
@@ -100,7 +100,7 @@ const db = mysql.createConnection({
     const page = await browser.newPage();
 
     let categories = []
-    for (let compteur=753; compteur<=2273; compteur++) {
+    for (let compteur=1; compteur<=2273; compteur++) {
         await page.goto('https://fr.pornhub.com/video?o=mv&t=a&cc=fr&page='+compteur+'');
         const infos = await page.evaluate(() => {
             let videos = [];
